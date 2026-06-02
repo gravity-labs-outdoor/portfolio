@@ -6,14 +6,14 @@
 <title>TrackPush / Gravity Strategy Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #1a1714;
-    --paper: #f5f0e8;
-    --paper-dark: #ede7d9;
-    --rule: #c8bfb0;
-    --mid: #6b6460;
+    --ink: #111111;
+    --paper: #FAFAF8;
+    --paper-dark: #F2F1EE;
+    --rule: #E0DDD8;
+    --mid: #888884;
     --gold: #c4922a;
     --ice: #ccdde8;
     --ice-mid: #7aafc4;
@@ -31,9 +31,10 @@
   body {
     background-color: var(--paper);
     color: var(--ink);
-    font-family: 'Source Serif 4', Georgia, serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 18px;
     line-height: 1.75;
+  font-weight: 300;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -42,7 +43,7 @@
     background-color: var(--ink);
     color: rgba(245,240,232,0.55);
     padding: 14px 32px;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.18em;
@@ -98,9 +99,9 @@
     max-width: 900px;
   }
   .hero-eyebrow {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 500;
     letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--orange-light);
@@ -117,12 +118,12 @@
     background: var(--orange-light);
   }
   .hero h1 {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: clamp(52px, 8vw, 96px);
-    font-weight: 900;
+    font-weight: 800;
     line-height: 0.9;
     color: #fff;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     margin-bottom: 28px;
   }
   .hero h1 em {
@@ -130,7 +131,7 @@
     color: var(--orange-light);
   }
   .hero-sub {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: clamp(17px, 2.2vw, 22px);
     font-style: italic;
     color: rgba(245,240,232,0.55);
@@ -153,7 +154,7 @@
     padding: 14px 20px;
   }
   .hero-stat-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.14em;
@@ -161,7 +162,7 @@
     color: rgba(245,240,232,0.45);
   }
   .hero-stat-value {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 13px;
     font-weight: 700;
     color: rgba(245,240,232,0.8);
@@ -181,7 +182,7 @@
   .section:last-of-type { border-bottom: none; }
 
   .section-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.2em;
@@ -200,7 +201,7 @@
   }
 
   h2 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: clamp(26px, 3.5vw, 38px);
     font-weight: 700;
     line-height: 1.2;
@@ -208,7 +209,7 @@
     margin-bottom: 24px;
   }
   h3 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 21px;
     font-weight: 700;
     font-style: italic;
@@ -228,7 +229,7 @@
     border-left: 3px solid var(--orange);
   }
   .pull-quote p {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: clamp(19px, 2.2vw, 24px);
     font-style: italic;
     line-height: 1.5;
@@ -236,7 +237,7 @@
     margin-bottom: 12px;
   }
   .pull-quote cite {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.15em;
@@ -254,7 +255,7 @@
     border-radius: 0 2px 2px 0;
   }
   .callout-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 0.22em;
@@ -286,7 +287,7 @@
     vertical-align: top;
   }
   .spec-table td:first-child {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.15em;
@@ -302,7 +303,7 @@
   }
   .spec-tag {
     display: inline-block;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -324,7 +325,7 @@
     text-align: center;
   }
   .app-preview-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.22em;
@@ -344,7 +345,7 @@
     background: rgba(232,101,26,0.4);
   }
   .app-preview-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 24px;
     font-style: italic;
     color: rgba(245,240,232,0.85);
@@ -395,10 +396,10 @@
     font-size: 12px;
     font-weight: 800;
     color: white;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
   }
   .mock-brand-text {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -406,7 +407,7 @@
     color: #F0F0F5;
   }
   .mock-badge {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 9px;
     font-weight: 700;
     padding: 3px 8px;
@@ -448,7 +449,7 @@
   }
   .mock-hud-metric { text-align: center; }
   .mock-hud-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 8px;
     font-weight: 700;
     color: #555872;
@@ -498,7 +499,7 @@
   .mock-progress-label {
     display: flex;
     justify-content: space-between;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 9px;
     font-weight: 600;
     color: #555872;
@@ -511,7 +512,7 @@
     border-left: 2px solid #E8651A;
     border-radius: 6px;
     padding: 8px 10px;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 10px;
     color: #8B8FA3;
     margin-bottom: 8px;
@@ -534,7 +535,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 9px;
     font-weight: 700;
     color: white;
@@ -550,7 +551,7 @@
     gap: 6px;
   }
   .mock-btn {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 10px;
     font-weight: 700;
     padding: 7px 12px;
@@ -571,7 +572,7 @@
     box-shadow: 0 0 16px rgba(26,191,160,0.12);
   }
   .mock-share-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 9px;
     font-weight: 700;
     color: #1ABFA0;
@@ -611,7 +612,7 @@
   }
   .flow-step:last-child { border-bottom: none; }
   .flow-num {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 40px;
     font-weight: 800;
     color: rgba(232,101,26,0.15);
@@ -622,7 +623,7 @@
   }
   .flow-body { flex: 1; padding-top: 4px; }
   .flow-title {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -659,7 +660,7 @@
   }
   .constraint-body { flex: 1; }
   .constraint-title {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.14em;
@@ -691,7 +692,7 @@
   }
   .cta-section .article-wrap { position: relative; z-index: 1; }
   .cta-label {
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.22em;
@@ -724,7 +725,7 @@
     display: inline-block;
     background: var(--orange);
     color: #fff;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -741,7 +742,7 @@
     display: inline-block;
     background: transparent;
     color: var(--ice-mid);
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 14px;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -761,7 +762,7 @@
     color: rgba(245,240,232,0.3);
     text-align: center;
     padding: 28px 24px;
-    font-family: 'Barlow Condensed', sans-serif;
+    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     letter-spacing: 0.14em;
     border-top: 1px solid rgba(255,255,255,0.05);
