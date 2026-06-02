@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snowbook / Gravity Strategy Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714;
+    --paper: #f5f0e8;
+    --paper-dark: #ede7d9;
+    --rule: #c8bfb0;
+    --mid: #6b6460;
+    --ice-mid: #7aafc4;
+    --ice-dark: #2e6a8a;
+    --blue: #2c6fa8;
+    --blue-light: #5a9fd4;
+    --blue-glow: rgba(44, 111, 168, 0.18);
+    --blue-tint: rgba(44, 111, 168, 0.07);
+    --snow: #e8f2f8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- MASTHEAD ---- */
+  .masthead {
+    background: var(--ink);
+    color: rgba(245,240,232,0.55);
+    padding: 14px 32px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .masthead a { color: var(--ice-mid); text-decoration: none; transition: color 0.15s; }
+  .masthead a:hover { color: #fff; }
+  .masthead-back { color: rgba(245,240,232,0.55) !important; display: flex; align-items: center; gap: 8px; }
+  .masthead-back::before { content: '←'; font-size: 14px; }
+  .masthead-sep { opacity: 0.3; }
+
+  /* ---- HERO ---- */
+  .hero {
+    position: relative;
+    background: var(--ink);
+    overflow: hidden;
+    min-height: 68vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 65% 15%, rgba(44,111,168,0.22) 0%, transparent 55%),
+      radial-gradient(ellipse at 10% 85%, rgba(122,175,196,0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 85% 80%, rgba(44,111,168,0.06) 0%, transparent 40%),
+      linear-gradient(172deg, #080d14 0%, #0e1a26 45%, #0a1019 100%);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  /* Subtle topo contour lines in hero */
+  .hero-topo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        rgba(122,175,196,0.8) 0px,
+        rgba(122,175,196,0.8) 1px,
+        transparent 1px,
+        transparent 40px
+      );
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 40px 56px 80px;
+    max-width: 900px;
+  }
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--blue-light);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 100px);
+    font-weight: 900;
+    line-height: 0.9;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: italic; color: var(--blue-light); }
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(16px, 2vw, 21px);
+    font-style: italic;
+    color: rgba(245,240,232,0.55);
+    max-width: 580px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+  .hero-stat-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-stat {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(44,111,168,0.25);
+    border-radius: 2px;
+    padding: 12px 18px;
+  }
+  .hero-stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+  }
+  .hero-stat-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(245,240,232,0.8);
+  }
+
+  /* ---- VIDEO SECTION ---- */
+  .video-section {
+    background: linear-gradient(180deg, #0a1019 0%, #0e1a26 50%, #111820 100%);
+    padding: 64px 0 72px;
+  }
+  .video-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+  .video-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+  }
+  .video-label::before, .video-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(44,111,168,0.35);
+    max-width: 120px;
+  }
+  .video-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-style: italic;
+    color: rgba(245,240,232,0.8);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid rgba(44,111,168,0.25);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.03);
+  }
+  .video-wrapper video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #080d14;
+  }
+  .video-note {
+    text-align: center;
+    margin-top: 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.3);
+  }
+
+  /* ---- ARTICLE LAYOUT ---- */
+  .article-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .section {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3.5vw, 38px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    font-weight: 700;
+    font-style: italic;
+    margin-top: 40px;
+    margin-bottom: 14px;
+  }
+  p { margin-bottom: 22px; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+  a { color: var(--blue); }
+  a:hover { color: var(--ink); }
+
+  /* ---- PULL QUOTE ---- */
+  .pull-quote {
+    margin: 48px 0;
+    padding: 32px 0 32px 32px;
+    border-left: 3px solid var(--blue);
+  }
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(19px, 2.2vw, 24px);
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 0;
+  }
+
+  /* ---- USE CASES ---- */
+  .use-cases {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 32px 0;
+  }
+  .use-case {
+    display: flex;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: flex-start;
+  }
+  .use-case:last-child { border-bottom: none; padding-bottom: 0; }
+  .use-case-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    color: rgba(44,111,168,0.14);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 56px;
+    text-align: right;
+    padding-top: 4px;
+  }
+  .use-case-body { flex: 1; }
+  .use-case-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 8px;
+  }
+  .use-case-body p {
+    font-size: 16px;
+    color: var(--mid);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  /* ---- SPEC GRID ---- */
+  .spec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin: 32px 0;
+  }
+  .spec-block {
+    background: var(--paper-dark);
+    padding: 28px 28px 24px;
+  }
+  .spec-block-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .spec-block-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+  .spec-list {
+    list-style: none;
+    padding: 0;
+  }
+  .spec-list li {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+    padding: 9px 0;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .spec-list li:last-child { border-bottom: none; padding-bottom: 0; }
+  .spec-list li::before {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+
+  /* ---- BENEFIT STRIP ---- */
+  .benefit-strip {
+    background: var(--ink);
+    padding: 64px 56px;
+  }
+  .benefit-strip .inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .benefit-strip .section-label { color: var(--blue-light); }
+  .benefit-strip .section-label::after { background: rgba(44,111,168,0.3); }
+  .benefit-strip h2 {
+    color: #fff;
+    margin-bottom: 40px;
+  }
+  .benefits {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px 40px;
+  }
+  .benefit { }
+  .benefit-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 8px;
+  }
+  .benefit p {
+    font-size: 15px;
+    color: rgba(245,240,232,0.6);
+    line-height: 1.65;
+    margin-bottom: 0;
+  }
+
+  /* ---- CTA ---- */
+  .cta-section {
+    background: linear-gradient(160deg, #080d14 0%, #0e1a26 100%);
+    color: #fff;
+    padding: 80px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(44,111,168,0.2) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+  .cta-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .cta-label::before, .cta-label::after {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: rgba(44,111,168,0.4);
+  }
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3.5vw, 38px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .cta-section p {
+    font-size: 16px;
+    color: rgba(245,240,232,0.55);
+    margin-bottom: 36px;
+  }
+  .btn-back {
+    display: inline-block;
+    background: transparent;
+    color: var(--ice-mid);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 40px;
+    border-radius: 2px;
+    border: 1px solid rgba(122,175,196,0.4);
+    transition: all 0.2s ease;
+  }
+  .btn-back:hover { background: rgba(122,175,196,0.1); color: #fff; }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--ink);
+    color: rgba(245,240,232,0.3);
+    text-align: center;
+    padding: 28px 24px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  footer a { color: rgba(122,175,196,0.6); text-decoration: none; }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow { animation: fadeUp 0.7s ease both; }
+  .hero h1      { animation: fadeUp 0.7s 0.12s ease both; }
+  .hero-sub     { animation: fadeUp 0.7s 0.22s ease both; }
+  .hero-stat-row { animation: fadeUp 0.7s 0.32s ease both; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 640px) {
+    .hero-content { padding: 40px 24px 60px; }
+    .article-wrap { padding: 0 20px; }
+    .spec-grid { grid-template-columns: 1fr; }
+    .benefits { grid-template-columns: 1fr; }
+    .benefit-strip { padding: 56px 24px; }
+    .cta-section { padding: 60px 24px; }
+    .video-inner { padding: 0 20px; }
+    .masthead { padding: 14px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <a class="masthead-back" href="index.html">Portfolio</a>
+  <span class="masthead-sep">/</span>
+  <span>Snowbook</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-topo"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Hardware + AI Product Design</div>
+    <h1>Snow<em>book</em></h1>
+    <p class="hero-sub">A deployable network of remote snow sensors with integrated AI tools, built to close the data gap in avalanche forecasting.</p>
+    <div class="hero-stat-row">
+      <div class="hero-stat">
+        <span class="hero-stat-label">Type</span>
+        <span class="hero-stat-value">Hardware + Software Product</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Domain</span>
+        <span class="hero-stat-value">Avalanche Safety &amp; Snow Science</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Year</span>
+        <span class="hero-stat-value">2023</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO -->
+<div class="video-section">
+  <div class="video-inner">
+    <div class="video-label">Product Pitch</div>
+    <p class="video-title">A four-minute walkthrough of the Snowbook concept</p>
+    <div class="video-wrapper">
+      <iframe
+        src="https://www.youtube.com/embed/ZkSvyNa-ItI"
+        title="Snowbook Product Pitch"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <p class="video-note">4 min &nbsp;·&nbsp; Snowbook product pitch &nbsp;·&nbsp; Patrick Scanlan</p>
+  </div>
+</div>
+
+<!-- THE PROBLEM -->
+<section class="section">
+  <div class="article-wrap">
+    <div class="section-label">The Problem</div>
+    <h2>Avalanche Forecasters Are Making Critical Decisions on Incomplete Data</h2>
+
+    <p>Data collection in mountain environments is genuinely hard. Access is remote, power sources are often nonexistent, and the terrain that matters most is exactly the terrain that is most difficult to instrument. In winter, this data scarcity means avalanche forecasters and snow scientists are left to rely on inconsistent field observations, weather model outputs, and a sparse network of fixed weather stations to make snowpack assumptions across enormous, variable terrain.</p>
+
+    <p>The consequences of that gap are significant. Forecast accuracy depends directly on the spatial density of snowpack data. Where data is thin, uncertainty is high. And where uncertainty is high, the margin for error in hazard communication narrows.</p>
+
+    <div class="pull-quote">
+      <p>More data points, better spatial awareness, and consistent delivery from locations no fixed station will ever reach.</p>
+    </div>
+
+    <p>Snowbook was designed to close that gap directly: a network of low-cost, deployable snow sensors that can be placed anywhere, run on battery power for a month at a time, and transmit measurements automatically every 30 minutes without requiring field personnel to be present.</p>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="section">
+  <div class="article-wrap">
+    <div class="section-label">Use Cases</div>
+    <h2>Three Audiences, One Platform</h2>
+    <p>Snowbook is designed around three distinct professional use cases, each of which benefits from the same core capability: reliable, high-resolution snowpack data from locations that were previously unmeasured.</p>
+
+    <div class="use-cases">
+      <div class="use-case">
+        <div class="use-case-num">1</div>
+        <div class="use-case-body">
+          <div class="use-case-title">Professional Avalanche Forecasters</div>
+          <p>Deploy sensors across forecast zones to increase spatial resolution of snowpack data. Improved data density feeds directly into hazard rating accuracy and the quality of public safety communication.</p>
+        </div>
+      </div>
+      <div class="use-case">
+        <div class="use-case-num">2</div>
+        <div class="use-case-body">
+          <div class="use-case-title">Research Scientists</div>
+          <p>Instrument remote terrain for climate, meteorology, and hydrology research. Snowbook enables consistent, longitudinal data collection in locations previously accessible only through expensive and time-intensive manual measurements.</p>
+        </div>
+      </div>
+      <div class="use-case">
+        <div class="use-case-num">3</div>
+        <div class="use-case-body">
+          <div class="use-case-title">Ski Resorts</div>
+          <p>Gain higher-fidelity understanding of snowpack conditions across ski area terrain and assess the effectiveness of avalanche mitigation efforts with real measurement data rather than estimates.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="article-wrap">
+    <div class="section-label">How It Works</div>
+    <h2>Deploy, Measure, Transmit, Predict</h2>
+
+    <p>Snowbook units are installed by field technicians across locations where snowpack data is needed. From that point, the system operates autonomously. Snow depth and temperature measurements are collected continuously and transmitted to a central database via SMS every 30 minutes, with no requirement for local power infrastructure or network connectivity beyond a cellular signal.</p>
+
+    <p>Battery life supports approximately 30 days of continuous operation before a technician returns to swap the battery or collect the unit. That runtime is long enough to capture the arc of a storm cycle and its aftermath without mid-deployment intervention.</p>
+
+    <p>On the software side, incoming sensor data flows into two output streams. Raw measurements are made available directly for specialist use. In parallel, the data feeds Snowbook's machine learning model, which combines sensor inputs with standard geo-relevant datasets to generate high-integrity predictions of avalanche hazard and snowpack structure.</p>
+
+    <div class="spec-grid">
+      <div class="spec-block">
+        <div class="spec-block-label">Hardware</div>
+        <ul class="spec-list">
+          <li>Ultrasonic distance sensor for snow depth</li>
+          <li>Mobile snow thermometer array</li>
+          <li>On-board computer with cellular transmitter</li>
+          <li>Robust, weatherproof field enclosure</li>
+          <li>Battery-powered, approximately 30-day runtime</li>
+        </ul>
+      </div>
+      <div class="spec-block">
+        <div class="spec-block-label">Software &amp; AI</div>
+        <ul class="spec-list">
+          <li>SMS data transmission every 30 minutes</li>
+          <li>XGBoost machine learning model</li>
+          <li>5-scale avalanche hazard rating by location</li>
+          <li>Weak layer and reactive snowpack detection</li>
+          <li>Raw data API for specialist access</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<div class="benefit-strip">
+  <div class="inner">
+    <div class="section-label">Key Distinctions</div>
+    <h2>What Sets Snowbook Apart from Fixed Weather Stations</h2>
+    <div class="benefits">
+      <div class="benefit">
+        <div class="benefit-title">Spatial Resolution</div>
+        <p>More data points across variable terrain produces fundamentally better spatial awareness of snowpack conditions than a fixed network ever can.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-title">Cost</div>
+        <p>Snowbook units cost pennies on the dollar compared to standardized fixed snow plot stations, making broad deployment financially viable for the first time.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-title">Consistency</div>
+        <p>Automated 30-minute transmission cycles deliver data continuously, without the gaps that come with resource-intensive and weather-dependent manual measurements.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-title">AI-Powered Prediction</div>
+        <p>The XGBoost model connects field measurements to hazard ratings and snowpack structure predictions, bridging raw sensor data and actionable safety intelligence.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-label">Up Next</div>
+    <h2>See More Work</h2>
+    <p>Browse the full portfolio or return to the landing page.</p>
+    <a href="index.html" class="btn-back">← Back to Portfolio</a>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2026 Gravity Strategy &nbsp;&middot;&nbsp; <a href="https://www.gravitystrategy.co">gravitystrategy.co</a></p>
+</footer>
+
+</body>
+</html>

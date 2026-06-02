@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AllTrails Feature Design / Gravity Strategy Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714;
+    --paper: #f5f0e8;
+    --paper-dark: #ede7d9;
+    --rule: #c8bfb0;
+    --mid: #6b6460;
+    --ice-mid: #7aafc4;
+    --ice-dark: #2e6a8a;
+    --green: #2d6a2d;
+    --green-light: #4a9c4a;
+    --green-glow: rgba(45, 106, 45, 0.15);
+    --green-tint: rgba(45, 106, 45, 0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- MASTHEAD ---- */
+  .masthead {
+    background: var(--ink);
+    color: rgba(245,240,232,0.55);
+    padding: 14px 32px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .masthead a { color: var(--ice-mid); text-decoration: none; transition: color 0.15s; }
+  .masthead a:hover { color: #fff; }
+  .masthead-back { color: rgba(245,240,232,0.55) !important; display: flex; align-items: center; gap: 8px; }
+  .masthead-back::before { content: '←'; font-size: 14px; }
+  .masthead-sep { opacity: 0.3; }
+
+  /* ---- HERO ---- */
+  .hero {
+    position: relative;
+    background: var(--ink);
+    overflow: hidden;
+    min-height: 65vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 60% 20%, rgba(45,106,45,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 10% 80%, rgba(122,175,196,0.07) 0%, transparent 50%),
+      linear-gradient(172deg, #0a0f0a 0%, #131a13 45%, #0e1210 100%);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 40px 56px 80px;
+    max-width: 900px;
+  }
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--green-light);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(46px, 7vw, 88px);
+    font-weight: 900;
+    line-height: 0.92;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .hero h1 em { font-style: italic; color: var(--green-light); }
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(16px, 2vw, 21px);
+    font-style: italic;
+    color: rgba(245,240,232,0.55);
+    max-width: 560px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+  .hero-stat-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .hero-stat {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(45,106,45,0.25);
+    border-radius: 2px;
+    padding: 12px 18px;
+  }
+  .hero-stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+  }
+  .hero-stat-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(245,240,232,0.8);
+  }
+
+  /* ---- OVERVIEW ---- */
+  .overview {
+    padding: 72px 56px;
+    display: flex;
+    gap: 72px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .overview-left { flex: 1; min-width: 260px; }
+  .overview-right { flex: 1.6; min-width: 300px; }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+
+  .overview-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 34px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+  .overview-left h2 em { font-style: italic; color: var(--green); }
+  .overview-right p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #3a3530;
+    margin-bottom: 20px;
+  }
+  .overview-right p:last-child { margin-bottom: 0; }
+
+  /* ---- PROCESS SECTIONS ---- */
+  .process-section {
+    border-top: 1px solid var(--rule);
+    padding: 0 0 80px;
+  }
+
+  .section-header {
+    padding: 64px 56px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .section-header-left { flex: 1; min-width: 260px; }
+  .section-number {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 80px;
+    font-weight: 800;
+    color: rgba(45,106,45,0.1);
+    line-height: 1;
+    margin-bottom: -8px;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .section-header-desc {
+    flex: 1.2;
+    min-width: 240px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--mid);
+    padding-bottom: 4px;
+    max-width: 500px;
+  }
+
+  /* ---- SLIDE GALLERY ---- */
+  .slide-gallery {
+    padding: 0 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Single full-width slide */
+  .slide-full {
+    margin-bottom: 16px;
+  }
+  .slide-full img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .slide-full img:hover {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    transform: translateY(-2px);
+  }
+
+  /* Two-column grid */
+  .slide-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .slide-grid-2 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .slide-grid-2 img:hover {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    transform: translateY(-2px);
+  }
+
+  /* 1+2 layout: one big left, two stacked right */
+  .slide-featured {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .slide-featured .main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .slide-featured .main img:hover {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    transform: translateY(-2px);
+  }
+  .slide-featured .side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .slide-featured .side img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    cursor: zoom-in;
+    flex: 1;
+    object-fit: cover;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .slide-featured .side img:hover {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    transform: translateY(-2px);
+  }
+
+  /* Caption strip */
+  .slide-caption {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-top: 8px;
+    margin-bottom: 20px;
+    padding-left: 2px;
+  }
+
+  /* ---- PULL QUOTE ---- */
+  .pull-quote-strip {
+    background: var(--ink);
+    padding: 56px 56px;
+    margin: 0;
+  }
+  .pull-quote-strip .inner {
+    max-width: 760px;
+    margin: 0 auto;
+    border-left: 3px solid var(--green-light);
+    padding-left: 32px;
+  }
+  .pull-quote-strip p {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.5vw, 26px);
+    font-style: italic;
+    color: rgba(245,240,232,0.9);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .pull-quote-strip cite {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    font-style: normal;
+  }
+
+  /* ---- APPENDIX STRIP ---- */
+  .appendix-intro {
+    background: var(--paper-dark);
+    border-top: 2px solid var(--ink);
+    padding: 56px 56px 0;
+  }
+  .appendix-intro .inner {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .appendix-intro h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 700;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .appendix-intro p {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--mid);
+    max-width: 680px;
+  }
+
+  /* ---- SCROLL STRIP for journey slides ---- */
+  .journey-strip {
+    background: var(--paper-dark);
+    padding: 40px 0 56px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .journey-inner {
+    display: flex;
+    gap: 20px;
+    padding: 0 56px;
+    width: max-content;
+  }
+  .journey-slide {
+    flex-shrink: 0;
+    width: 680px;
+  }
+  .journey-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.15);
+    cursor: zoom-in;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .journey-slide img:hover {
+    box-shadow: 0 10px 40px rgba(0,0,0,0.22);
+    transform: translateY(-2px);
+  }
+  .journey-slide .slide-caption { margin-top: 10px; }
+  /* Scroll hint */
+  .scroll-hint {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mid);
+    padding: 0 56px 18px;
+    background: var(--paper-dark);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .scroll-hint::after {
+    content: '→';
+    font-size: 14px;
+    opacity: 0.5;
+    animation: nudge 2s ease-in-out infinite;
+  }
+  @keyframes nudge {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+  }
+
+  /* ---- CTA ---- */
+  .cta-section {
+    background: linear-gradient(160deg, #0a0f0a 0%, #131a13 100%);
+    color: #fff;
+    padding: 80px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(45,106,45,0.2) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .cta-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .cta-label::before, .cta-label::after {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: rgba(74,156,74,0.4);
+  }
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3.5vw, 38px);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .cta-section p {
+    font-size: 16px;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 36px;
+  }
+  .btn-back {
+    display: inline-block;
+    background: transparent;
+    color: var(--ice-mid);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 40px;
+    border-radius: 2px;
+    border: 1px solid rgba(122,175,196,0.4);
+    transition: all 0.2s ease;
+  }
+  .btn-back:hover { background: rgba(122,175,196,0.1); color: #fff; }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--ink);
+    color: rgba(245,240,232,0.3);
+    text-align: center;
+    padding: 28px 24px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+  }
+  footer a { color: rgba(122,175,196,0.6); text-decoration: none; }
+
+  /* ---- LIGHTBOX ---- */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(10,15,10,0.96);
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    cursor: zoom-out;
+  }
+  .lightbox.active { display: flex; }
+  .lightbox-img {
+    max-width: 95vw;
+    max-height: 92vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.8);
+    cursor: default;
+  }
+  .lightbox-close {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    color: rgba(245,240,232,0.6);
+    font-size: 28px;
+    font-weight: 300;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1;
+    transition: color 0.15s ease;
+    z-index: 10000;
+  }
+  .lightbox-close:hover { color: #fff; }
+  .lightbox-nav {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(245,240,232,0.1);
+    border: none;
+    color: rgba(245,240,232,0.7);
+    font-size: 28px;
+    padding: 16px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+    z-index: 10000;
+  }
+  .lightbox-nav:hover { background: rgba(245,240,232,0.2); color: #fff; }
+  .lightbox-prev { left: 16px; }
+  .lightbox-next { right: 16px; }
+  .lightbox-counter {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.45);
+  }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow { animation: fadeUp 0.7s ease both; }
+  .hero h1      { animation: fadeUp 0.7s 0.12s ease both; }
+  .hero-sub     { animation: fadeUp 0.7s 0.22s ease both; }
+  .hero-stat-row { animation: fadeUp 0.7s 0.32s ease both; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 768px) {
+    .hero-content { padding: 40px 24px 60px; }
+    .overview { padding: 48px 24px; gap: 40px; }
+    .section-header { padding: 48px 24px 0; }
+    .slide-gallery { padding: 0 20px; }
+    .slide-grid-2 { grid-template-columns: 1fr; }
+    .slide-featured { grid-template-columns: 1fr; }
+    .pull-quote-strip { padding: 48px 24px; }
+    .appendix-intro { padding: 48px 24px 0; }
+    .journey-inner { padding: 0 24px; }
+    .journey-slide { width: 88vw; }
+    .scroll-hint { padding: 0 24px 16px; }
+    .cta-section { padding: 60px 24px; }
+    .masthead { padding: 14px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <a class="masthead-back" href="index.html">Portfolio</a>
+  <span class="masthead-sep">/</span>
+  <span>AllTrails</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">UX Research &amp; Feature Design</div>
+    <h1>All<em>Trails</em><br>Feature<br>Enhancement</h1>
+    <p class="hero-sub">Crowd-sourcing data for trust and accuracy in a mapping app with 65 million users.</p>
+    <div class="hero-stat-row">
+      <div class="hero-stat">
+        <span class="hero-stat-label">Type</span>
+        <span class="hero-stat-value">UX Research &amp; Product Design</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Context</span>
+        <span class="hero-stat-value">CMU MIIPS</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Year</span>
+        <span class="hero-stat-value">2024</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<div class="overview">
+  <div class="overview-left">
+    <div class="section-label">Overview</div>
+    <h2>When community data becomes a <em>safety problem</em></h2>
+  </div>
+  <div class="overview-right">
+    <p>AllTrails' strength is its crowd-sourced database of over 400,000 trails contributed by an active community of 65 million users. But that same model is its most significant liability: unverified, user-generated data regularly leads hikers off trail, provides inaccurate time and distance estimates, and in some cases, into genuine danger.</p>
+    <p>This project, completed as part of the CMU Master of Integrated Innovation for Products and Services program, set out to identify how AllTrails could use its own community to fix the problem, by designing a feature set that turns every user into a contributor to data integrity.</p>
+    <p>The process moved from user research through ecology mapping, jobs-to-be-done analysis, and high-fidelity prototype design, culminating in a tested feature concept validated with real users.</p>
+  </div>
+</div>
+
+<!-- ═══ SECTION 1: RESEARCH ═══ -->
+<div class="process-section">
+  <div class="section-header">
+    <div class="section-header-left">
+      <div class="section-number">01</div>
+      <h2>Research &amp; Discovery</h2>
+    </div>
+    <p class="section-header-desc">Four research methods: user surveys, desk research, 1:1 interviews, and guerilla research, built a holistic picture of how people actually experience AllTrails in the field.</p>
+  </div>
+  <div class="slide-gallery">
+    <div class="slide-full">
+      <img src="alltrails-imgs/slide-03.jpg" alt="AllTrails service summary" loading="lazy">
+    </div>
+    <div class="slide-caption">AllTrails service overview, 65M users, 400K+ trails</div>
+
+    <div class="slide-full">
+      <img src="alltrails-imgs/slide-04.jpg" alt="Research methods and data points" loading="lazy">
+    </div>
+    <div class="slide-caption">Four research methods, select data points from user interviews</div>
+  </div>
+</div>
+
+<!-- PULL QUOTE -->
+<div class="pull-quote-strip">
+  <div class="inner">
+    <p>"AllTrails has led me down false routes and has been off by milage estimation by more than a mile. I've gotten lost because of this."</p>
+    <cite>User interview participant</cite>
+  </div>
+</div>
+
+<!-- ═══ SECTION 2: SYNTHESIS ═══ -->
+<div class="process-section">
+  <div class="section-header">
+    <div class="section-header-left">
+      <div class="section-number">02</div>
+      <h2>Synthesis &amp; Framing</h2>
+    </div>
+    <p class="section-header-desc">Research findings were synthesized into pain points, design questions, and a service ecology map that charted where value and information actually flow between AllTrails and its users.</p>
+  </div>
+  <div class="slide-gallery">
+    <div class="slide-grid-2">
+      <img src="alltrails-imgs/slide-05.jpg" alt="Research findings and design questions" loading="lazy">
+      <img src="alltrails-imgs/slide-06.jpg" alt="Ecology map" loading="lazy">
+    </div>
+    <div class="slide-caption">Research findings → guiding design questions &nbsp;·&nbsp; Service ecology map</div>
+
+    <div class="slide-grid-2">
+      <img src="alltrails-imgs/slide-07.jpg" alt="Jobs to be done and ideation goals" loading="lazy">
+      <img src="alltrails-imgs/slide-08.jpg" alt="Feature set: must-have and nice-to-have" loading="lazy">
+    </div>
+    <div class="slide-caption">Jobs-to-be-done &amp; ideation goals &nbsp;·&nbsp; Must-have vs. nice-to-have feature set</div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 3: THE FEATURES ═══ -->
+<div class="process-section">
+  <div class="section-header">
+    <div class="section-header-left">
+      <div class="section-number">03</div>
+      <h2>The Feature Design</h2>
+    </div>
+    <p class="section-header-desc">Three interconnected features form the core concept: a post-hike accuracy rating system, a crowd-sourced verification loop, and a contributor profile with gamified incentives to drive participation.</p>
+  </div>
+  <div class="slide-gallery">
+    <div class="slide-full">
+      <img src="alltrails-imgs/slide-09.jpg" alt="In-app rating and classification system" loading="lazy">
+    </div>
+    <div class="slide-caption">In-app rating &amp; classification system, post-hike accuracy data collection</div>
+
+    <div class="slide-full">
+      <img src="alltrails-imgs/slide-10.jpg" alt="In-app verification system" loading="lazy">
+    </div>
+    <div class="slide-caption">In-app verification system, crowd-sourced data validation during navigation</div>
+
+    <div class="slide-full">
+      <img src="alltrails-imgs/slide-11.jpg" alt="Contributor incentive model" loading="lazy">
+    </div>
+    <div class="slide-caption">Contributor profile &amp; incentive model, AllTrails+ subscription as reward</div>
+  </div>
+</div>
+
+<!-- ═══ SECTION 4: VALIDATION ═══ -->
+<div class="process-section">
+  <div class="section-header">
+    <div class="section-header-left">
+      <div class="section-number">04</div>
+      <h2>Testing &amp; Framework</h2>
+    </div>
+    <p class="section-header-desc">Prototype testing with real users validated the core jobs-to-be-done and surfaced important constructive feedback. The DART model was used to evaluate the feature set through the lens of value co-creation.</p>
+  </div>
+  <div class="slide-gallery">
+    <div class="slide-grid-2">
+      <img src="alltrails-imgs/slide-12.jpg" alt="Prototype testing insights" loading="lazy">
+      <img src="alltrails-imgs/slide-13.jpg" alt="DART model" loading="lazy">
+    </div>
+    <div class="slide-caption">Key insights from prototype testing &nbsp;·&nbsp; DART model for value co-creation</div>
+
+    <div class="slide-full">
+      <img src="alltrails-imgs/slide-14.jpg" alt="Conclusions and recommendations" loading="lazy">
+    </div>
+    <div class="slide-caption">Conclusions &amp; recommendations</div>
+  </div>
+</div>
+
+<!-- ═══ APPENDIX: USER JOURNEY ═══ -->
+<div class="appendix-intro">
+  <div class="inner">
+    <div class="section-label">Appendix</div>
+    <h3>Full Prototype with Narrated User Journey</h3>
+    <p>The prototype walkthrough follows a real user scenario end-to-end: from opening the app and discovering a trail, to experiencing a route inaccuracy in the field, completing the post-hike feedback loop, and building toward their contributor goals over subsequent hikes. Scroll to explore the full sequence.</p>
+  </div>
+</div>
+<div class="scroll-hint">Scroll to explore the user journey</div>
+<div class="journey-strip">
+  <div class="journey-inner">
+    <div class="journey-slide">
+      <img src="alltrails-imgs/slide-15.jpg" alt="User journey: contributor profile" loading="lazy">
+      <div class="slide-caption">The contributor profile, status &amp; yearly goals</div>
+    </div>
+    <div class="journey-slide">
+      <img src="alltrails-imgs/slide-16.jpg" alt="User journey: discovering a trail" loading="lazy">
+      <div class="slide-caption">Discovering a trail, and encountering a route inaccuracy in the field</div>
+    </div>
+    <div class="journey-slide">
+      <img src="alltrails-imgs/slide-17.jpg" alt="User journey: post-hike rating" loading="lazy">
+      <div class="slide-caption">End-of-hike rating, reporting the accuracy issue</div>
+    </div>
+    <div class="journey-slide">
+      <img src="alltrails-imgs/slide-18.jpg" alt="User journey: AI route flagging" loading="lazy">
+      <div class="slide-caption">AI-assisted route flagging, confirming the inaccuracy location</div>
+    </div>
+    <div class="journey-slide">
+      <img src="alltrails-imgs/slide-19.jpg" alt="User journey: trails needing verification" loading="lazy">
+      <div class="slide-caption">Trails that need your help, targeted verification opportunities</div>
+    </div>
+    <div class="journey-slide">
+      <img src="alltrails-imgs/slide-20.jpg" alt="User journey: verification at the trailhead" loading="lazy">
+      <div class="slide-caption">Parking verification in the field, contribution credited to profile</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-label">Up Next</div>
+    <h2>See More Work</h2>
+    <p>Browse the full portfolio or return to the landing page.</p>
+    <a href="index.html" class="btn-back">← Back to Portfolio</a>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2026 Gravity Strategy &nbsp;&middot;&nbsp; <a href="https://www.gravitystrategy.co">gravitystrategy.co</a></p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#8249;</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="lightboxNext">&#8250;</button>
+  <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
+<script>
+  // Collect all slide images in document order
+  const allImages = Array.from(document.querySelectorAll('img[src^="alltrails-imgs/"]'));
+  let currentIdx = 0;
+
+  function openLightbox(img) {
+    currentIdx = allImages.indexOf(img);
+    updateLightbox();
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function updateLightbox() {
+    const img = allImages[currentIdx];
+    document.getElementById('lightboxImg').src = img.src;
+    document.getElementById('lightboxImg').alt = img.alt;
+    document.getElementById('lightboxCounter').textContent =
+      `${currentIdx + 1} / ${allImages.length}`;
+  }
+
+  function prevSlide() {
+    currentIdx = (currentIdx - 1 + allImages.length) % allImages.length;
+    updateLightbox();
+  }
+
+  function nextSlide() {
+    currentIdx = (currentIdx + 1) % allImages.length;
+    updateLightbox();
+  }
+
+  // Attach click to all slide images
+  allImages.forEach(img => {
+    img.addEventListener('click', () => openLightbox(img));
+  });
+
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxPrev').addEventListener('click', e => { e.stopPropagation(); prevSlide(); });
+  document.getElementById('lightboxNext').addEventListener('click', e => { e.stopPropagation(); nextSlide(); });
+
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('active')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') prevSlide();
+    if (e.key === 'ArrowRight') nextSlide();
+  });
+</script>
+</body>
+</html>

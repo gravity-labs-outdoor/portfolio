@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrackPush / Gravity Strategy Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1714;
+    --paper: #f5f0e8;
+    --paper-dark: #ede7d9;
+    --rule: #c8bfb0;
+    --mid: #6b6460;
+    --gold: #c4922a;
+    --ice: #ccdde8;
+    --ice-mid: #7aafc4;
+    --ice-dark: #2e6a8a;
+    --orange: #E8651A;
+    --orange-light: #FF8642;
+    --orange-glow: rgba(232, 101, 26, 0.18);
+    --orange-tint: rgba(232, 101, 26, 0.08);
+    --teal: #1ABFA0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---- MASTHEAD ---- */
+  .masthead {
+    background-color: var(--ink);
+    color: rgba(245,240,232,0.55);
+    padding: 14px 32px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .masthead a { color: var(--ice-mid); text-decoration: none; transition: color 0.15s; }
+  .masthead a:hover { color: #fff; }
+  .masthead-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(245,240,232,0.55) !important;
+  }
+  .masthead-back::before {
+    content: '←';
+    font-size: 14px;
+  }
+  .masthead-sep { opacity: 0.3; }
+
+  /* ---- HERO ---- */
+  .hero {
+    position: relative;
+    background-color: var(--ink);
+    overflow: hidden;
+    min-height: 68vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 70% 20%, rgba(232,101,26,0.12) 0%, transparent 55%),
+      radial-gradient(ellipse at 10% 85%, rgba(26,191,160,0.07) 0%, transparent 50%),
+      linear-gradient(172deg, #0d1117 0%, #1a1e14 40%, #100f0d 100%);
+  }
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 40px 56px 80px;
+    max-width: 900px;
+  }
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange-light);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--orange-light);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 900;
+    line-height: 0.9;
+    color: #fff;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--orange-light);
+  }
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(17px, 2.2vw, 22px);
+    font-style: italic;
+    color: rgba(245,240,232,0.55);
+    max-width: 580px;
+    line-height: 1.5;
+    margin-bottom: 40px;
+  }
+  .hero-stat-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-stat {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(232,101,26,0.2);
+    border-radius: 2px;
+    padding: 14px 20px;
+  }
+  .hero-stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.45);
+  }
+  .hero-stat-value {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(245,240,232,0.8);
+  }
+
+  /* ---- ARTICLE ---- */
+  .article-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .section {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section:last-of-type { border-bottom: none; }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 3.5vw, 38px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 24px;
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    font-weight: 700;
+    font-style: italic;
+    margin-top: 40px;
+    margin-bottom: 14px;
+  }
+  p { margin-bottom: 22px; }
+  p:last-child { margin-bottom: 0; }
+  strong { font-weight: 600; }
+  a { color: var(--orange); }
+  a:hover { color: var(--ink); }
+
+  /* ---- PULL QUOTE ---- */
+  .pull-quote {
+    margin: 48px 0;
+    padding: 32px 0 32px 32px;
+    border-left: 3px solid var(--orange);
+  }
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(19px, 2.2vw, 24px);
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .pull-quote cite {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mid);
+    font-style: normal;
+  }
+
+  /* ---- CALLOUT BOX ---- */
+  .callout {
+    background: var(--paper-dark);
+    border-left: 4px solid var(--orange);
+    padding: 28px 32px;
+    margin: 40px 0;
+    border-radius: 0 2px 2px 0;
+  }
+  .callout-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 12px;
+  }
+  .callout p {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 10px;
+    color: #2e2622;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  /* ---- SPEC TABLE ---- */
+  .spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 32px 0;
+    font-size: 15px;
+  }
+  .spec-table tr {
+    border-bottom: 1px solid var(--rule);
+  }
+  .spec-table tr:last-child { border-bottom: none; }
+  .spec-table td {
+    padding: 14px 0;
+    vertical-align: top;
+  }
+  .spec-table td:first-child {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--mid);
+    width: 38%;
+    padding-right: 24px;
+    padding-top: 17px;
+  }
+  .spec-table td:last-child {
+    color: var(--ink);
+    line-height: 1.6;
+  }
+  .spec-tag {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    background: var(--orange-tint);
+    color: var(--orange);
+    margin: 2px 4px 2px 0;
+    border: 1px solid rgba(232,101,26,0.2);
+  }
+
+  /* ---- APP PREVIEW ---- */
+  .app-preview {
+    background: linear-gradient(172deg, #0d1117 0%, #181B25 100%);
+    padding: 64px 0;
+  }
+  .app-preview .article-wrap {
+    text-align: center;
+  }
+  .app-preview-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .app-preview-label::before,
+  .app-preview-label::after {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: rgba(232,101,26,0.4);
+  }
+  .app-preview-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-style: italic;
+    color: rgba(245,240,232,0.85);
+    margin-bottom: 32px;
+  }
+  /* Phone mockup */
+  .phone-frame {
+    display: inline-block;
+    background: #0F1117;
+    border-radius: 36px;
+    border: 2px solid #2A2D3E;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+    width: 260px;
+    overflow: hidden;
+    text-align: left;
+    vertical-align: top;
+    margin: 0 12px 16px;
+  }
+  .phone-notch {
+    width: 90px;
+    height: 8px;
+    background: #1E2130;
+    border-radius: 4px;
+    margin: 14px auto 0;
+  }
+  .phone-screen {
+    padding: 16px;
+  }
+  /* HUD preview */
+  .mock-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .mock-brand {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .mock-brand-icon {
+    width: 24px; height: 24px;
+    background: #E8651A;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    color: white;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+  .mock-brand-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #F0F0F5;
+  }
+  .mock-badge {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background: rgba(26,191,160,0.12);
+    color: #1ABFA0;
+    border: 1px solid rgba(26,191,160,0.25);
+  }
+  /* Mini map */
+  .mock-map {
+    height: 120px;
+    background: linear-gradient(145deg, #1a2030 0%, #0d1520 100%);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #2A2D3E;
+  }
+  .mock-map svg {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+  }
+  /* HUD card */
+  .mock-hud-card {
+    background: rgba(24,27,37,0.95);
+    border: 1px solid #2A2D3E;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .mock-hud-main {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 14px 16px;
+    gap: 10px;
+  }
+  .mock-hud-metric { text-align: center; }
+  .mock-hud-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 8px;
+    font-weight: 700;
+    color: #555872;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 2px;
+  }
+  .mock-hud-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 20px;
+    font-weight: 600;
+    color: #F0F0F5;
+    line-height: 1;
+  }
+  .mock-hud-value small {
+    font-size: 11px;
+    color: #8B8FA3;
+    font-weight: 400;
+  }
+  .mock-compass {
+    width: 44px; height: 44px;
+    border: 1.5px solid #2A2D3E;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #E8651A;
+  }
+  .mock-progress {
+    padding: 10px 16px 14px;
+    border-top: 1px solid #2A2D3E;
+  }
+  .mock-progress-bar {
+    height: 3px;
+    background: #2A2D3E;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 6px;
+  }
+  .mock-progress-fill {
+    height: 100%;
+    width: 42%;
+    background: linear-gradient(90deg, #E8651A, #1ABFA0);
+    border-radius: 2px;
+  }
+  .mock-progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    color: #555872;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  /* Create screen mockup */
+  .mock-instruction {
+    background: #1E2130;
+    border-left: 2px solid #E8651A;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    color: #8B8FA3;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .mock-wp-list { margin-bottom: 8px; }
+  .mock-wp-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 8px;
+    background: #1E2130;
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+  .mock-wp-num {
+    width: 16px; height: 16px;
+    background: #E8651A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+  .mock-wp-coords {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: #8B8FA3;
+  }
+  .mock-btn-row {
+    display: flex;
+    gap: 6px;
+  }
+  .mock-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 7px 12px;
+    border-radius: 7px;
+    letter-spacing: 0.3px;
+    flex: 1;
+    text-align: center;
+  }
+  .mock-btn.primary { background: #E8651A; color: white; }
+  .mock-btn.secondary { background: #1E2130; color: #8B8FA3; border: 1px solid #2A2D3E; }
+  /* Share output mockup */
+  .mock-share-output {
+    background: #1E2130;
+    border: 1px solid #1ABFA0;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 8px;
+    box-shadow: 0 0 16px rgba(26,191,160,0.12);
+  }
+  .mock-share-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: #1ABFA0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .mock-share-url-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+  .mock-share-input {
+    flex: 1;
+    background: #0F1117;
+    border: 1px solid #2A2D3E;
+    border-radius: 5px;
+    padding: 5px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: #8B8FA3;
+  }
+
+  /* ---- FLOW DIAGRAM ---- */
+  .flow-diagram {
+    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .flow-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: rgba(232,101,26,0.15);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 52px;
+    text-align: right;
+  }
+  .flow-body { flex: 1; padding-top: 4px; }
+  .flow-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 6px;
+  }
+  .flow-body p {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+
+  /* ---- CONSTRAINT LIST ---- */
+  .constraint-list {
+    list-style: none;
+    margin: 24px 0;
+  }
+  .constraint-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .constraint-item:last-child { border-bottom: none; }
+  .constraint-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    padding-top: 2px;
+    width: 28px;
+  }
+  .constraint-body { flex: 1; }
+  .constraint-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .constraint-body p {
+    font-size: 15px;
+    color: var(--mid);
+    margin-bottom: 0;
+  }
+
+  /* ---- CTA ---- */
+  .cta-section {
+    background: linear-gradient(160deg, #1a1e14 0%, #0d1117 100%);
+    color: #fff;
+    padding: 80px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(232,101,26,0.18) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-section .article-wrap { position: relative; z-index: 1; }
+  .cta-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--orange-light);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+  .cta-label::before, .cta-label::after {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: rgba(232,101,26,0.4);
+  }
+  .cta-section h2 {
+    color: #fff;
+    font-size: clamp(26px, 3.5vw, 38px);
+    margin-bottom: 16px;
+  }
+  .cta-section p {
+    color: rgba(245,240,232,0.6);
+    font-size: 16px;
+    max-width: 520px;
+    margin: 0 auto 36px;
+  }
+  .btn-primary {
+    display: inline-block;
+    background: var(--orange);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 40px;
+    border-radius: 2px;
+    transition: background 0.2s ease;
+    margin: 0 8px 12px;
+    box-shadow: 0 4px 24px var(--orange-glow);
+  }
+  .btn-primary:hover { background: #c95414; color: #fff; }
+  .btn-secondary-outline {
+    display: inline-block;
+    background: transparent;
+    color: var(--ice-mid);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 40px;
+    border-radius: 2px;
+    border: 1px solid rgba(122,175,196,0.4);
+    transition: all 0.2s ease;
+    margin: 0 8px 12px;
+  }
+  .btn-secondary-outline:hover { background: rgba(122,175,196,0.1); color: #fff; }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--ink);
+    color: rgba(245,240,232,0.3);
+    text-align: center;
+    padding: 28px 24px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  footer a { color: rgba(122,175,196,0.6); text-decoration: none; }
+  footer a:hover { color: var(--ice-mid); }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow { animation: fadeUp 0.7s ease both; }
+  .hero h1      { animation: fadeUp 0.7s 0.12s ease both; }
+  .hero-sub     { animation: fadeUp 0.7s 0.22s ease both; }
+  .hero-stat-row { animation: fadeUp 0.7s 0.32s ease both; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 640px) {
+    .hero-content { padding: 40px 24px 60px; }
+    .article-wrap { padding: 0 20px; }
+    .cta-section { padding: 60px 24px; }
+    .phone-frames { overflow-x: auto; white-space: nowrap; }
+    .phone-frame { white-space: normal; }
+    .masthead { padding: 14px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <a class="masthead-back" href="index.html">Portfolio</a>
+  <span class="masthead-sep">/</span>
+  <span>TrackPush</span>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Product Design &amp; Build</div>
+    <h1>Track<em>Push</em></h1>
+    <p class="hero-sub">GPS route sharing for search and rescue, delivered as a link.</p>
+    <div class="hero-stat-row">
+      <div class="hero-stat">
+        <span class="hero-stat-label">Type</span>
+        <span class="hero-stat-value">Web App</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Platform</span>
+        <span class="hero-stat-value">iOS &amp; Android Browser</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Year</span>
+        <span class="hero-stat-value">2025</span>
+      </div>
+      <div class="hero-stat">
+        <span class="hero-stat-label">Stack</span>
+        <span class="hero-stat-value">HTML · Leaflet · GPS API</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<section class="section">
+  <div class="article-wrap">
+    <div class="section-label">The Problem</div>
+    <h2>Guiding Someone Out of the Wilderness Over the Phone</h2>
+
+    <p>When a hiker is lost, injured, or disoriented in the backcountry, search and rescue coordinators face a frustrating communication gap. They know the terrain, they know the egress route, and they have the caller on the line, but transferring that spatial knowledge verbally is slow, error-prone, and fails entirely when the caller is panicked or unfamiliar with map reading.</p>
+
+    <p>The alternatives require app installs, account creation, or expensive satellite hardware. None of that works when a lost person is standing in the woods with a stressed mind and 18% battery.</p>
+
+    <div class="pull-quote">
+      <p>"The route is always in my head. The problem is getting it into theirs."</p>
+      <cite>SAR Coordinator, White Mountains</cite>
+    </div>
+
+    <p>TrackPush was built to close that gap. A SAR professional draws an egress route and sends it as a link. The recipient taps it, grants location permission, and a live navigation interface appears in their browser. No app store. No account. No setup.</p>
+  </div>
+</section>
+
+<!-- APP PREVIEW -->
+<div class="app-preview">
+  <div class="article-wrap">
+    <div class="app-preview-label">The App</div>
+    <p class="app-preview-title">Two interfaces. One link.</p>
+    <div class="phone-frames" style="text-align:center; margin-top: 8px;">
+
+      <!-- Create mode -->
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="mock-header">
+            <div class="mock-brand">
+              <div class="mock-brand-icon">⊕</div>
+              <div class="mock-brand-text">TrackPush</div>
+            </div>
+            <div class="mock-badge" style="background:rgba(232,101,26,0.12);color:#FF8642;border-color:rgba(232,101,26,0.25);">Create</div>
+          </div>
+          <!-- Mini map with route -->
+          <div class="mock-map">
+            <svg viewBox="0 0 228 120" xmlns="http://www.w3.org/2000/svg">
+              <!-- Topo lines -->
+              <ellipse cx="80" cy="70" rx="75" ry="45" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
+              <ellipse cx="80" cy="70" rx="55" ry="32" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
+              <ellipse cx="80" cy="70" rx="36" ry="20" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
+              <!-- Route line -->
+              <polyline points="30,90 60,75 95,60 135,45 175,28 205,18" stroke="#E8651A" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="7,5" opacity="0.9"/>
+              <!-- Waypoint markers -->
+              <circle cx="30" cy="90" r="6" fill="#E8651A" stroke="white" stroke-width="1.5"/>
+              <circle cx="95" cy="60" r="5" fill="#E8651A" stroke="white" stroke-width="1.5"/>
+              <circle cx="175" cy="28" r="5" fill="#E8651A" stroke="white" stroke-width="1.5"/>
+              <circle cx="205" cy="18" r="6" fill="#1ABFA0" stroke="white" stroke-width="1.5"/>
+              <!-- Arrow indicators -->
+              <polygon points="80,72 85,79 80,77 75,79" fill="#E8651A" opacity="0.75"/>
+              <polygon points="158,34 163,41 158,39 153,41" fill="#E8651A" opacity="0.75"/>
+            </svg>
+          </div>
+          <!-- Waypoint list -->
+          <div class="mock-wp-list">
+            <div class="mock-instruction">Tap map to add waypoints. 3 added.</div>
+            <div class="mock-wp-item">
+              <div class="mock-wp-num">1</div>
+              <div class="mock-wp-coords">44.27100, -71.30300</div>
+            </div>
+            <div class="mock-wp-item">
+              <div class="mock-wp-num">2</div>
+              <div class="mock-wp-coords">44.27420, -71.30700</div>
+            </div>
+            <div class="mock-wp-item">
+              <div class="mock-wp-num">3</div>
+              <div class="mock-wp-coords">44.27560, -71.31020</div>
+            </div>
+          </div>
+          <div class="mock-btn-row" style="margin-bottom: 7px;">
+            <div class="mock-btn secondary">↑ GPX</div>
+            <div class="mock-btn secondary">Clear</div>
+          </div>
+          <div class="mock-btn primary" style="margin-bottom:7px;">Generate Share Link</div>
+          <div class="mock-share-output">
+            <div class="mock-share-label">✓ Share this link</div>
+            <div class="mock-share-url-row">
+              <div class="mock-share-input">trackpush.io/#follow/e8kLp...</div>
+              <div class="mock-btn primary" style="flex-shrink:0;padding:5px 10px;">Copy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Follow mode -->
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="mock-header">
+            <div class="mock-brand">
+              <div class="mock-brand-icon">⊕</div>
+              <div class="mock-brand-text">TrackPush</div>
+            </div>
+            <div class="mock-badge">Following</div>
+          </div>
+          <div class="mock-map">
+            <svg viewBox="0 0 228 120" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="90" cy="72" rx="78" ry="46" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
+              <ellipse cx="90" cy="72" rx="56" ry="32" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
+              <ellipse cx="90" cy="72" rx="36" ry="20" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
+              <!-- Route -->
+              <polyline points="38,92 68,77 105,62 145,46 185,28 210,18" stroke="#E8651A" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.9"/>
+              <!-- Start -->
+              <circle cx="38" cy="92" r="6" fill="#E8651A" stroke="white" stroke-width="1.5"/>
+              <!-- End -->
+              <circle cx="210" cy="18" r="6" fill="#1ABFA0" stroke="white" stroke-width="1.5"/>
+              <!-- Arrows -->
+              <polygon points="86,66 91,73 86,71 81,73" fill="#E8651A" opacity="0.8"/>
+              <polygon points="163,38 168,45 163,43 158,45" fill="#E8651A" opacity="0.8"/>
+              <!-- User position (chevron) -->
+              <polygon points="68,77 74,85 68,82 62,85" fill="#1ABFA0" stroke="white" stroke-width="0.8" transform="rotate(-15, 68, 80)"/>
+              <!-- Accuracy ring -->
+              <circle cx="68" cy="79" r="10" fill="rgba(26,191,160,0.1)" stroke="#1ABFA0" stroke-width="0.5" opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="mock-hud-card">
+            <div class="mock-hud-main">
+              <div class="mock-hud-metric">
+                <div class="mock-hud-label">Distance</div>
+                <div class="mock-hud-value">0.8<small>mi</small></div>
+              </div>
+              <div class="mock-compass">↗</div>
+              <div class="mock-hud-metric">
+                <div class="mock-hud-label">Next WP</div>
+                <div class="mock-hud-value">3</div>
+              </div>
+            </div>
+            <div class="mock-progress">
+              <div class="mock-progress-label">
+                <span>Waypoint 2 / 5</span>
+                <span>42%</span>
+              </div>
+              <div class="mock-progress-bar">
+                <div class="mock-progress-fill"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="article-wrap">
+    <div class="section-label">How It Works</div>
+    <h2>Six Steps from Distress Call to Navigation</h2>
+
+    <div class="flow-diagram">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-body">
+          <div class="flow-title">Locate the Caller</div>
+          <p>SAR receives GPS coordinates from 911 dispatch, a cell ping, or the caller's description. The coordinator opens TrackPush and finds the position on the topo map.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-body">
+          <div class="flow-title">Draw the Egress Route</div>
+          <p>The coordinator taps waypoints on the map to define the path to safety. GPX files from existing tracks can also be uploaded and simplified automatically.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-body">
+          <div class="flow-title">Generate the Link</div>
+          <p>One tap produces a shareable URL. The entire route is polyline-encoded directly into the URL hash, requiring no server, no database, and no account.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-body">
+          <div class="flow-title">Send It</div>
+          <p>The link goes out via SMS, iMessage, email, or through a satellite messenger relay. Any channel works. The link is short enough to read back verbally if needed.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div class="flow-body">
+          <div class="flow-title">Recipient Opens It</div>
+          <p>The caller taps the link. Their browser opens Follow mode: no app download, no account prompt, no delay. They grant location access in one tap.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">6</div>
+        <div class="flow-body">
+          <div class="flow-title">They Walk. The App Guides.</div>
+          <p>Live GPS position, a compass bearing to the next waypoint, distance remaining, and a progress bar. The interface is designed for cold hands, low battery, and high stress.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESIGN DECISIONS -->
+<section class="section">
+  <div class="article-wrap">
+    <div class="section-label">Design Decisions</div>
+    <h2>Every Choice in Service of One User State</h2>
+
+    <p>The follow mode interface is designed around a person who is cold, scared, and probably has less than 30% battery. That framing informed every decision from color palette to interaction model.</p>
+
+    <h3>Serverless by Design</h3>
+    <p>The entire route is encoded into the URL itself using Google's polyline encoding algorithm. There is no backend, no database, no API key required. The app works from a static file host, reduces latency to near zero, and eliminates any failure surface in the link-sharing pipeline. The tradeoff is URL length at high waypoint counts, which is mitigated by a GPX simplification algorithm that reduces tracks to a configurable maximum of 50 points.</p>
+
+    <div class="callout">
+      <div class="callout-label">Technical Approach</div>
+      <p>Routes are encoded using the Polyline encoding algorithm, compressing lat/lng pairs into a compact ASCII string. The full route decodes in the browser on load, requiring no network request beyond the initial page and map tiles.</p>
+    </div>
+
+    <h3>High-Contrast Dark UI</h3>
+    <p>Follow mode uses a dark theme not for aesthetics but for outdoor legibility. High-contrast orange and teal on near-black surfaces remain readable in direct sunlight and reduce the screen brightness needed in low-light situations, extending battery life.</p>
+
+    <h3>Compass Heading Logic</h3>
+    <p>The directional arrow pulls from two sources, depending on conditions. When the device is moving faster than 0.5 m/s, GPS velocity heading is used as it is more accurate than the magnetometer in motion. When stationary, the device compass (with appropriate handling for the iOS permission model and Android's <code>deviceorientationabsolute</code> event) takes over. The result is a heading arrow that behaves correctly in both scenarios without user configuration.</p>
+
+    <h3>Waypoint Progression</h3>
+    <p>The app automatically advances the active waypoint when the user comes within 30 meters of it, updating the bearing and distance readouts to point toward the next target. This removes the cognitive load of manually tracking progress through the route.</p>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="section">
+  <div class="article-wrap">
+    <div class="section-label">Project Specs</div>
+    <h2>Build Details</h2>
+
+    <table class="spec-table">
+      <tr>
+        <td>Stack</td>
+        <td>Vanilla HTML, CSS, JavaScript. Leaflet.js for mapping. OpenTopoMap and OpenStreetMap tile layers.</td>
+      </tr>
+      <tr>
+        <td>GPS &amp; Sensors</td>
+        <td>Geolocation API (watchPosition), DeviceOrientationEvent with iOS 13+ permission handling and Android <code>deviceorientationabsolute</code>.</td>
+      </tr>
+      <tr>
+        <td>Routing</td>
+        <td>Manual waypoint placement, GPX file import with Douglas-Peucker-style simplification, URL-encoded polyline for link generation.</td>
+      </tr>
+      <tr>
+        <td>Geocoding</td>
+        <td>Nominatim (OpenStreetMap) for place search. Coordinate parsing supports decimal degrees and DMS.</td>
+      </tr>
+      <tr>
+        <td>Hosting</td>
+        <td>Static. No server required. Deployable to any CDN or file host.</td>
+      </tr>
+      <tr>
+        <td>Platforms</td>
+        <td>
+          <span class="spec-tag">iOS Safari</span>
+          <span class="spec-tag">Android Chrome</span>
+          <span class="spec-tag">Firefox Mobile</span>
+          <span class="spec-tag">Desktop</span>
+        </td>
+      </tr>
+      <tr>
+        <td>Dependencies</td>
+        <td>Leaflet 1.9.4. No other runtime dependencies.</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<!-- CONSTRAINTS -->
+<section class="section">
+  <div class="article-wrap">
+    <div class="section-label">Current Limitations</div>
+    <h2>What TrackPush Does Not Do (Yet)</h2>
+
+    <p>Honest accounting of constraints is part of good product design. TrackPush was built for a specific, well-defined use case, and the limitations below are direct consequences of its architecture.</p>
+
+    <ul class="constraint-list">
+      <li class="constraint-item">
+        <div class="constraint-icon">📶</div>
+        <div class="constraint-body">
+          <div class="constraint-title">Requires Cell Service</div>
+          <p>Map tiles load over the network. The app works where the caller has a signal. Offline tile caching is on the roadmap but not yet implemented.</p>
+        </div>
+      </li>
+      <li class="constraint-item">
+        <div class="constraint-icon">👁</div>
+        <div class="constraint-body">
+          <div class="constraint-title">One-Way Only</div>
+          <p>The serverless architecture means SAR cannot see the caller's real-time position within the app. The route is pushed; progress is not reported back. Two-way tracking would require a backend, which changes the deployment model significantly.</p>
+        </div>
+      </li>
+      <li class="constraint-item">
+        <div class="constraint-icon">🔋</div>
+        <div class="constraint-body">
+          <div class="constraint-title">Battery Consumption</div>
+          <p>Continuous GPS and screen-on usage will drain a phone. Best suited for situations where sufficient charge remains to complete the egress. Screen dimming and background GPS are potential future optimizations.</p>
+        </div>
+      </li>
+      <li class="constraint-item">
+        <div class="constraint-icon">🗺</div>
+        <div class="constraint-body">
+          <div class="constraint-title">URL Length at Scale</div>
+          <p>Dense GPX tracks with thousands of points exceed practical URL lengths. The built-in simplification algorithm addresses this, but very long routes require a tradeoff in precision.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="article-wrap">
+    <div class="cta-label">Try It</div>
+    <h2>Open the App</h2>
+    <p>TrackPush is free to use and requires no account. Create a route and share it with anyone.</p>
+    <a href="https://www.gravitystrategy.co/trackpush" class="btn-primary" target="_blank">Open TrackPush →</a>
+    <a href="index.html" class="btn-secondary-outline">← Back to Portfolio</a>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2026 Gravity Strategy &nbsp;&middot;&nbsp; <a href="https://www.gravitystrategy.co">gravitystrategy.co</a></p>
+</footer>
+
+</body>
+</html>
