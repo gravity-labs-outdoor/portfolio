@@ -6,461 +6,485 @@
 <title>Patrick Scanlan / Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700;1,800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #111111;
-    --paper: #FAFAF8;
-    --paper-dark: #F2F1EE;
-    --rule: #E0DDD8;
-    --mid: #888884;
-    --gold: #c4922a;
-    --ice: #ccdde8;
-    --ice-mid: #7aafc4;
-    --ice-dark: #2e6a8a;
+    --color-bg: #F9F9F8;
+    --color-text-main: #111112;
+    --color-text-muted: #66666A;
+    --color-accent: #E15A3E;
+    --color-rule: #E5E5E2;
+    --font-primary: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+    --tracking-tight: -0.04em;
+    --tracking-normal: -0.01em;
+    --tracking-wide: 0.15em;
+    --tracking-xwide: 0.2em;
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 32px;
+    --space-lg: 64px;
+    --space-xl: 140px;
+    --transition-fade: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
   body {
-    background-color: var(--paper);
-    color: var(--ink);
-    font-family: 'Urbanist', sans-serif;
-    font-size: 18px;
-    line-height: 1.75;
-  font-weight: 300;
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+    font-family: var(--font-primary);
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 400;
+    letter-spacing: var(--tracking-normal);
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ---- MASTHEAD ---- */
-  .masthead {
-    background-color: var(--ink);
-    color: rgba(245,240,232,0.55);
-    text-align: center;
-    padding: 14px 24px;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
+  a { color: var(--color-text-main); text-decoration: none; transition: var(--transition-fade); }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
   }
-  .masthead a { color: var(--ice-mid); text-decoration: none; }
-  .masthead a:hover { text-decoration: underline; }
+  .nav-links { display: flex; gap: var(--space-lg); }
+  .nav-links a {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+  .nav-links a:hover { color: var(--color-text-main); }
 
   /* ---- HERO ---- */
-  .hero {
-    position: relative;
-    background-color: var(--ink);
-    overflow: hidden;
-    min-height: 72vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 65% 25%, rgba(44, 106, 138, 0.15) 0%, transparent 60%),
-      radial-gradient(ellipse at 15% 75%, rgba(196, 146, 42, 0.08) 0%, transparent 55%),
-      linear-gradient(172deg, #0d1117 0%, #1a2226 45%, #111418 100%);
-  }
-  .hero-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.5;
-    pointer-events: none;
-  }
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 40px 56px 80px;
-    max-width: 860px;
+  .hero { padding: var(--space-xl) 0 var(--space-lg); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+    align-items: end;
   }
   .hero-eyebrow {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
+    grid-column: 1 / span 12;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--ice-mid);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 32px;
-    height: 1px;
-    background: var(--ice-mid);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
   }
   .hero h1 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(56px, 8vw, 100px);
-    font-weight: 800;
-    line-height: 0.9;
-    color: #fff;
-    letter-spacing: -0.03em;
-    margin-bottom: 28px;
+    grid-column: 1 / span 10;
+    font-size: clamp(64px, 11vw, 168px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-main);
+    margin-bottom: var(--space-lg);
   }
-  .hero h1 em {
-    font-style: italic;
-    color: var(--ice-mid);
-  }
+  .hero h1 strong { font-weight: 800; font-style: normal; }
   .hero-bio {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(16px, 2vw, 20px);
-    color: rgba(245,240,232,0.6);
-    max-width: 520px;
-    line-height: 1.65;
+    grid-column: 6 / span 7;
+    font-size: 1.15rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    max-width: 540px;
   }
 
-  /* ---- MAIN WRAP ---- */
-  .main-wrap {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 40px;
+  /* ---- META BAR ---- */
+  .meta-bar {
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+    padding: var(--space-md) 0;
+    margin-top: var(--space-lg);
   }
-
-  /* ---- SECTION HEADER ---- */
-  .section-header {
-    padding: 72px 0 40px;
-    border-bottom: 1px solid var(--rule);
-    margin-bottom: 48px;
-    display: flex;
-    align-items: baseline;
-    gap: 24px;
-  }
-  .section-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--mid);
-    white-space: nowrap;
-  }
-  .section-rule {
-    flex: 1;
-    height: 1px;
-    background: var(--rule);
-  }
-
-  /* ---- PROJECT GRID ---- */
-  .project-grid {
+  .meta-bar-inner {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2px;
-    margin-bottom: 96px;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
-
-  .project-card {
-    display: block;
-    text-decoration: none;
-    color: var(--ink);
-    background: var(--paper-dark);
-    border: 1px solid var(--rule);
-    padding: 36px 36px 32px;
-    position: relative;
-    transition: background 0.18s ease;
-    overflow: hidden;
-  }
-  .project-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 3px;
-    height: 0;
-    background: var(--card-accent, var(--ice-dark));
-    transition: height 0.22s ease;
-  }
-  .project-card:hover {
-    background: #e8e2d5;
-  }
-  .project-card:hover::before {
-    height: 100%;
-  }
-
-  .project-tag {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+  .meta-block { grid-column: span 6; }
+  .meta-block:nth-child(2) { grid-column: 9 / span 4; }
+  .meta-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--card-accent, var(--ice-dark));
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xs);
   }
-  .project-tag::before {
-    content: '';
-    width: 16px;
-    height: 1px;
-    background: var(--card-accent, var(--ice-dark));
+  .meta-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-main);
+    border-bottom: 1px solid var(--color-text-main);
+    padding-bottom: 1px;
+  }
+  .meta-link:hover { color: var(--color-accent); border-color: var(--color-accent); }
+
+  /* ---- SECTION ---- */
+  .section { padding: var(--space-xl) 0 var(--space-lg); }
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+  .section-head .label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-top: 10px;
+  }
+  .section-head h2 {
+    grid-column: 4 / span 8;
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+  }
+  .section-head h2 strong { font-weight: 800; }
+
+  /* ---- PROJECT ROWS ---- */
+  .project-rows { margin-top: var(--space-md); }
+  .project-row {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-rule);
+    transition: var(--transition-fade);
+    color: var(--color-text-main);
+    position: relative;
+    align-items: start;
+  }
+  .project-row:last-of-type { border-bottom: 1px solid var(--color-rule); }
+  .project-row:hover { background: rgba(225, 90, 62, 0.02); }
+  .project-row:hover .project-arrow { color: var(--color-accent); transform: translate(4px, -4px); }
+  .project-row:hover .project-name { color: var(--color-accent); }
+
+  .project-num {
+    grid-column: 1 / span 1;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-top: 12px;
   }
   .project-name {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(22px, 3vw, 30px);
+    grid-column: 2 / span 4;
+    font-size: clamp(22px, 2.4vw, 30px);
     font-weight: 700;
     line-height: 1.15;
-    letter-spacing: -0.01em;
-    margin-bottom: 14px;
+    letter-spacing: var(--tracking-normal);
+    transition: var(--transition-fade);
+  }
+  .project-body {
+    grid-column: 7 / span 5;
+    padding-top: 8px;
+  }
+  .project-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
   }
   .project-desc {
-    font-size: 15px;
-    line-height: 1.65;
-    color: var(--mid);
-    margin-bottom: 24px;
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin-bottom: var(--space-sm);
   }
   .project-meta {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .project-chip {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
+    gap: var(--space-md);
+    font-size: 0.7rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--mid);
-    padding: 5px 12px;
-    background: rgba(0,0,0,0.05);
-    border-radius: 2px;
+    color: var(--color-text-muted);
   }
   .project-arrow {
-    margin-left: auto;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--card-accent, var(--ice-dark));
-    opacity: 0;
-    transition: opacity 0.18s ease;
+    grid-column: 12 / span 1;
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    text-align: right;
+    padding-top: 12px;
+    transition: var(--transition-fade);
   }
-  .project-card:hover .project-arrow { opacity: 1; }
+  .project-row.disabled { opacity: 0.45; pointer-events: none; }
 
-  /* ---- ABOUT STRIP ---- */
-  .about-strip {
-    background: var(--ink);
-    padding: 72px 56px;
-    display: flex;
-    gap: 64px;
-    align-items: flex-start;
-    flex-wrap: wrap;
+  /* ---- ABOUT ---- */
+  .about-section {
+    padding: var(--space-xl) 0 var(--space-lg);
+    border-top: 1px solid var(--color-rule);
   }
-  .about-strip .label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+  }
+  .about-label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--ice-mid);
-    margin-bottom: 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: var(--color-text-muted);
+    padding-top: 10px;
   }
-  .about-strip .label::before {
-    content: '';
-    width: 24px;
-    height: 1px;
-    background: var(--ice-mid);
+  .about-head { grid-column: 4 / span 8; }
+  .about-head h2 {
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-lg);
   }
-  .about-left {
-    flex: 1;
-    min-width: 240px;
+  .about-head h2 strong { font-weight: 800; }
+  .about-body {
+    grid-column: 4 / span 7;
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
   }
-  .about-left h2 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(28px, 3.5vw, 40px);
-    font-weight: 700;
-    color: #fff;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin-bottom: 20px;
-  }
-  .about-left h2 em { font-style: italic; color: var(--ice-mid); }
-  .about-right {
-    flex: 1.4;
-    min-width: 280px;
-  }
-  .about-right p {
-    font-size: 16px;
-    line-height: 1.75;
-  font-weight: 300;
-    color: rgba(245,240,232,0.65);
-    margin-bottom: 20px;
-  }
-  .about-right p:last-child { margin-bottom: 0; }
+  .about-body p { margin-bottom: var(--space-sm); }
+  .about-body p:last-child { margin-bottom: 0; }
   .contact-line {
+    grid-column: 4 / span 8;
+    margin-top: var(--space-lg);
     display: flex;
-    gap: 12px;
+    gap: var(--space-lg);
     flex-wrap: wrap;
-    margin-top: 32px;
+    border-top: 1px solid var(--color-rule);
+    padding-top: var(--space-md);
   }
   .contact-link {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--ice-mid);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(122,175,196,0.35);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-main);
+    border-bottom: 1px solid var(--color-text-main);
     padding-bottom: 2px;
-    transition: color 0.18s ease, border-color 0.18s ease;
   }
-  .contact-link:hover { color: #fff; border-color: #fff; }
+  .contact-link:hover { color: var(--color-accent); border-color: var(--color-accent); }
+  .contact-link::after { content: ' \2197'; font-weight: 400; }
 
   /* ---- FOOTER ---- */
   footer {
-    background: var(--ink);
-    color: rgba(245,240,232,0.3);
-    text-align: center;
-    padding: 28px 24px;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid var(--color-rule);
+    padding: var(--space-md) 0;
+    margin-top: var(--space-xl);
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
 
-  /* ---- ANIMATIONS ---- */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .hero-eyebrow { animation: fadeUp 0.7s ease both; }
-  .hero h1      { animation: fadeUp 0.7s 0.12s ease both; }
-  .hero-bio     { animation: fadeUp 0.7s 0.24s ease both; }
+  .hero-eyebrow { animation: fadeUp 0.8s ease both; }
+  .hero h1      { animation: fadeUp 0.8s 0.1s ease both; }
+  .hero-bio     { animation: fadeUp 0.8s 0.2s ease both; }
 
-  /* ---- RESPONSIVE ---- */
-  @media (max-width: 640px) {
-    .hero-content { padding: 40px 24px 64px; }
-    .main-wrap { padding: 0 20px; }
-    .project-grid { grid-template-columns: 1fr; }
-    .about-strip { padding: 56px 24px; gap: 40px; }
-    .section-header { padding: 56px 0 32px; }
+  @media (max-width: 900px) {
+    .container { padding: 0 var(--space-md); }
+    .hero { padding: var(--space-lg) 0 var(--space-md); }
+    .hero h1 { grid-column: 1 / span 12; font-size: clamp(48px, 13vw, 96px); }
+    .hero-bio { grid-column: 1 / span 12; }
+    .section { padding: var(--space-lg) 0 var(--space-md); }
+    .about-section { padding: var(--space-lg) 0 var(--space-md); }
+    .section-head .label { grid-column: 1 / span 12; padding-top: 0; margin-bottom: var(--space-sm); }
+    .section-head h2 { grid-column: 1 / span 12; }
+    .project-num { grid-column: 1 / span 12; padding-top: 0; }
+    .project-name { grid-column: 1 / span 12; }
+    .project-body { grid-column: 1 / span 12; padding-top: 0; }
+    .project-arrow { grid-column: 1 / span 12; text-align: left; padding-top: 0; }
+    .about-label, .about-head, .about-body, .contact-line { grid-column: 1 / span 12; }
+    .meta-block, .meta-block:nth-child(2) { grid-column: 1 / span 12; }
+    .nav-links { gap: var(--space-md); }
   }
 </style>
 </head>
 <body>
 
-<div class="masthead">
-  Gravity Strategy &nbsp;&middot;&nbsp; <a href="https://www.gravitystrategy.co">gravitystrategy.co</a>
-</div>
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <div class="logo">Gravity Strategy</div>
+      <div class="nav-links">
+        <a href="#portfolio">Portfolio</a>
+        <a href="#about">About</a>
+        <a href="mailto:patrick@gravitystrategy.co">Contact</a>
+      </div>
+    </div>
+  </div>
+</nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Selected Work</div>
-    <h1>Patrick<br><em>Scanlan</em></h1>
-    <p class="hero-bio">Design, strategy, and product for the outdoors. Building tools that work when it matters most.</p>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-eyebrow">Selected Work &mdash; 2026</div>
+      <h1>Patrick<br><strong>Scanlan</strong></h1>
+      <p class="hero-bio">Design, strategy, and product for the outdoors. Building tools that work when it matters most.</p>
+    </div>
+    <div class="meta-bar">
+      <div class="meta-bar-inner">
+        <div class="meta-block">
+          <div class="meta-label">Studio</div>
+          <a class="meta-link" href="https://www.gravitystrategy.co" target="_blank">gravitystrategy.co</a>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Contact</div>
+          <a class="meta-link" href="mailto:patrick@gravitystrategy.co">patrick@gravitystrategy.co</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- PROJECTS -->
-<div class="main-wrap">
-  <div class="section-header">
-    <span class="section-label">Portfolio</span>
-    <div class="section-rule"></div>
-  </div>
-
-  <div class="project-grid">
-
-    <!-- Snowbook -->
-    <a class="project-card" href="snowbook.html" style="--card-accent: #2c6fa8;">
-      <div class="project-tag">Hardware &amp; AI Product Design</div>
-      <div class="project-name">Snowbook</div>
-      <p class="project-desc">A deployable network of remote snow sensors with integrated AI tools, built to close the data gap in avalanche forecasting and snow science.</p>
-      <div class="project-meta">
-        <span class="project-chip">Hardware</span>
-        <span class="project-chip">AI / ML</span>
-        <span class="project-chip">2023</span>
-        <span class="project-arrow">View Case Study →</span>
-      </div>
-    </a>
-
-    <!-- AllTrails -->
-    <a class="project-card" href="alltrails.html" style="--card-accent: #2d6a2d;">
-      <div class="project-tag">UX Research &amp; Feature Design</div>
-      <div class="project-name">AllTrails Feature Enhancement</div>
-      <p class="project-desc">A proof-of-concept feature design for AllTrails, exploring how to turn 65 million existing users into contributors to trail accuracy and data integrity.</p>
-      <div class="project-meta">
-        <span class="project-chip">CMU MIIPS</span>
-        <span class="project-chip">UX Research</span>
-        <span class="project-chip">2024</span>
-        <span class="project-arrow">View Case Study →</span>
-      </div>
-    </a>
-
-    <!-- TrackPush -->
-    <a class="project-card" href="trackpush.html" style="--card-accent: #E8651A;">
-      <div class="project-tag">Product Design &amp; Build</div>
-      <div class="project-name">TrackPush</div>
-      <p class="project-desc">A GPS route-sharing tool built for search and rescue teams. Push an egress route to a lost hiker's phone as a simple, zero-install link.</p>
-      <div class="project-meta">
-        <span class="project-chip">SAR</span>
-        <span class="project-chip">Web App</span>
-        <span class="project-chip">2025</span>
-        <span class="project-arrow">View Case Study →</span>
-      </div>
-    </a>
-
-    <!-- The Proving Ground -->
-    <a class="project-card" href="proving-ground.html" style="--card-accent: #b83a2a;">
-      <div class="project-tag">UX &amp; Content Design &nbsp;·&nbsp; Live</div>
-      <div class="project-name">The Proving Ground</div>
-      <p class="project-desc">End-to-end design of a public safety communication experience for the Mount Washington Avalanche Center, built to change behavior before people reach the mountain.</p>
-      <div class="project-meta">
-        <span class="project-chip">MWAC</span>
-        <span class="project-chip">Content Strategy</span>
-        <span class="project-chip">2026</span>
-        <span class="project-arrow">View Case Study →</span>
-      </div>
-    </a>
-
-    <!-- Placeholder: more projects -->
-    <div class="project-card" style="--card-accent: var(--ice-dark); opacity: 0.4; cursor: default;">
-      <div class="project-tag">Coming Soon</div>
-      <div class="project-name" style="color: var(--mid);">More Work</div>
-      <p class="project-desc">Additional projects and case studies being added.</p>
-      <div class="project-meta">
-        <span class="project-chip">In Progress</span>
-      </div>
+<section class="section" id="portfolio">
+  <div class="container">
+    <div class="section-head">
+      <h2>Selected <strong>case studies</strong> from the field, the studio, and the firmware layer.</h2>
     </div>
 
-  </div>
-</div>
+    <div class="project-rows">
 
-<!-- ABOUT -->
-<div class="about-strip">
-  <div class="about-left">
-    <div class="label">About</div>
-    <h2>Design for the <em>real</em> world</h2>
-  </div>
-  <div class="about-right">
-    <p>Gravity Strategy is a design studio and consultancy helping build the next generation of smart outdoor technology. We work at the intersection of design, strategy, and technology to create products that work when it matters most.</p>
-    <p>Our work spans web apps, product strategy, visual identity, and editorial storytelling for organizations operating in challenging environments.</p>
-    <div class="contact-line">
-      <a class="contact-link" href="https://www.gravitystrategy.co" target="_blank">gravitystrategy.co</a>
-      <a class="contact-link" href="mailto:gravityexped@gmail.com">gravityexped@gmail.com</a>
+      <a class="project-row" href="snowbook.html">
+        <div class="project-num">01</div>
+        <div class="project-name">snowbook</div>
+        <div class="project-body">
+          <div class="project-tag">Hardware &amp; AI Product Design</div>
+          <p class="project-desc">A deployable network of remote snow sensors with integrated AI tools, built to close the data gap in avalanche forecasting and snow science.</p>
+          <div class="project-meta">
+            <span>Hardware</span>
+            <span>AI / ML</span>
+            <span>2023</span>
+          </div>
+        </div>
+        <div class="project-arrow">&#8599;</div>
+      </a>
+
+      <a class="project-row" href="alltrails.html">
+        <div class="project-num">02</div>
+        <div class="project-name">AllTrails Feature Enhancement</div>
+        <div class="project-body">
+          <div class="project-tag">UX Research &amp; Feature Design</div>
+          <p class="project-desc">A proof-of-concept feature design for AllTrails, exploring how to turn 65 million existing users into contributors to trail accuracy and data integrity.</p>
+          <div class="project-meta">
+            <span>CMU MIIPS</span>
+            <span>UX Research</span>
+            <span>2024</span>
+          </div>
+        </div>
+        <div class="project-arrow">&#8599;</div>
+      </a>
+
+      <a class="project-row" href="trackpush.html">
+        <div class="project-num">03</div>
+        <div class="project-name">TrackPush</div>
+        <div class="project-body">
+          <div class="project-tag">Product Design &amp; Build</div>
+          <p class="project-desc">A GPS route-sharing tool built for search and rescue teams. Push an egress route to a lost hiker's phone as a simple, zero-install link.</p>
+          <div class="project-meta">
+            <span>SAR</span>
+            <span>Web App</span>
+            <span>2025</span>
+          </div>
+        </div>
+        <div class="project-arrow">&#8599;</div>
+      </a>
+
+      <a class="project-row" href="proving-ground.html">
+        <div class="project-num">04</div>
+        <div class="project-name">The Proving Ground</div>
+        <div class="project-body">
+          <div class="project-tag">UX &amp; Content Design &nbsp;&middot;&nbsp; Live</div>
+          <p class="project-desc">End-to-end design of a public safety communication experience for the Mount Washington Avalanche Center, built to change behavior before people reach the mountain.</p>
+          <div class="project-meta">
+            <span>MWAC</span>
+            <span>Content Strategy</span>
+            <span>2026</span>
+          </div>
+        </div>
+        <div class="project-arrow">&#8599;</div>
+      </a>
+
+      <div class="project-row disabled">
+        <div class="project-num">05</div>
+        <div class="project-name">More Work</div>
+        <div class="project-body">
+          <div class="project-tag">Coming Soon</div>
+          <p class="project-desc">Additional projects and case studies being added.</p>
+          <div class="project-meta">
+            <span>In Progress</span>
+          </div>
+        </div>
+        <div class="project-arrow">&mdash;</div>
+      </div>
+
     </div>
   </div>
-</div>
+</section>
+
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-head">
+        <h2>Design for the <strong>real</strong> world.</h2>
+      </div>
+      <div class="about-body">
+        <p>Gravity Strategy is a design studio and consultancy helping build the next generation of smart outdoor technology. We work at the intersection of design, strategy, and technology to create products that work when it matters most.</p>
+        <p>Our work spans UX research &amp; design, product strategy, and human factors engineering for organizations operating in challenging environments.</p>
+      </div>
+      <div class="contact-line">
+        <a class="contact-link" href="https://www.gravitystrategy.co" target="_blank">gravitystrategy.co</a>
+        <a class="contact-link" href="mailto:patrick@gravitystrategy.co">patrick@gravitystrategy.co</a>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>
-  &copy; 2026 Gravity Strategy
+  <div class="container">
+    <div class="footer-inner">
+      <span>&copy; 2026 Gravity Strategy</span>
+      <span>Selected Work</span>
+    </div>
+  </div>
 </footer>
 
 </body>

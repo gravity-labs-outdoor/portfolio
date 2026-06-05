@@ -6,389 +6,247 @@
 <title>TrackPush / Gravity Strategy Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700;1,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #111111;
-    --paper: #FAFAF8;
-    --paper-dark: #F2F1EE;
-    --rule: #E0DDD8;
-    --mid: #888884;
-    --gold: #c4922a;
-    --ice: #ccdde8;
-    --ice-mid: #7aafc4;
-    --ice-dark: #2e6a8a;
-    --orange: #E8651A;
-    --orange-light: #FF8642;
-    --orange-glow: rgba(232, 101, 26, 0.18);
-    --orange-tint: rgba(232, 101, 26, 0.08);
-    --teal: #1ABFA0;
+    --color-bg: #F9F9F8;
+    --color-text-main: #111112;
+    --color-text-muted: #66666A;
+    --color-accent: #E15A3E;
+    --color-rule: #E5E5E2;
+    --font-primary: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+    --tracking-tight: -0.04em;
+    --tracking-normal: -0.01em;
+    --tracking-wide: 0.15em;
+    --tracking-xwide: 0.2em;
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 32px;
+    --space-lg: 64px;
+    --space-xl: 140px;
+    --transition-fade: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
   body {
-    background-color: var(--paper);
-    color: var(--ink);
-    font-family: 'Urbanist', sans-serif;
-    font-size: 18px;
-    line-height: 1.75;
-  font-weight: 300;
+    background: var(--color-bg);
+    color: var(--color-text-main);
+    font-family: var(--font-primary);
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 400;
+    letter-spacing: var(--tracking-normal);
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ---- MASTHEAD ---- */
-  .masthead {
-    background-color: var(--ink);
-    color: rgba(245,240,232,0.55);
-    padding: 14px 32px;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
+  a { color: var(--color-text-main); text-decoration: none; transition: var(--transition-fade); }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg); }
+
+  /* ---- NAV ---- */
+  nav { padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 20px;
+    color: var(--color-text-muted);
   }
-  .masthead a { color: var(--ice-mid); text-decoration: none; transition: color 0.15s; }
-  .masthead a:hover { color: #fff; }
-  .masthead-back {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: rgba(245,240,232,0.55) !important;
-  }
-  .masthead-back::before {
-    content: '←';
-    font-size: 14px;
-  }
-  .masthead-sep { opacity: 0.3; }
+  .nav-inner a { color: var(--color-text-muted); }
+  .nav-inner a:hover { color: var(--color-text-main); }
+  .nav-left { display: flex; gap: var(--space-md); align-items: center; }
+  .logo { font-weight: 700; color: var(--color-text-main); letter-spacing: var(--tracking-wide); }
+  .crumb-sep { opacity: 0.4; }
+  .back-link::before { content: '\2190 \00a0'; }
 
   /* ---- HERO ---- */
-  .hero {
-    position: relative;
-    background-color: var(--ink);
-    overflow: hidden;
-    min-height: 68vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 70% 20%, rgba(232,101,26,0.12) 0%, transparent 55%),
-      radial-gradient(ellipse at 10% 85%, rgba(26,191,160,0.07) 0%, transparent 50%),
-      linear-gradient(172deg, #0d1117 0%, #1a1e14 40%, #100f0d 100%);
-  }
-  .hero-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.5;
-    pointer-events: none;
-  }
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 40px 56px 80px;
-    max-width: 900px;
+  .hero { padding: var(--space-xl) 0 var(--space-lg); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
   .hero-eyebrow {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
+    grid-column: 1 / span 12;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--orange-light);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 32px;
-    height: 1px;
-    background: var(--orange-light);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
   }
   .hero h1 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(52px, 8vw, 96px);
-    font-weight: 800;
-    line-height: 0.9;
-    color: #fff;
-    letter-spacing: -0.03em;
-    margin-bottom: 28px;
+    grid-column: 1 / span 10;
+    font-size: clamp(56px, 10vw, 152px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-lg);
   }
-  .hero h1 em {
-    font-style: italic;
-    color: var(--orange-light);
-  }
+  .hero h1 strong { font-weight: 800; }
   .hero-sub {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(17px, 2.2vw, 22px);
-    font-style: italic;
-    color: rgba(245,240,232,0.55);
-    max-width: 580px;
-    line-height: 1.5;
-    margin-bottom: 40px;
+    grid-column: 5 / span 8;
+    font-size: 1.25rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    max-width: 620px;
   }
-  .hero-stat-row {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+
+  /* ---- HERO META ---- */
+  .hero-meta { border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); margin-top: var(--space-lg); }
+  .hero-meta-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .hero-meta-cell {
+    padding: var(--space-md) 0 var(--space-md) var(--space-md);
+    border-left: 1px solid var(--color-rule);
   }
-  .hero-stat {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 6px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(232,101,26,0.2);
-    border-radius: 2px;
-    padding: 14px 20px;
-  }
-  .hero-stat-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
+  .hero-meta-cell:first-child { border-left: none; padding-left: 0; }
+  .hero-meta-label {
+    font-size: 0.7rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: rgba(245,240,232,0.45);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xs);
   }
-  .hero-stat-value {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: rgba(245,240,232,0.8);
-  }
+  .hero-meta-value { font-size: 0.95rem; font-weight: 600; color: var(--color-text-main); line-height: 1.4; }
 
-  /* ---- ARTICLE ---- */
-  .article-wrap {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 0 32px;
+  /* ---- SECTION ---- */
+  .section { padding: var(--space-xl) 0 var(--space-lg); border-bottom: 1px solid var(--color-rule); }
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
   }
-
-  .section {
-    padding: 72px 0;
-    border-bottom: 1px solid var(--rule);
-  }
-  .section:last-of-type { border-bottom: none; }
-
-  .section-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+  .section-head .label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: var(--color-text-muted);
+    padding-top: 10px;
   }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--rule);
+  .section-head h2 {
+    grid-column: 4 / span 8;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
   }
+  .section-head h2 strong { font-weight: 800; }
 
-  h2 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(26px, 3.5vw, 38px);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin-bottom: 24px;
+  .article-body {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
-  h3 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 21px;
-    font-weight: 700;
-    font-style: italic;
-    margin-top: 40px;
-    margin-bottom: 14px;
+  .article-body > * { grid-column: 4 / span 8; }
+  .article-body p {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
   }
-  p { margin-bottom: 22px; }
-  p:last-child { margin-bottom: 0; }
-  strong { font-weight: 600; }
-  a { color: var(--orange); }
-  a:hover { color: var(--ink); }
+  .article-body p:last-child { margin-bottom: 0; }
+  .article-body strong { color: var(--color-text-main); font-weight: 600; }
+  .article-body a { color: var(--color-accent); border-bottom: 1px solid var(--color-accent); }
+  .article-body code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    color: var(--color-text-main);
+    background: rgba(225, 90, 62, 0.06);
+    padding: 1px 6px;
+    border-radius: 0;
+  }
+  .article-body h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-text-main);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+  }
 
   /* ---- PULL QUOTE ---- */
   .pull-quote {
-    margin: 48px 0;
-    padding: 32px 0 32px 32px;
-    border-left: 3px solid var(--orange);
+    grid-column: 4 / span 8 !important;
+    margin: var(--space-md) 0;
+    padding-left: var(--space-md);
+    border-left: 2px solid var(--color-accent);
   }
   .pull-quote p {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(19px, 2.2vw, 24px);
-    font-style: italic;
-    line-height: 1.5;
-    color: var(--ink);
-    margin-bottom: 12px;
+    font-size: clamp(22px, 2.6vw, 32px) !important;
+    font-weight: 300 !important;
+    line-height: 1.3 !important;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-main) !important;
+    margin-bottom: var(--space-sm) !important;
   }
   .pull-quote cite {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--mid);
+    color: var(--color-text-muted);
     font-style: normal;
   }
 
-  /* ---- CALLOUT BOX ---- */
-  .callout {
-    background: var(--paper-dark);
-    border-left: 4px solid var(--orange);
-    padding: 28px 32px;
-    margin: 40px 0;
-    border-radius: 0 2px 2px 0;
+  /* ---- APP PREVIEW (light editorial frame around dark screens) ---- */
+  .app-preview-section {
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-rule);
   }
-  .callout-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--orange);
-    margin-bottom: 12px;
-  }
-  .callout p {
-    font-size: 15px;
-    line-height: 1.7;
-    margin-bottom: 10px;
-    color: #2e2622;
-  }
-  .callout p:last-child { margin-bottom: 0; }
-
-  /* ---- SPEC TABLE ---- */
-  .spec-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 32px 0;
-    font-size: 15px;
-  }
-  .spec-table tr {
-    border-bottom: 1px solid var(--rule);
-  }
-  .spec-table tr:last-child { border-bottom: none; }
-  .spec-table td {
-    padding: 14px 0;
-    vertical-align: top;
-  }
-  .spec-table td:first-child {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--mid);
-    width: 38%;
-    padding-right: 24px;
-    padding-top: 17px;
-  }
-  .spec-table td:last-child {
-    color: var(--ink);
-    line-height: 1.6;
-  }
-  .spec-tag {
-    display: inline-block;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 2px;
-    background: var(--orange-tint);
-    color: var(--orange);
-    margin: 2px 4px 2px 0;
-    border: 1px solid rgba(232,101,26,0.2);
-  }
-
-  /* ---- APP PREVIEW ---- */
-  .app-preview {
-    background: linear-gradient(172deg, #0d1117 0%, #181B25 100%);
-    padding: 64px 0;
-  }
-  .app-preview .article-wrap {
-    text-align: center;
+  .app-preview-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    align-items: end;
   }
   .app-preview-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--orange-light);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-  }
-  .app-preview-label::before,
-  .app-preview-label::after {
-    content: '';
-    width: 32px;
-    height: 1px;
-    background: rgba(232,101,26,0.4);
+    color: var(--color-text-muted);
+    padding-bottom: 6px;
   }
   .app-preview-title {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 24px;
-    font-style: italic;
-    color: rgba(245,240,232,0.85);
-    margin-bottom: 32px;
+    grid-column: 4 / span 8;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: var(--tracking-tight);
   }
-  /* Phone mockup */
+  .app-preview-title strong { font-weight: 800; }
+  .phone-frames {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
   .phone-frame {
-    display: inline-block;
     background: #0F1117;
     border-radius: 36px;
-    border: 2px solid #2A2D3E;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04);
+    border: 1px solid #2A2D3E;
     width: 260px;
     overflow: hidden;
     text-align: left;
-    vertical-align: top;
-    margin: 0 12px 16px;
   }
-  .phone-notch {
-    width: 90px;
-    height: 8px;
-    background: #1E2130;
-    border-radius: 4px;
-    margin: 14px auto 0;
-  }
-  .phone-screen {
-    padding: 16px;
-  }
-  /* HUD preview */
-  .mock-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
-  .mock-brand {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-  }
+  .phone-notch { width: 90px; height: 8px; background: #1E2130; border-radius: 4px; margin: 14px auto 0; }
+  .phone-screen { padding: 16px; }
+  .mock-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .mock-brand { display: flex; align-items: center; gap: 7px; }
   .mock-brand-icon {
     width: 24px; height: 24px;
-    background: #E8651A;
+    background: var(--color-accent);
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -396,10 +254,8 @@
     font-size: 12px;
     font-weight: 800;
     color: white;
-    font-family: 'Urbanist', sans-serif;
   }
   .mock-brand-text {
-    font-family: 'Urbanist', sans-serif;
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -407,7 +263,6 @@
     color: #F0F0F5;
   }
   .mock-badge {
-    font-family: 'Urbanist', sans-serif;
     font-size: 9px;
     font-weight: 700;
     padding: 3px 8px;
@@ -418,7 +273,6 @@
     color: #1ABFA0;
     border: 1px solid rgba(26,191,160,0.25);
   }
-  /* Mini map */
   .mock-map {
     height: 120px;
     background: linear-gradient(145deg, #1a2030 0%, #0d1520 100%);
@@ -428,18 +282,8 @@
     overflow: hidden;
     border: 1px solid #2A2D3E;
   }
-  .mock-map svg {
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-  }
-  /* HUD card */
-  .mock-hud-card {
-    background: rgba(24,27,37,0.95);
-    border: 1px solid #2A2D3E;
-    border-radius: 14px;
-    overflow: hidden;
-  }
+  .mock-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .mock-hud-card { background: rgba(24,27,37,0.95); border: 1px solid #2A2D3E; border-radius: 14px; overflow: hidden; }
   .mock-hud-main {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -449,7 +293,6 @@
   }
   .mock-hud-metric { text-align: center; }
   .mock-hud-label {
-    font-family: 'Urbanist', sans-serif;
     font-size: 8px;
     font-weight: 700;
     color: #555872;
@@ -464,11 +307,7 @@
     color: #F0F0F5;
     line-height: 1;
   }
-  .mock-hud-value small {
-    font-size: 11px;
-    color: #8B8FA3;
-    font-weight: 400;
-  }
+  .mock-hud-value small { font-size: 11px; color: #8B8FA3; font-weight: 400; }
   .mock-compass {
     width: 44px; height: 44px;
     border: 1.5px solid #2A2D3E;
@@ -477,42 +316,25 @@
     align-items: center;
     justify-content: center;
     font-size: 20px;
-    color: #E8651A;
+    color: var(--color-accent);
   }
-  .mock-progress {
-    padding: 10px 16px 14px;
-    border-top: 1px solid #2A2D3E;
-  }
-  .mock-progress-bar {
-    height: 3px;
-    background: #2A2D3E;
-    border-radius: 2px;
-    overflow: hidden;
-    margin-top: 6px;
-  }
-  .mock-progress-fill {
-    height: 100%;
-    width: 42%;
-    background: linear-gradient(90deg, #E8651A, #1ABFA0);
-    border-radius: 2px;
-  }
+  .mock-progress { padding: 10px 16px 14px; border-top: 1px solid #2A2D3E; }
+  .mock-progress-bar { height: 3px; background: #2A2D3E; border-radius: 2px; overflow: hidden; margin-top: 6px; }
+  .mock-progress-fill { height: 100%; width: 42%; background: linear-gradient(90deg, var(--color-accent), #1ABFA0); border-radius: 2px; }
   .mock-progress-label {
     display: flex;
     justify-content: space-between;
-    font-family: 'Urbanist', sans-serif;
     font-size: 9px;
     font-weight: 600;
     color: #555872;
     text-transform: uppercase;
     letter-spacing: 1px;
   }
-  /* Create screen mockup */
   .mock-instruction {
     background: #1E2130;
-    border-left: 2px solid #E8651A;
+    border-left: 2px solid var(--color-accent);
     border-radius: 6px;
     padding: 8px 10px;
-    font-family: 'Urbanist', sans-serif;
     font-size: 10px;
     color: #8B8FA3;
     margin-bottom: 8px;
@@ -530,28 +352,19 @@
   }
   .mock-wp-num {
     width: 16px; height: 16px;
-    background: #E8651A;
+    background: var(--color-accent);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Urbanist', sans-serif;
     font-size: 9px;
     font-weight: 700;
     color: white;
     flex-shrink: 0;
   }
-  .mock-wp-coords {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    color: #8B8FA3;
-  }
-  .mock-btn-row {
-    display: flex;
-    gap: 6px;
-  }
+  .mock-wp-coords { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #8B8FA3; }
+  .mock-btn-row { display: flex; gap: 6px; }
   .mock-btn {
-    font-family: 'Urbanist', sans-serif;
     font-size: 10px;
     font-weight: 700;
     padding: 7px 12px;
@@ -560,19 +373,16 @@
     flex: 1;
     text-align: center;
   }
-  .mock-btn.primary { background: #E8651A; color: white; }
+  .mock-btn.primary { background: var(--color-accent); color: white; }
   .mock-btn.secondary { background: #1E2130; color: #8B8FA3; border: 1px solid #2A2D3E; }
-  /* Share output mockup */
   .mock-share-output {
     background: #1E2130;
     border: 1px solid #1ABFA0;
     border-radius: 10px;
     padding: 10px 12px;
     margin-top: 8px;
-    box-shadow: 0 0 16px rgba(26,191,160,0.12);
   }
   .mock-share-label {
-    font-family: 'Urbanist', sans-serif;
     font-size: 9px;
     font-weight: 700;
     color: #1ABFA0;
@@ -580,11 +390,7 @@
     text-transform: uppercase;
     margin-bottom: 6px;
   }
-  .mock-share-url-row {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
+  .mock-share-url-row { display: flex; gap: 6px; align-items: center; }
   .mock-share-input {
     flex: 1;
     background: #0F1117;
@@ -596,316 +402,300 @@
     color: #8B8FA3;
   }
 
-  /* ---- FLOW DIAGRAM ---- */
-  .flow-diagram {
-    margin: 40px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+  /* ---- FLOW STEPS (hairline rows) ---- */
+  .flow-rows {
+    grid-column: 4 / span 9 !important;
+    margin-top: var(--space-md);
   }
   .flow-step {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr 3fr 5fr;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-rule);
+    align-items: start;
   }
-  .flow-step:last-child { border-bottom: none; }
+  .flow-step:last-child { border-bottom: 1px solid var(--color-rule); }
   .flow-num {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 40px;
-    font-weight: 800;
-    color: rgba(232,101,26,0.15);
-    line-height: 1;
-    flex-shrink: 0;
-    width: 52px;
-    text-align: right;
-  }
-  .flow-body { flex: 1; padding-top: 4px; }
-  .flow-title {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--orange);
-    margin-bottom: 6px;
+    color: var(--color-text-muted);
+    padding-top: 6px;
   }
-  .flow-body p {
-    font-size: 15px;
-    color: var(--mid);
-    line-height: 1.6;
-    margin-bottom: 0;
+  .flow-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-text-main);
+    line-height: 1.25;
+  }
+  .flow-body { color: var(--color-text-muted); font-size: 1rem; line-height: 1.65; }
+
+  /* ---- CALLOUT (cardless, accent rule) ---- */
+  .callout {
+    grid-column: 4 / span 8 !important;
+    padding: var(--space-md) var(--space-md);
+    margin: var(--space-md) 0;
+    border-top: 1px solid var(--color-accent);
+    border-bottom: 1px solid var(--color-accent);
+  }
+  .callout-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--space-sm);
+  }
+  .callout p { font-size: 1rem !important; line-height: 1.65 !important; color: var(--color-text-main) !important; margin-bottom: 0 !important; }
+
+  /* ---- SPEC TABLE ---- */
+  .spec-table-wrap { grid-column: 4 / span 9 !important; margin-top: var(--space-md); }
+  .spec-table { width: 100%; border-collapse: collapse; }
+  .spec-table tr { border-top: 1px solid var(--color-rule); }
+  .spec-table tr:last-child { border-bottom: 1px solid var(--color-rule); }
+  .spec-table td { padding: var(--space-md) 0; vertical-align: top; }
+  .spec-table td:first-child {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    width: 25%;
+    padding-right: var(--space-md);
+    padding-top: calc(var(--space-md) + 4px);
+  }
+  .spec-table td:last-child { color: var(--color-text-main); font-size: 1rem; line-height: 1.65; }
+  .spec-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-rule);
+    padding: 4px 10px;
+    margin: 2px 4px 2px 0;
   }
 
-  /* ---- CONSTRAINT LIST ---- */
-  .constraint-list {
-    list-style: none;
-    margin: 24px 0;
-  }
+  /* ---- CONSTRAINTS (hairline rows) ---- */
+  .constraints-rows { grid-column: 4 / span 9 !important; margin-top: var(--space-md); }
   .constraint-item {
-    display: flex;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--rule);
-    font-size: 16px;
-    line-height: 1.65;
+    display: grid;
+    grid-template-columns: 1fr 3fr 5fr;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-rule);
+    align-items: start;
   }
-  .constraint-item:last-child { border-bottom: none; }
-  .constraint-icon {
-    font-size: 18px;
-    flex-shrink: 0;
-    padding-top: 2px;
-    width: 28px;
-  }
-  .constraint-body { flex: 1; }
-  .constraint-title {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
+  .constraint-item:last-child { border-bottom: 1px solid var(--color-rule); }
+  .constraint-num {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--ink);
-    margin-bottom: 4px;
+    color: var(--color-text-muted);
+    padding-top: 6px;
   }
-  .constraint-body p {
-    font-size: 15px;
-    color: var(--mid);
-    margin-bottom: 0;
+  .constraint-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-normal);
+    line-height: 1.25;
   }
+  .constraint-body { color: var(--color-text-muted); font-size: 1rem; line-height: 1.65; }
 
   /* ---- CTA ---- */
-  .cta-section {
-    background: linear-gradient(160deg, #1a1e14 0%, #0d1117 100%);
-    color: #fff;
-    padding: 80px 56px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(232,101,26,0.18) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .cta-section .article-wrap { position: relative; z-index: 1; }
+  .cta-section { padding: var(--space-xl) 0; border-top: 1px solid var(--color-rule); }
+  .cta-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-md); }
   .cta-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--orange-light);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+    color: var(--color-text-muted);
+    padding-top: 10px;
   }
-  .cta-label::before, .cta-label::after {
-    content: '';
-    width: 32px;
-    height: 1px;
-    background: rgba(232,101,26,0.4);
+  .cta-body { grid-column: 4 / span 8; }
+  .cta-body h2 {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-sm);
   }
-  .cta-section h2 {
-    color: #fff;
-    font-size: clamp(26px, 3.5vw, 38px);
-    margin-bottom: 16px;
-  }
-  .cta-section p {
-    color: rgba(245,240,232,0.6);
-    font-size: 16px;
-    max-width: 520px;
-    margin: 0 auto 36px;
-  }
-  .btn-primary {
-    display: inline-block;
-    background: var(--orange);
-    color: #fff;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
+  .cta-body h2 strong { font-weight: 800; }
+  .cta-body p { color: var(--color-text-muted); font-size: 1.05rem; margin-bottom: var(--space-md); }
+  .cta-links { display: flex; gap: var(--space-lg); flex-wrap: wrap; }
+  .cta-link {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    text-decoration: none;
-    padding: 16px 40px;
-    border-radius: 2px;
-    transition: background 0.2s ease;
-    margin: 0 8px 12px;
-    box-shadow: 0 4px 24px var(--orange-glow);
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom: 2px;
   }
-  .btn-primary:hover { background: #c95414; color: #fff; }
-  .btn-secondary-outline {
-    display: inline-block;
-    background: transparent;
-    color: var(--ice-mid);
-    font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 15px 40px;
-    border-radius: 2px;
-    border: 1px solid rgba(122,175,196,0.4);
-    transition: all 0.2s ease;
-    margin: 0 8px 12px;
-  }
-  .btn-secondary-outline:hover { background: rgba(122,175,196,0.1); color: #fff; }
+  .cta-link.alt { color: var(--color-text-main); border-color: var(--color-text-main); }
+  .cta-link:hover { color: var(--color-text-main); border-color: var(--color-text-main); }
+  .cta-link.alt:hover { color: var(--color-accent); border-color: var(--color-accent); }
+  .cta-link::after { content: ' \2197'; }
 
   /* ---- FOOTER ---- */
-  footer {
-    background: var(--ink);
-    color: rgba(245,240,232,0.3);
-    text-align: center;
-    padding: 28px 24px;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    border-top: 1px solid rgba(255,255,255,0.05);
+  footer { border-top: 1px solid var(--color-rule); padding: var(--space-md) 0; }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
-  footer a { color: rgba(122,175,196,0.6); text-decoration: none; }
-  footer a:hover { color: var(--ice-mid); }
+  footer a { color: var(--color-text-muted); border-bottom: 1px solid var(--color-rule); }
+  footer a:hover { color: var(--color-text-main); }
 
-  /* ---- ANIMATIONS ---- */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .hero-eyebrow { animation: fadeUp 0.7s ease both; }
-  .hero h1      { animation: fadeUp 0.7s 0.12s ease both; }
-  .hero-sub     { animation: fadeUp 0.7s 0.22s ease both; }
-  .hero-stat-row { animation: fadeUp 0.7s 0.32s ease both; }
+  .hero-eyebrow { animation: fadeUp 0.8s ease both; }
+  .hero h1      { animation: fadeUp 0.8s 0.1s ease both; }
+  .hero-sub     { animation: fadeUp 0.8s 0.2s ease both; }
 
-  /* ---- RESPONSIVE ---- */
-  @media (max-width: 640px) {
-    .hero-content { padding: 40px 24px 60px; }
-    .article-wrap { padding: 0 20px; }
-    .cta-section { padding: 60px 24px; }
-    .phone-frames { overflow-x: auto; white-space: nowrap; }
-    .phone-frame { white-space: normal; }
-    .masthead { padding: 14px 20px; }
+  @media (max-width: 900px) {
+    .container { padding: 0 var(--space-md); }
+    .hero { padding: var(--space-lg) 0 var(--space-md); }
+    .hero h1 { grid-column: 1 / span 12; font-size: clamp(48px, 13vw, 88px); }
+    .hero-sub { grid-column: 1 / span 12; }
+    .hero-meta-grid { grid-template-columns: 1fr; }
+    .hero-meta-cell { border-left: none; padding-left: 0; border-top: 1px solid var(--color-rule); }
+    .hero-meta-cell:first-child { border-top: none; }
+    .section { padding: var(--space-lg) 0 var(--space-md); }
+    .section-head .label, .app-preview-label { grid-column: 1 / span 12; padding-top: 0; padding-bottom: 0; margin-bottom: var(--space-sm); }
+    .section-head h2, .app-preview-title { grid-column: 1 / span 12; }
+    .article-body > *, .flow-rows, .spec-table-wrap, .constraints-rows, .callout, .pull-quote { grid-column: 1 / span 12 !important; }
+    .flow-step, .constraint-item { grid-template-columns: 1fr; gap: var(--space-xs); }
+    .cta-label { grid-column: 1 / span 12; padding-top: 0; margin-bottom: var(--space-sm); }
+    .cta-body { grid-column: 1 / span 12; }
+    .nav-inner { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
   }
 </style>
 </head>
 <body>
 
-<div class="masthead">
-  <a class="masthead-back" href="index.html">Portfolio</a>
-  <span class="masthead-sep">/</span>
-  <span>TrackPush</span>
-</div>
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a class="logo" href="index.html">Gravity Strategy</a>
+        <span class="crumb-sep">/</span>
+        <span>TrackPush</span>
+      </div>
+      <a class="back-link" href="index.html">Portfolio</a>
+    </div>
+  </div>
+</nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">Product Design &amp; Build</div>
-    <h1>Track<em>Push</em></h1>
-    <p class="hero-sub">GPS route sharing for search and rescue, delivered as a link.</p>
-    <div class="hero-stat-row">
-      <div class="hero-stat">
-        <span class="hero-stat-label">Type</span>
-        <span class="hero-stat-value">Web App</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Platform</span>
-        <span class="hero-stat-value">iOS &amp; Android Browser</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Year</span>
-        <span class="hero-stat-value">2025</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Stack</span>
-        <span class="hero-stat-value">HTML · Leaflet · GPS API</span>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-eyebrow">Product Design &amp; Build</div>
+      <h1>Track<strong>Push</strong></h1>
+      <p class="hero-sub">GPS route sharing for search and rescue, delivered as a link.</p>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-grid">
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Type</div>
+          <div class="hero-meta-value">Web App</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Domain</div>
+          <div class="hero-meta-value">Outdoors + Search &amp; Rescue</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Platform</div>
+          <div class="hero-meta-value">iOS &amp; Android Browser</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Year</div>
+          <div class="hero-meta-value">2025</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Stack</div>
+          <div class="hero-meta-value">HTML &middot; Leaflet &middot; GPS API</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- INTRO -->
 <section class="section">
-  <div class="article-wrap">
-    <div class="section-label">The Problem</div>
-    <h2>Guiding Someone Out of the Wilderness Over the Phone</h2>
-
-    <p>When a hiker is lost, injured, or disoriented in the backcountry, search and rescue coordinators face a frustrating communication gap. They know the terrain, they know the egress route, and they have the caller on the line, but transferring that spatial knowledge verbally is slow, error-prone, and fails entirely when the caller is panicked or unfamiliar with map reading.</p>
-
-    <p>The alternatives require app installs, account creation, or expensive satellite hardware. None of that works when a lost person is standing in the woods with a stressed mind and 18% battery.</p>
-
-    <div class="pull-quote">
-      <p>"The route is always in my head. The problem is getting it into theirs."</p>
-      <cite>SAR Coordinator, White Mountains</cite>
+  <div class="container">
+    <div class="section-head">
+      <h2>Guiding someone out of the wilderness <strong>over the phone.</strong></h2>
     </div>
-
-    <p>TrackPush was built to close that gap. A SAR professional draws an egress route and sends it as a link. The recipient taps it, grants location permission, and a live navigation interface appears in their browser. No app store. No account. No setup.</p>
+    <div class="article-body">
+      <p>When a hiker is lost, injured, or disoriented in the backcountry, search and rescue coordinators face a frustrating communication gap. They know the terrain, they know the egress route, and they have the caller on the line, but transferring that spatial knowledge verbally is slow, error-prone, and fails entirely when the caller is panicked or unfamiliar with map reading.</p>
+      <p>The alternatives require app installs, account creation, or expensive satellite hardware. None of that works when a lost person is standing in the woods with a stressed mind and 18% battery.</p>
+      <div class="pull-quote">
+        <p>"The route is always in my head. The problem is getting it into theirs."</p>
+        <cite>SAR Coordinator, White Mountains</cite>
+      </div>
+      <p>TrackPush was built to close that gap. A SAR professional draws an egress route and sends it as a link. The recipient taps it, grants location permission, and a live navigation interface appears in their browser. No app store. No account. No setup.</p>
+    </div>
   </div>
 </section>
 
-<!-- APP PREVIEW -->
-<div class="app-preview">
-  <div class="article-wrap">
-    <div class="app-preview-label">The App</div>
-    <p class="app-preview-title">Two interfaces. One link.</p>
-    <div class="phone-frames" style="text-align:center; margin-top: 8px;">
+<section class="app-preview-section">
+  <div class="container">
+    <div class="app-preview-head">
+      <div class="app-preview-title">Two interfaces. <strong>One link.</strong></div>
+    </div>
+    <div class="phone-frames">
 
-      <!-- Create mode -->
       <div class="phone-frame">
         <div class="phone-notch"></div>
         <div class="phone-screen">
           <div class="mock-header">
             <div class="mock-brand">
-              <div class="mock-brand-icon">⊕</div>
+              <div class="mock-brand-icon">&oplus;</div>
               <div class="mock-brand-text">TrackPush</div>
             </div>
-            <div class="mock-badge" style="background:rgba(232,101,26,0.12);color:#FF8642;border-color:rgba(232,101,26,0.25);">Create</div>
+            <div class="mock-badge" style="background:rgba(225,90,62,0.12);color:#FF8642;border-color:rgba(225,90,62,0.25);">Create</div>
           </div>
-          <!-- Mini map with route -->
           <div class="mock-map">
             <svg viewBox="0 0 228 120" xmlns="http://www.w3.org/2000/svg">
-              <!-- Topo lines -->
               <ellipse cx="80" cy="70" rx="75" ry="45" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
               <ellipse cx="80" cy="70" rx="55" ry="32" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
               <ellipse cx="80" cy="70" rx="36" ry="20" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
-              <!-- Route line -->
-              <polyline points="30,90 60,75 95,60 135,45 175,28 205,18" stroke="#E8651A" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="7,5" opacity="0.9"/>
-              <!-- Waypoint markers -->
-              <circle cx="30" cy="90" r="6" fill="#E8651A" stroke="white" stroke-width="1.5"/>
-              <circle cx="95" cy="60" r="5" fill="#E8651A" stroke="white" stroke-width="1.5"/>
-              <circle cx="175" cy="28" r="5" fill="#E8651A" stroke="white" stroke-width="1.5"/>
+              <polyline points="30,90 60,75 95,60 135,45 175,28 205,18" stroke="#E15A3E" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="7,5" opacity="0.9"/>
+              <circle cx="30" cy="90" r="6" fill="#E15A3E" stroke="white" stroke-width="1.5"/>
+              <circle cx="95" cy="60" r="5" fill="#E15A3E" stroke="white" stroke-width="1.5"/>
+              <circle cx="175" cy="28" r="5" fill="#E15A3E" stroke="white" stroke-width="1.5"/>
               <circle cx="205" cy="18" r="6" fill="#1ABFA0" stroke="white" stroke-width="1.5"/>
-              <!-- Arrow indicators -->
-              <polygon points="80,72 85,79 80,77 75,79" fill="#E8651A" opacity="0.75"/>
-              <polygon points="158,34 163,41 158,39 153,41" fill="#E8651A" opacity="0.75"/>
+              <polygon points="80,72 85,79 80,77 75,79" fill="#E15A3E" opacity="0.75"/>
+              <polygon points="158,34 163,41 158,39 153,41" fill="#E15A3E" opacity="0.75"/>
             </svg>
           </div>
-          <!-- Waypoint list -->
           <div class="mock-wp-list">
             <div class="mock-instruction">Tap map to add waypoints. 3 added.</div>
-            <div class="mock-wp-item">
-              <div class="mock-wp-num">1</div>
-              <div class="mock-wp-coords">44.27100, -71.30300</div>
-            </div>
-            <div class="mock-wp-item">
-              <div class="mock-wp-num">2</div>
-              <div class="mock-wp-coords">44.27420, -71.30700</div>
-            </div>
-            <div class="mock-wp-item">
-              <div class="mock-wp-num">3</div>
-              <div class="mock-wp-coords">44.27560, -71.31020</div>
-            </div>
+            <div class="mock-wp-item"><div class="mock-wp-num">1</div><div class="mock-wp-coords">44.27100, -71.30300</div></div>
+            <div class="mock-wp-item"><div class="mock-wp-num">2</div><div class="mock-wp-coords">44.27420, -71.30700</div></div>
+            <div class="mock-wp-item"><div class="mock-wp-num">3</div><div class="mock-wp-coords">44.27560, -71.31020</div></div>
           </div>
           <div class="mock-btn-row" style="margin-bottom: 7px;">
-            <div class="mock-btn secondary">↑ GPX</div>
+            <div class="mock-btn secondary">&uarr; GPX</div>
             <div class="mock-btn secondary">Clear</div>
           </div>
           <div class="mock-btn primary" style="margin-bottom:7px;">Generate Share Link</div>
           <div class="mock-share-output">
-            <div class="mock-share-label">✓ Share this link</div>
+            <div class="mock-share-label">&check; Share this link</div>
             <div class="mock-share-url-row">
               <div class="mock-share-input">trackpush.io/#follow/e8kLp...</div>
               <div class="mock-btn primary" style="flex-shrink:0;padding:5px 10px;">Copy</div>
@@ -914,13 +704,12 @@
         </div>
       </div>
 
-      <!-- Follow mode -->
       <div class="phone-frame">
         <div class="phone-notch"></div>
         <div class="phone-screen">
           <div class="mock-header">
             <div class="mock-brand">
-              <div class="mock-brand-icon">⊕</div>
+              <div class="mock-brand-icon">&oplus;</div>
               <div class="mock-brand-text">TrackPush</div>
             </div>
             <div class="mock-badge">Following</div>
@@ -930,18 +719,12 @@
               <ellipse cx="90" cy="72" rx="78" ry="46" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
               <ellipse cx="90" cy="72" rx="56" ry="32" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
               <ellipse cx="90" cy="72" rx="36" ry="20" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
-              <!-- Route -->
-              <polyline points="38,92 68,77 105,62 145,46 185,28 210,18" stroke="#E8651A" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.9"/>
-              <!-- Start -->
-              <circle cx="38" cy="92" r="6" fill="#E8651A" stroke="white" stroke-width="1.5"/>
-              <!-- End -->
+              <polyline points="38,92 68,77 105,62 145,46 185,28 210,18" stroke="#E15A3E" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.9"/>
+              <circle cx="38" cy="92" r="6" fill="#E15A3E" stroke="white" stroke-width="1.5"/>
               <circle cx="210" cy="18" r="6" fill="#1ABFA0" stroke="white" stroke-width="1.5"/>
-              <!-- Arrows -->
-              <polygon points="86,66 91,73 86,71 81,73" fill="#E8651A" opacity="0.8"/>
-              <polygon points="163,38 168,45 163,43 158,45" fill="#E8651A" opacity="0.8"/>
-              <!-- User position (chevron) -->
+              <polygon points="86,66 91,73 86,71 81,73" fill="#E15A3E" opacity="0.8"/>
+              <polygon points="163,38 168,45 163,43 158,45" fill="#E15A3E" opacity="0.8"/>
               <polygon points="68,77 74,85 68,82 62,85" fill="#1ABFA0" stroke="white" stroke-width="0.8" transform="rotate(-15, 68, 80)"/>
-              <!-- Accuracy ring -->
               <circle cx="68" cy="79" r="10" fill="rgba(26,191,160,0.1)" stroke="#1ABFA0" stroke-width="0.5" opacity="0.4"/>
             </svg>
           </div>
@@ -951,7 +734,7 @@
                 <div class="mock-hud-label">Distance</div>
                 <div class="mock-hud-value">0.8<small>mi</small></div>
               </div>
-              <div class="mock-compass">↗</div>
+              <div class="mock-compass">&nearr;</div>
               <div class="mock-hud-metric">
                 <div class="mock-hud-label">Next WP</div>
                 <div class="mock-hud-value">3</div>
@@ -962,9 +745,7 @@
                 <span>Waypoint 2 / 5</span>
                 <span>42%</span>
               </div>
-              <div class="mock-progress-bar">
-                <div class="mock-progress-fill"></div>
-              </div>
+              <div class="mock-progress-bar"><div class="mock-progress-fill"></div></div>
             </div>
           </div>
         </div>
@@ -972,186 +753,176 @@
 
     </div>
   </div>
-</div>
+</section>
 
-<!-- HOW IT WORKS -->
 <section class="section">
-  <div class="article-wrap">
-    <div class="section-label">How It Works</div>
-    <h2>Six Steps from Distress Call to Navigation</h2>
-
-    <div class="flow-diagram">
-      <div class="flow-step">
-        <div class="flow-num">1</div>
-        <div class="flow-body">
+  <div class="container">
+    <div class="section-head">
+      <h2>Six steps from distress call to <strong>navigation.</strong></h2>
+    </div>
+    <div class="article-body">
+      <div class="flow-rows">
+        <div class="flow-step">
+          <div class="flow-num">01</div>
           <div class="flow-title">Locate the Caller</div>
-          <p>SAR receives GPS coordinates from 911 dispatch, a cell ping, or the caller's description. The coordinator opens TrackPush and finds the position on the topo map.</p>
+          <div class="flow-body">SAR receives GPS coordinates from 911 dispatch, a cell ping, or the caller's description. The coordinator opens TrackPush and finds the position on the topo map.</div>
         </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">2</div>
-        <div class="flow-body">
+        <div class="flow-step">
+          <div class="flow-num">02</div>
           <div class="flow-title">Draw the Egress Route</div>
-          <p>The coordinator taps waypoints on the map to define the path to safety. GPX files from existing tracks can also be uploaded and simplified automatically.</p>
+          <div class="flow-body">The coordinator taps waypoints on the map to define the path to safety. GPX files from existing tracks can also be uploaded and simplified automatically.</div>
         </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">3</div>
-        <div class="flow-body">
+        <div class="flow-step">
+          <div class="flow-num">03</div>
           <div class="flow-title">Generate the Link</div>
-          <p>One tap produces a shareable URL. The entire route is polyline-encoded directly into the URL hash, requiring no server, no database, and no account.</p>
+          <div class="flow-body">One tap produces a shareable URL. The entire route is polyline-encoded directly into the URL hash, requiring no server, no database, and no account.</div>
         </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">4</div>
-        <div class="flow-body">
+        <div class="flow-step">
+          <div class="flow-num">04</div>
           <div class="flow-title">Send It</div>
-          <p>The link goes out via SMS, iMessage, email, or through a satellite messenger relay. Any channel works. The link is short enough to read back verbally if needed.</p>
+          <div class="flow-body">The link goes out via SMS, iMessage, email, or through a satellite messenger relay. Any channel works. The link is short enough to read back verbally if needed.</div>
         </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">5</div>
-        <div class="flow-body">
+        <div class="flow-step">
+          <div class="flow-num">05</div>
           <div class="flow-title">Recipient Opens It</div>
-          <p>The caller taps the link. Their browser opens Follow mode: no app download, no account prompt, no delay. They grant location access in one tap.</p>
+          <div class="flow-body">The caller taps the link. Their browser opens Follow mode: no app download, no account prompt, no delay. They grant location access in one tap.</div>
         </div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-num">6</div>
-        <div class="flow-body">
+        <div class="flow-step">
+          <div class="flow-num">06</div>
           <div class="flow-title">They Walk. The App Guides.</div>
-          <p>Live GPS position, a compass bearing to the next waypoint, distance remaining, and a progress bar. The interface is designed for cold hands, low battery, and high stress.</p>
+          <div class="flow-body">Live GPS position, a compass bearing to the next waypoint, distance remaining, and a progress bar. The interface is designed for cold hands, low battery, and high stress.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DESIGN DECISIONS -->
 <section class="section">
-  <div class="article-wrap">
-    <div class="section-label">Design Decisions</div>
-    <h2>Every Choice in Service of One User State</h2>
-
-    <p>The follow mode interface is designed around a person who is cold, scared, and probably has less than 30% battery. That framing informed every decision from color palette to interaction model.</p>
-
-    <h3>Serverless by Design</h3>
-    <p>The entire route is encoded into the URL itself using Google's polyline encoding algorithm. There is no backend, no database, no API key required. The app works from a static file host, reduces latency to near zero, and eliminates any failure surface in the link-sharing pipeline. The tradeoff is URL length at high waypoint counts, which is mitigated by a GPX simplification algorithm that reduces tracks to a configurable maximum of 50 points.</p>
-
-    <div class="callout">
-      <div class="callout-label">Technical Approach</div>
-      <p>Routes are encoded using the Polyline encoding algorithm, compressing lat/lng pairs into a compact ASCII string. The full route decodes in the browser on load, requiring no network request beyond the initial page and map tiles.</p>
+  <div class="container">
+    <div class="section-head">
+      <h2>Every choice in service of <strong>one user state.</strong></h2>
     </div>
-
-    <h3>High-Contrast Dark UI</h3>
-    <p>Follow mode uses a dark theme not for aesthetics but for outdoor legibility. High-contrast orange and teal on near-black surfaces remain readable in direct sunlight and reduce the screen brightness needed in low-light situations, extending battery life.</p>
-
-    <h3>Compass Heading Logic</h3>
-    <p>The directional arrow pulls from two sources, depending on conditions. When the device is moving faster than 0.5 m/s, GPS velocity heading is used as it is more accurate than the magnetometer in motion. When stationary, the device compass (with appropriate handling for the iOS permission model and Android's <code>deviceorientationabsolute</code> event) takes over. The result is a heading arrow that behaves correctly in both scenarios without user configuration.</p>
-
-    <h3>Waypoint Progression</h3>
-    <p>The app automatically advances the active waypoint when the user comes within 30 meters of it, updating the bearing and distance readouts to point toward the next target. This removes the cognitive load of manually tracking progress through the route.</p>
+    <div class="article-body">
+      <p>The follow mode interface is designed around a person who is cold, scared, and probably has less than 30% battery. That framing informed every decision from color palette to interaction model.</p>
+      <h3>Serverless by Design</h3>
+      <p>The entire route is encoded into the URL itself using Google's polyline encoding algorithm. There is no backend, no database, no API key required. The app works from a static file host, reduces latency to near zero, and eliminates any failure surface in the link-sharing pipeline. The tradeoff is URL length at high waypoint counts, which is mitigated by a GPX simplification algorithm that reduces tracks to a configurable maximum of 50 points.</p>
+      <div class="callout">
+        <div class="callout-label">Technical Approach</div>
+        <p>Routes are encoded using the Polyline encoding algorithm, compressing lat/lng pairs into a compact ASCII string. The full route decodes in the browser on load, requiring no network request beyond the initial page and map tiles.</p>
+      </div>
+      <h3>High-Contrast Dark UI</h3>
+      <p>Follow mode uses a dark theme not for aesthetics but for outdoor legibility. High-contrast orange and teal on near-black surfaces remain readable in direct sunlight and reduce the screen brightness needed in low-light situations, extending battery life.</p>
+      <h3>Compass Heading Logic</h3>
+      <p>The directional arrow pulls from two sources, depending on conditions. When the device is moving faster than 0.5 m/s, GPS velocity heading is used as it is more accurate than the magnetometer in motion. When stationary, the device compass (with appropriate handling for the iOS permission model and Android's <code>deviceorientationabsolute</code> event) takes over. The result is a heading arrow that behaves correctly in both scenarios without user configuration.</p>
+      <h3>Waypoint Progression</h3>
+      <p>The app automatically advances the active waypoint when the user comes within 30 meters of it, updating the bearing and distance readouts to point toward the next target. This removes the cognitive load of manually tracking progress through the route.</p>
+    </div>
   </div>
 </section>
 
-<!-- SPECS -->
 <section class="section">
-  <div class="article-wrap">
-    <div class="section-label">Project Specs</div>
-    <h2>Build Details</h2>
-
-    <table class="spec-table">
-      <tr>
-        <td>Stack</td>
-        <td>Vanilla HTML, CSS, JavaScript. Leaflet.js for mapping. OpenTopoMap and OpenStreetMap tile layers.</td>
-      </tr>
-      <tr>
-        <td>GPS &amp; Sensors</td>
-        <td>Geolocation API (watchPosition), DeviceOrientationEvent with iOS 13+ permission handling and Android <code>deviceorientationabsolute</code>.</td>
-      </tr>
-      <tr>
-        <td>Routing</td>
-        <td>Manual waypoint placement, GPX file import with Douglas-Peucker-style simplification, URL-encoded polyline for link generation.</td>
-      </tr>
-      <tr>
-        <td>Geocoding</td>
-        <td>Nominatim (OpenStreetMap) for place search. Coordinate parsing supports decimal degrees and DMS.</td>
-      </tr>
-      <tr>
-        <td>Hosting</td>
-        <td>Static. No server required. Deployable to any CDN or file host.</td>
-      </tr>
-      <tr>
-        <td>Platforms</td>
-        <td>
-          <span class="spec-tag">iOS Safari</span>
-          <span class="spec-tag">Android Chrome</span>
-          <span class="spec-tag">Firefox Mobile</span>
-          <span class="spec-tag">Desktop</span>
-        </td>
-      </tr>
-      <tr>
-        <td>Dependencies</td>
-        <td>Leaflet 1.9.4. No other runtime dependencies.</td>
-      </tr>
-    </table>
+  <div class="container">
+    <div class="section-head">
+      <h2>Build <strong>details.</strong></h2>
+    </div>
+    <div class="article-body">
+      <div class="spec-table-wrap">
+        <table class="spec-table">
+          <tr>
+            <td>Stack</td>
+            <td>Vanilla HTML, CSS, JavaScript. Leaflet.js for mapping. OpenTopoMap and OpenStreetMap tile layers.</td>
+          </tr>
+          <tr>
+            <td>GPS &amp; Sensors</td>
+            <td>Geolocation API (watchPosition), DeviceOrientationEvent with iOS 13+ permission handling and Android <code>deviceorientationabsolute</code>.</td>
+          </tr>
+          <tr>
+            <td>Routing</td>
+            <td>Manual waypoint placement, GPX file import with Douglas-Peucker-style simplification, URL-encoded polyline for link generation.</td>
+          </tr>
+          <tr>
+            <td>Geocoding</td>
+            <td>Nominatim (OpenStreetMap) for place search. Coordinate parsing supports decimal degrees and DMS.</td>
+          </tr>
+          <tr>
+            <td>Hosting</td>
+            <td>Static. No server required. Deployable to any CDN or file host.</td>
+          </tr>
+          <tr>
+            <td>Platforms</td>
+            <td>
+              <span class="spec-tag">iOS Safari</span>
+              <span class="spec-tag">Android Chrome</span>
+              <span class="spec-tag">Firefox Mobile</span>
+              <span class="spec-tag">Desktop</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Dependencies</td>
+            <td>Leaflet 1.9.4. No other runtime dependencies.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- CONSTRAINTS -->
 <section class="section">
-  <div class="article-wrap">
-    <div class="section-label">Current Limitations</div>
-    <h2>What TrackPush Does Not Do (Yet)</h2>
-
-    <p>Honest accounting of constraints is part of good product design. TrackPush was built for a specific, well-defined use case, and the limitations below are direct consequences of its architecture.</p>
-
-    <ul class="constraint-list">
-      <li class="constraint-item">
-        <div class="constraint-icon">📶</div>
-        <div class="constraint-body">
+  <div class="container">
+    <div class="section-head">
+      <h2>What TrackPush does not do <strong>(yet).</strong></h2>
+    </div>
+    <div class="article-body">
+      <p>Honest accounting of constraints is part of good product design. TrackPush was built for a specific, well-defined use case, and the limitations below are direct consequences of its architecture.</p>
+      <div class="constraints-rows">
+        <div class="constraint-item">
+          <div class="constraint-num">01</div>
           <div class="constraint-title">Requires Cell Service</div>
-          <p>Map tiles load over the network. The app works where the caller has a signal. Offline tile caching is on the roadmap but not yet implemented.</p>
+          <div class="constraint-body">Map tiles load over the network. The app works where the caller has a signal. Offline tile caching is on the roadmap but not yet implemented.</div>
         </div>
-      </li>
-      <li class="constraint-item">
-        <div class="constraint-icon">👁</div>
-        <div class="constraint-body">
+        <div class="constraint-item">
+          <div class="constraint-num">02</div>
           <div class="constraint-title">One-Way Only</div>
-          <p>The serverless architecture means SAR cannot see the caller's real-time position within the app. The route is pushed; progress is not reported back. Two-way tracking would require a backend, which changes the deployment model significantly.</p>
+          <div class="constraint-body">The serverless architecture means SAR cannot see the caller's real-time position within the app. The route is pushed; progress is not reported back. Two-way tracking would require a backend, which changes the deployment model significantly.</div>
         </div>
-      </li>
-      <li class="constraint-item">
-        <div class="constraint-icon">🔋</div>
-        <div class="constraint-body">
+        <div class="constraint-item">
+          <div class="constraint-num">03</div>
           <div class="constraint-title">Battery Consumption</div>
-          <p>Continuous GPS and screen-on usage will drain a phone. Best suited for situations where sufficient charge remains to complete the egress. Screen dimming and background GPS are potential future optimizations.</p>
+          <div class="constraint-body">Continuous GPS and screen-on usage will drain a phone. Best suited for situations where sufficient charge remains to complete the egress. Screen dimming and background GPS are potential future optimizations.</div>
         </div>
-      </li>
-      <li class="constraint-item">
-        <div class="constraint-icon">🗺</div>
-        <div class="constraint-body">
+        <div class="constraint-item">
+          <div class="constraint-num">04</div>
           <div class="constraint-title">URL Length at Scale</div>
-          <p>Dense GPX tracks with thousands of points exceed practical URL lengths. The built-in simplification algorithm addresses this, but very long routes require a tradeoff in precision.</p>
+          <div class="constraint-body">Dense GPX tracks with thousands of points exceed practical URL lengths. The built-in simplification algorithm addresses this, but very long routes require a tradeoff in precision.</div>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- CTA -->
-<div class="cta-section">
-  <div class="article-wrap">
-    <div class="cta-label">Try It</div>
-    <h2>Open the App</h2>
-    <p>TrackPush is free to use and requires no account. Create a route and share it with anyone.</p>
-    <a href="https://www.gravitystrategy.co/trackpush" class="btn-primary" target="_blank">Open TrackPush →</a>
-    <a href="index.html" class="btn-secondary-outline">← Back to Portfolio</a>
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-grid">
+      <div class="cta-label">Try It</div>
+      <div class="cta-body">
+        <h2>Open the <strong>app.</strong></h2>
+        <p>TrackPush is free to use and requires no account. Create a route and share it with anyone.</p>
+        <div class="cta-links">
+          <a class="cta-link" href="https://www.gravitystrategy.co/trackpush" target="_blank">Open TrackPush</a>
+          <a class="cta-link alt" href="index.html">Back to Portfolio</a>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 <footer>
-  <p>&copy; 2026 Gravity Strategy &nbsp;&middot;&nbsp; <a href="https://www.gravitystrategy.co">gravitystrategy.co</a></p>
+  <div class="container">
+    <div class="footer-inner">
+      <span>&copy; 2026 Gravity Strategy</span>
+      <a href="https://www.gravitystrategy.co">gravitystrategy.co</a>
+    </div>
+  </div>
 </footer>
 
 </body>

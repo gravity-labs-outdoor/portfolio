@@ -6,744 +6,643 @@
 <title>The Proving Ground / Gravity Strategy Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700;1,800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #111111;
-    --paper: #FAFAF8;
-    --paper-dark: #F2F1EE;
-    --rule: #E0DDD8;
-    --mid: #888884;
-    --ice-mid: #7aafc4;
-    --ice-dark: #2e6a8a;
-    --danger: #b83a2a;
-    --danger-light: #d45a48;
-    --danger-glow: rgba(184, 58, 42, 0.18);
-    --danger-tint: rgba(184, 58, 42, 0.07);
-    --danger-pale: #f0dbd8;
+    --color-bg: #F9F9F8;
+    --color-text-main: #111112;
+    --color-text-muted: #66666A;
+    --color-accent: #E15A3E;
+    --color-rule: #E5E5E2;
+    --font-primary: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+    --tracking-tight: -0.04em;
+    --tracking-normal: -0.01em;
+    --tracking-wide: 0.15em;
+    --tracking-xwide: 0.2em;
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 32px;
+    --space-lg: 64px;
+    --space-xl: 140px;
+    --transition-fade: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Urbanist', sans-serif;
-    font-size: 18px;
-    line-height: 1.75;
-  font-weight: 300;
+    background: var(--color-bg);
+    color: var(--color-text-main);
+    font-family: var(--font-primary);
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 400;
+    letter-spacing: var(--tracking-normal);
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ---- MASTHEAD ---- */
-  .masthead {
-    background: var(--ink);
-    color: rgba(245,240,232,0.55);
-    padding: 14px 32px;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+  a { color: var(--color-text-main); text-decoration: none; transition: var(--transition-fade); }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg); }
+
+  /* ---- NAV ---- */
+  nav { padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+  .nav-inner {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
-  .masthead a { color: var(--ice-mid); text-decoration: none; transition: color 0.15s; }
-  .masthead a:hover { color: #fff; }
-  .masthead-back { color: rgba(245,240,232,0.55) !important; display: flex; align-items: center; gap: 8px; }
-  .masthead-back::before { content: '←'; font-size: 14px; }
-  .masthead-sep { opacity: 0.3; }
+  .nav-inner a { color: var(--color-text-muted); }
+  .nav-inner a:hover { color: var(--color-text-main); }
+  .nav-left { display: flex; gap: var(--space-md); align-items: center; }
+  .logo { font-weight: 700; color: var(--color-text-main); letter-spacing: var(--tracking-wide); }
+  .crumb-sep { opacity: 0.4; }
+  .back-link::before { content: '\2190 \00a0'; }
 
   /* ---- HERO ---- */
-  .hero {
-    position: relative;
-    background: var(--ink);
-    overflow: hidden;
-    min-height: 72vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 65% 20%, rgba(184,58,42,0.14) 0%, transparent 55%),
-      radial-gradient(ellipse at 10% 80%, rgba(44,106,138,0.08) 0%, transparent 50%),
-      linear-gradient(172deg, #0d0b09 0%, #1a1410 45%, #120f0d 100%);
-  }
-  .hero-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.5;
-    pointer-events: none;
-  }
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 40px 56px 80px;
-    max-width: 920px;
+  .hero { padding: var(--space-xl) 0 var(--space-lg); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
   .hero-eyebrow {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
+    grid-column: 1 / span 12;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--danger-light);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 32px;
-    height: 1px;
-    background: var(--danger-light);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
   }
   .hero h1 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(52px, 8vw, 100px);
-    font-weight: 800;
-    line-height: 0.9;
-    color: #fff;
-    letter-spacing: -0.03em;
-    margin-bottom: 28px;
+    grid-column: 1 / span 11;
+    font-size: clamp(56px, 9.5vw, 144px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-lg);
   }
-  .hero h1 em { font-style: italic; color: var(--danger-light); }
+  .hero h1 strong { font-weight: 800; }
   .hero-sub {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(16px, 2vw, 21px);
-    font-style: italic;
-    color: rgba(245,240,232,0.55);
-    max-width: 620px;
-    line-height: 1.5;
-    margin-bottom: 40px;
-  }
-  .hero-stat-row { display: flex; gap: 12px; flex-wrap: wrap; }
-  .hero-stat {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 8px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(184,58,42,0.2);
-    border-radius: 2px;
-    padding: 12px 18px;
-  }
-  .hero-stat-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(245,240,232,0.4);
-  }
-  .hero-stat-value {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: rgba(245,240,232,0.8);
-  }
-  .hero-stat-value.live {
-    color: var(--danger-light);
+    grid-column: 5 / span 8;
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
   }
 
-  /* ---- ROLE STRIP ---- */
-  .role-strip {
-    background: var(--ink);
-    border-top: 1px solid rgba(255,255,255,0.06);
-    padding: 40px 56px;
-    display: flex;
-    gap: 48px;
-    flex-wrap: wrap;
-    align-items: flex-start;
+  /* ---- HERO META ---- */
+  .hero-meta { border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); margin-top: var(--space-lg); }
+  .hero-meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+  .hero-meta-cell {
+    padding: var(--space-md) 0 var(--space-md) var(--space-md);
+    border-left: 1px solid var(--color-rule);
   }
-  .role-item { flex: 1; min-width: 160px; }
-  .role-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+  .hero-meta-cell:first-child { border-left: none; padding-left: 0; }
+  .hero-meta-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: rgba(245,240,232,0.35);
-    margin-bottom: 6px;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xs);
+  }
+  .hero-meta-value { font-size: 0.95rem; font-weight: 600; color: var(--color-text-main); line-height: 1.4; }
+  .hero-meta-value.live { color: var(--color-accent); }
+
+  /* ---- ROLE STRIP ---- */
+  .role-strip { padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule); }
+  .role-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+  }
+  .role-block { grid-column: span 3; }
+  .role-block:nth-child(5) { grid-column: span 12; padding-top: var(--space-md); border-top: 1px dotted var(--color-rule); margin-top: var(--space-sm); }
+  .role-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xs);
   }
   .role-value {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
+    font-size: 1rem;
     font-weight: 600;
-    letter-spacing: 0.06em;
-    color: rgba(245,240,232,0.8);
+    color: var(--color-text-main);
     line-height: 1.4;
   }
 
-  /* ---- ARTICLE ---- */
-  .article-wrap {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-
-  .section {
-    padding: 72px 0;
-    border-bottom: 1px solid var(--rule);
-  }
+  /* ---- SECTION ---- */
+  .section { padding: var(--space-xl) 0 var(--space-lg); border-bottom: 1px solid var(--color-rule); }
   .section:last-of-type { border-bottom: none; }
-
-  .section-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+  .section-head .label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 28px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: var(--color-text-muted);
+    padding-top: 10px;
   }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+  .section-head h2 {
+    grid-column: 4 / span 8;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+  }
+  .section-head h2 strong { font-weight: 800; }
 
-  h2 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(26px, 3.5vw, 38px);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin-bottom: 24px;
+  .article-body {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
-  p { margin-bottom: 22px; }
-  p:last-child { margin-bottom: 0; }
-  strong { font-weight: 600; }
-  a { color: var(--danger); }
-  a:hover { color: var(--ink); }
+  .article-body > * { grid-column: 4 / span 8; }
+  .article-body p {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+  }
+  .article-body p:last-child { margin-bottom: 0; }
+  .article-body strong { color: var(--color-text-main); font-weight: 600; }
+  .article-body a { color: var(--color-accent); border-bottom: 1px solid var(--color-accent); }
 
   /* ---- BIG STAT ---- */
   .big-stat {
-    margin: 40px 0;
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
+    grid-column: 4 / span 8 !important;
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+    gap: var(--space-md);
+    align-items: end;
+    padding: var(--space-md) 0;
+    margin-bottom: var(--space-md);
+    border-top: 1px solid var(--color-text-main);
+    border-bottom: 1px solid var(--color-text-main);
   }
   .big-stat-number {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 80px;
+    font-size: clamp(96px, 12vw, 160px);
     font-weight: 800;
-    color: var(--danger);
-    line-height: 1;
-    flex-shrink: 0;
+    color: var(--color-accent);
+    line-height: 0.85;
+    letter-spacing: var(--tracking-tight);
   }
   .big-stat-label {
-    font-size: 17px;
-    color: var(--mid);
-    line-height: 1.55;
-    max-width: 380px;
+    font-size: 1rem;
+    color: var(--color-text-main);
+    line-height: 1.5;
+    padding-bottom: var(--space-sm);
   }
 
   /* ---- PULL QUOTE ---- */
   .pull-quote {
-    margin: 48px 0;
-    padding: 32px 0 32px 32px;
-    border-left: 3px solid var(--danger);
+    grid-column: 4 / span 8 !important;
+    margin: var(--space-md) 0;
+    padding-left: var(--space-md);
+    border-left: 2px solid var(--color-accent);
   }
   .pull-quote p {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(19px, 2.2vw, 25px);
-    font-style: italic;
-    line-height: 1.5;
-    color: var(--ink);
-    margin-bottom: 0;
+    font-size: clamp(22px, 2.6vw, 32px) !important;
+    font-weight: 300 !important;
+    line-height: 1.3 !important;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-main) !important;
+    margin-bottom: 0 !important;
   }
 
-  /* ---- REFRAME BOX ---- */
+  /* ---- REFRAME BOX (editorial, cardless) ---- */
   .reframe-box {
-    background: var(--ink);
-    color: rgba(245,240,232,0.9);
-    padding: 44px 48px;
-    margin: 48px 0;
-    position: relative;
-    overflow: hidden;
-  }
-  .reframe-box::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--danger);
+    grid-column: 4 / span 8 !important;
+    padding: var(--space-md) 0;
+    margin: var(--space-md) 0;
+    border-top: 1px solid var(--color-text-main);
+    border-bottom: 1px solid var(--color-text-main);
   }
   .reframe-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.22em;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--danger-light);
-    margin-bottom: 16px;
+    color: var(--color-accent);
+    margin-bottom: var(--space-sm);
   }
   .reframe-box p {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(18px, 2.2vw, 24px);
-    font-style: italic;
-    line-height: 1.55;
-    color: rgba(245,240,232,0.9);
-    margin-bottom: 16px;
+    font-size: clamp(20px, 2.4vw, 28px) !important;
+    font-weight: 300 !important;
+    line-height: 1.35 !important;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-main) !important;
+    margin-bottom: var(--space-sm) !important;
   }
-  .reframe-box p:last-child { margin-bottom: 0; }
-  .reframe-box p strong {
-    font-style: normal;
-    color: #fff;
-    font-weight: 700;
-  }
+  .reframe-box p:last-child { margin-bottom: 0 !important; }
+  .reframe-box p strong { font-weight: 800; }
 
-  /* ---- DESIGN DECISIONS ---- */
-  .decision-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin: 32px 0;
-  }
+  /* ---- DECISION LIST (hairline rows) ---- */
+  .decision-list { grid-column: 4 / span 9 !important; margin-top: var(--space-md); }
   .decision {
-    display: flex;
-    gap: 24px;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--rule);
-    align-items: flex-start;
-  }
-  .decision:last-child { border-bottom: none; padding-bottom: 0; }
-  .decision-num {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 44px;
-    font-weight: 800;
-    color: rgba(184,58,42,0.14);
-    line-height: 1;
-    flex-shrink: 0;
-    width: 52px;
-    text-align: right;
-    padding-top: 4px;
-  }
-  .decision-body { flex: 1; }
-  .decision-title {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--danger);
-    margin-bottom: 8px;
-  }
-  .decision-body p {
-    font-size: 16px;
-    color: var(--mid);
-    line-height: 1.7;
-    margin-bottom: 0;
-  }
-
-  /* ---- SKILLS GRID ---- */
-  .skills-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    margin: 32px 0;
+    grid-template-columns: 1fr 3fr 5fr;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-rule);
+    align-items: start;
   }
-  .skill-block {
-    background: var(--paper-dark);
-    padding: 20px 22px;
-    font-size: 15px;
-    line-height: 1.5;
-    color: var(--mid);
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
+  .decision:last-child { border-bottom: 1px solid var(--color-rule); }
+  .decision-num {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-top: 6px;
   }
-  .skill-block::before {
-    content: '';
-    display: block;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--danger);
-    flex-shrink: 0;
-    margin-top: 8px;
+  .decision-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-text-main);
+    line-height: 1.25;
   }
+  .decision-body { color: var(--color-text-muted); font-size: 1rem; line-height: 1.65; }
 
   /* ---- CALLOUT ---- */
   .callout {
-    background: var(--danger-pale);
-    border-left: 4px solid var(--danger);
-    padding: 28px 32px;
-    margin: 40px 0;
-    border-radius: 0 2px 2px 0;
+    grid-column: 4 / span 8 !important;
+    padding: var(--space-md);
+    margin: var(--space-md) 0;
+    border-top: 1px solid var(--color-accent);
+    border-bottom: 1px solid var(--color-accent);
   }
   .callout-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.22em;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--danger);
-    margin-bottom: 10px;
+    color: var(--color-accent);
+    margin-bottom: var(--space-sm);
   }
-  .callout p {
-    font-size: 15px;
-    line-height: 1.7;
-    color: #3a1a16;
-    margin-bottom: 8px;
+  .callout p { font-size: 1rem !important; line-height: 1.65 !important; color: var(--color-text-main) !important; margin-bottom: var(--space-sm) !important; }
+  .callout p:last-child { margin-bottom: 0 !important; }
+
+  /* ---- SKILLS GRID (cardless typographic) ---- */
+  .skills-grid {
+    grid-column: 4 / span 9 !important;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: var(--space-md);
+    border-top: 1px solid var(--color-rule);
   }
-  .callout p:last-child { margin-bottom: 0; }
+  .skill-block {
+    padding: var(--space-md) var(--space-md) var(--space-md) 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-text-main);
+    border-bottom: 1px solid var(--color-rule);
+    border-right: 1px solid var(--color-rule);
+    display: flex;
+    gap: var(--space-sm);
+    align-items: flex-start;
+  }
+  .skill-block:nth-child(2n) { border-right: none; padding-right: 0; padding-left: var(--space-md); }
+  .skill-block::before {
+    content: counter(skill, decimal-leading-zero);
+    counter-increment: skill;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    color: var(--color-text-muted);
+    padding-top: 4px;
+    flex-shrink: 0;
+    min-width: 32px;
+  }
+  .skills-grid { counter-reset: skill; }
 
   /* ---- CTA ---- */
-  .cta-section {
-    background: linear-gradient(160deg, #0d0b09 0%, #1a1410 100%);
-    color: #fff;
-    padding: 80px 56px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(184,58,42,0.18) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+  .cta-section { padding: var(--space-xl) 0; border-top: 1px solid var(--color-rule); }
+  .cta-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-md); }
   .cta-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--danger-light);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+    color: var(--color-text-muted);
+    padding-top: 10px;
   }
-  .cta-label::before, .cta-label::after {
-    content: '';
-    width: 32px;
-    height: 1px;
-    background: rgba(184,58,42,0.4);
+  .cta-body { grid-column: 4 / span 8; }
+  .cta-body h2 {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-sm);
   }
-  .cta-section h2 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(24px, 3.5vw, 36px);
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 16px;
-  }
-  .cta-section p {
-    font-size: 16px;
-    color: rgba(245,240,232,0.55);
-    margin-bottom: 36px;
-  }
-  .btn-live {
-    display: inline-block;
-    background: var(--danger);
-    color: #fff;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
+  .cta-body h2 strong { font-weight: 800; }
+  .cta-body p { color: var(--color-text-muted); font-size: 1.05rem; margin-bottom: var(--space-md); }
+  .cta-links { display: flex; gap: var(--space-lg); flex-wrap: wrap; }
+  .cta-link {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    text-decoration: none;
-    padding: 16px 40px;
-    border-radius: 2px;
-    transition: background 0.2s ease;
-    margin: 0 8px 12px;
-    box-shadow: 0 4px 24px var(--danger-glow);
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom: 2px;
   }
-  .btn-live:hover { background: #9a2e1e; color: #fff; }
-  .btn-back {
-    display: inline-block;
-    background: transparent;
-    color: var(--ice-mid);
-    font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 15px 40px;
-    border-radius: 2px;
-    border: 1px solid rgba(122,175,196,0.4);
-    transition: all 0.2s ease;
-    margin: 0 8px 12px;
-  }
-  .btn-back:hover { background: rgba(122,175,196,0.1); color: #fff; }
+  .cta-link.alt { color: var(--color-text-main); border-color: var(--color-text-main); }
+  .cta-link:hover { color: var(--color-text-main); border-color: var(--color-text-main); }
+  .cta-link.alt:hover { color: var(--color-accent); border-color: var(--color-accent); }
+  .cta-link::after { content: ' \2197'; }
 
   /* ---- FOOTER ---- */
-  footer {
-    background: var(--ink);
-    color: rgba(245,240,232,0.3);
-    text-align: center;
-    padding: 28px 24px;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    border-top: 1px solid rgba(255,255,255,0.05);
+  footer { border-top: 1px solid var(--color-rule); padding: var(--space-md) 0; }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
-  footer a { color: rgba(122,175,196,0.6); text-decoration: none; }
+  footer a { color: var(--color-text-muted); border-bottom: 1px solid var(--color-rule); }
+  footer a:hover { color: var(--color-text-main); }
 
-  /* ---- ANIMATIONS ---- */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .hero-eyebrow { animation: fadeUp 0.7s ease both; }
-  .hero h1      { animation: fadeUp 0.7s 0.12s ease both; }
-  .hero-sub     { animation: fadeUp 0.7s 0.22s ease both; }
-  .hero-stat-row { animation: fadeUp 0.7s 0.32s ease both; }
+  .hero-eyebrow { animation: fadeUp 0.8s ease both; }
+  .hero h1      { animation: fadeUp 0.8s 0.1s ease both; }
+  .hero-sub     { animation: fadeUp 0.8s 0.2s ease both; }
 
-  /* ---- RESPONSIVE ---- */
-  @media (max-width: 640px) {
-    .hero-content { padding: 40px 24px 60px; }
-    .role-strip { padding: 36px 24px; gap: 32px; }
-    .article-wrap { padding: 0 20px; }
-    .reframe-box { padding: 32px 28px 32px 36px; }
+  @media (max-width: 900px) {
+    .container { padding: 0 var(--space-md); }
+    .hero { padding: var(--space-lg) 0 var(--space-md); }
+    .hero h1 { grid-column: 1 / span 12; font-size: clamp(44px, 13vw, 80px); }
+    .hero-sub { grid-column: 1 / span 12; }
+    .hero-meta-grid { grid-template-columns: 1fr; }
+    .hero-meta-cell { border-left: none; padding-left: 0; border-top: 1px solid var(--color-rule); }
+    .hero-meta-cell:first-child { border-top: none; }
+    .role-block { grid-column: span 6; }
+    .role-block:nth-child(5) { grid-column: span 12; }
+    .section { padding: var(--space-lg) 0 var(--space-md); }
+    .section-head .label { grid-column: 1 / span 12; padding-top: 0; margin-bottom: var(--space-sm); }
+    .section-head h2 { grid-column: 1 / span 12; }
+    .article-body > *, .big-stat, .pull-quote, .reframe-box, .decision-list, .callout, .skills-grid { grid-column: 1 / span 12 !important; }
+    .big-stat { grid-template-columns: 1fr; gap: var(--space-sm); }
+    .decision { grid-template-columns: 1fr; gap: var(--space-xs); }
     .skills-grid { grid-template-columns: 1fr; }
-    .cta-section { padding: 60px 24px; }
-    .big-stat { flex-direction: column; gap: 4px; }
-    .masthead { padding: 14px 20px; }
+    .skill-block, .skill-block:nth-child(2n) { padding: var(--space-md) 0; border-right: none; }
+    .cta-label { grid-column: 1 / span 12; padding-top: 0; margin-bottom: var(--space-sm); }
+    .cta-body { grid-column: 1 / span 12; }
+    .nav-inner { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
   }
 </style>
 </head>
 <body>
 
-<!-- MASTHEAD -->
-<div class="masthead">
-  <a class="masthead-back" href="index.html">Portfolio</a>
-  <span class="masthead-sep">/</span>
-  <span>The Proving Ground</span>
-</div>
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a class="logo" href="index.html">Gravity Strategy</a>
+        <span class="crumb-sep">/</span>
+        <span>The Proving Ground</span>
+      </div>
+      <a class="back-link" href="index.html">Portfolio</a>
+    </div>
+  </div>
+</nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">UX &amp; Content Design &nbsp;·&nbsp; Public Safety</div>
-    <h1>The <em>Proving</em><br>Ground</h1>
-    <p class="hero-sub">Redesigning how a government safety organization communicates a life-threatening mountain hazard, by identifying a critical gap in the existing communication model and building a film-anchored web experience to close it.</p>
-    <div class="hero-stat-row">
-      <div class="hero-stat">
-        <span class="hero-stat-label">Type</span>
-        <span class="hero-stat-value">End-to-End UX &amp; Content Design</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Client</span>
-        <span class="hero-stat-value">MWAC Foundation</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Year</span>
-        <span class="hero-stat-value">2026</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Status</span>
-        <span class="hero-stat-value live">Live</span>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-eyebrow">UX &amp; Content Design &nbsp;&middot;&nbsp; Public Safety</div>
+      <h1>The <strong>Proving</strong><br>Ground</h1>
+      <p class="hero-sub">Redesigning how a government safety organization communicates a life-threatening mountain hazard, by identifying a critical gap in the existing communication model and building a film-anchored web experience to close it.</p>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-grid">
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Type</div>
+          <div class="hero-meta-value">End-to-End UX &amp; Content Design</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Client</div>
+          <div class="hero-meta-value">MWAC Foundation</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Year</div>
+          <div class="hero-meta-value">2026</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Status</div>
+          <div class="hero-meta-value live">Live</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ROLE STRIP -->
-<div class="role-strip">
-  <div class="role-item">
-    <div class="role-label">My Role</div>
-    <div class="role-value">Problem Owner</div>
-  </div>
-  <div class="role-item">
-    <div class="role-label">&nbsp;</div>
-    <div class="role-value">Creative Director</div>
-  </div>
-  <div class="role-item">
-    <div class="role-label">&nbsp;</div>
-    <div class="role-value">Content Strategist</div>
-  </div>
-  <div class="role-item">
-    <div class="role-label">&nbsp;</div>
-    <div class="role-value">Sole Designer &amp; Builder</div>
-  </div>
-  <div class="role-item">
-    <div class="role-label">Collaborators</div>
-    <div class="role-value">Warden Co. (film), MWAC / USFS, MWAC Foundation</div>
-  </div>
-</div>
-
-<!-- THE PROBLEM -->
-<section class="section">
-  <div class="article-wrap">
-    <div class="section-label">The Problem</div>
-    <h2>The Hazard Was Known. The Communication Was Failing.</h2>
-
-    <div class="big-stat">
-      <div class="big-stat-number">25</div>
-      <div class="big-stat-label">life-threatening sliding falls on Mount Washington per ski season, on average. Long sliding falls cause more fatalities on the mountain than avalanches and hypothermia combined.</div>
+<section class="role-strip">
+  <div class="container">
+    <div class="role-grid">
+      <div class="role-block">
+        <div class="role-label">My Role</div>
+        <div class="role-value">Problem Owner</div>
+      </div>
+      <div class="role-block">
+        <div class="role-label">&nbsp;</div>
+        <div class="role-value">Creative Director</div>
+      </div>
+      <div class="role-block">
+        <div class="role-label">&nbsp;</div>
+        <div class="role-value">Content Strategist</div>
+      </div>
+      <div class="role-block">
+        <div class="role-label">&nbsp;</div>
+        <div class="role-value">Sole Designer &amp; Builder</div>
+      </div>
+      <div class="role-block">
+        <div class="role-label">Collaborators</div>
+        <div class="role-value">Warden Co. (film), MWAC / USFS, MWAC Foundation</div>
+      </div>
     </div>
-
-    <p>The Mount Washington Avalanche Center had been communicating this hazard for years through trailhead signs, written forecasts, and direct visitor contact. Incident frequency had not declined. The existing communication approach was reaching users, but it was not changing behavior.</p>
-
-    <p>Field research and direct user observation surfaced the core problem: the target audience was not uninformed. They were underestimating. Experienced resort skiers were arriving with mental models of the terrain shaped by ski area experience, models that were fundamentally misaligned with the actual consequence environment at Tuckerman Ravine. They knew the mountain could be dangerous. They did not viscerally understand what a high-speed sliding fall on frozen snow looked and felt like.</p>
-
-    <div class="pull-quote">
-      <p>"Year after year, we continue to see people make the same mistakes in the same terrain, and the consequences are often tragic and heartbreaking. Traditional warnings and trailhead conversations are not enough."</p>
-    </div>
-
-    <p>Two specific patterns from incident data made the problem concrete. First, the expert skier heuristic trap: serious falls frequently involved strong resort skiers whose skill and confidence were real, but whose mental model of consequence was calibrated for a managed ski area, not a 45-degree slope with a cliff band below it. Second, the timing problem: existing communication touchpoints were reaching users at the trailhead, after commitment and momentum had already taken over. The decision to go had already been made.</p>
   </div>
 </section>
 
-<!-- THE REFRAME -->
 <section class="section">
-  <div class="article-wrap">
-    <div class="section-label">The Reframe</div>
-    <h2>This Is a UX Problem, Not an Information Problem.</h2>
-
-    <p>The standard response to a public safety communication failure is more communication: more signs, more warnings, more information. The diagnosis here was different.</p>
-
-    <div class="reframe-box">
-      <div class="reframe-label">The Design Reframe</div>
-      <p>The goal shifted from <strong>"inform visitors of the hazard"</strong> to <strong>"help visitors accurately model the consequence of a fall before they leave home."</strong></p>
-      <p>That reframe changed everything: the format, the channel, the timing, and the content strategy.</p>
+  <div class="container">
+    <div class="section-head">
+      <h2>The hazard was known. The communication <strong>was failing.</strong></h2>
     </div>
-
-    <p>If the problem is a mental model gap, the solution is not more text. Text cannot convey the physical reality of a high-speed sliding fall. The right medium can create visceral understanding in a way no sign or forecast ever could. Choosing the medium was the first and most consequential design decision.</p>
-
-    <p>Equally important was the timing insight. Intercepting users at the trailhead is too late. The right moment is during trip planning, when the decision is still open and the mental model can still be shaped. That meant distribution via YouTube, linked from avalanche forecasts, embedded in web content that targets the research phase of the user journey.</p>
+    <div class="article-body">
+      <div class="big-stat">
+        <div class="big-stat-number">25</div>
+        <div class="big-stat-label">life-threatening sliding falls on Mount Washington per ski season, on average. Long sliding falls cause more fatalities on the mountain than avalanches and hypothermia combined.</div>
+      </div>
+      <p>The Mount Washington Avalanche Center had been communicating this hazard for years through trailhead signs, written forecasts, and direct visitor contact. Incident frequency had not declined. The existing communication approach was reaching users, but it was not changing behavior.</p>
+      <p>Field research and direct user observation surfaced the core problem: the target audience was not uninformed. They were underestimating. Experienced resort skiers were arriving with mental models of the terrain shaped by ski area experience, models that were fundamentally misaligned with the actual consequence environment at Tuckerman Ravine. They knew the mountain could be dangerous. They did not viscerally understand what a high-speed sliding fall on frozen snow looked and felt like.</p>
+      <div class="pull-quote">
+        <p>"Year after year, we continue to see people make the same mistakes in the same terrain, and the consequences are often tragic and heartbreaking. Traditional warnings and trailhead conversations are not enough."</p>
+      </div>
+      <p>Two specific patterns from incident data made the problem concrete. First, the expert skier heuristic trap: serious falls frequently involved strong resort skiers whose skill and confidence were real, but whose mental model of consequence was calibrated for a managed ski area, not a 45-degree slope with a cliff band below it. Second, the timing problem: existing communication touchpoints were reaching users at the trailhead, after commitment and momentum had already taken over. The decision to go had already been made.</p>
+    </div>
   </div>
 </section>
 
-<!-- DESIGN DECISIONS -->
 <section class="section">
-  <div class="article-wrap">
-    <div class="section-label">Design Decisions</div>
-    <h2>Eight Choices and Why Each One Was Made</h2>
+  <div class="container">
+    <div class="section-head">
+      <h2>This is a UX problem, <strong>not an information problem.</strong></h2>
+    </div>
+    <div class="article-body">
+      <p>The standard response to a public safety communication failure is more communication: more signs, more warnings, more information. The diagnosis here was different.</p>
+      <div class="reframe-box">
+        <div class="reframe-label">The Design Reframe</div>
+        <p>The goal shifted from <strong>"inform visitors of the hazard"</strong> to <strong>"help visitors accurately model the consequence of a fall before they leave home."</strong></p>
+        <p>That reframe changed everything: the format, the channel, the timing, and the content strategy.</p>
+      </div>
+      <p>If the problem is a mental model gap, the solution is not more text. Text cannot convey the physical reality of a high-speed sliding fall. The right medium can create visceral understanding in a way no sign or forecast ever could. Choosing the medium was the first and most consequential design decision.</p>
+      <p>Equally important was the timing insight. Intercepting users at the trailhead is too late. The right moment is during trip planning, when the decision is still open and the mental model can still be shaped. That meant distribution via YouTube, linked from avalanche forecasts, embedded in web content that targets the research phase of the user journey.</p>
+    </div>
+  </div>
+</section>
 
-    <div class="decision-list">
-      <div class="decision">
-        <div class="decision-num">1</div>
-        <div class="decision-body">
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Eight choices and <strong>why each one was made.</strong></h2>
+    </div>
+    <div class="article-body">
+      <div class="decision-list">
+        <div class="decision">
+          <div class="decision-num">01</div>
           <div class="decision-title">Film as the Primary Medium</div>
-          <p>Text cannot convey the physical reality of a high-speed sliding fall. A film can create visceral understanding in a way no sign or forecast ever could. The medium itself was a design decision, made before a single line of copy was written.</p>
+          <div class="decision-body">Text cannot convey the physical reality of a high-speed sliding fall. A film can create visceral understanding in a way no sign or forecast ever could. The medium itself was a design decision, made before a single line of copy was written.</div>
         </div>
-      </div>
-      <div class="decision">
-        <div class="decision-num">2</div>
-        <div class="decision-body">
+        <div class="decision">
+          <div class="decision-num">02</div>
           <div class="decision-title">Intercept During Trip Planning</div>
-          <p>Distribution via YouTube and embedded links in avalanche forecasts targets users during the research and planning phase, before commitment has taken over. Reaching someone at the trailhead is too late. Reaching them on a Tuesday night while they plan their weekend is not.</p>
+          <div class="decision-body">Distribution via YouTube and embedded links in avalanche forecasts targets users during the research and planning phase, before commitment has taken over. Reaching someone at the trailhead is too late. Reaching them on a Tuesday night while they plan their weekend is not.</div>
         </div>
-      </div>
-      <div class="decision">
-        <div class="decision-num">3</div>
-        <div class="decision-body">
+        <div class="decision">
+          <div class="decision-num">03</div>
           <div class="decision-title">Information Architecture for Multiple User Types</div>
-          <p>The page serves three distinct audiences without requiring any of them to wade through irrelevant content. Casual viewers arriving from YouTube get the hero, the film, and why it was made. Active trip planners find hazard science, warning signs, and mitigation guidance. Deep researchers get documented case studies with links to primary incident reports. Each layer is accessible and independently complete.</p>
+          <div class="decision-body">The page serves three distinct audiences without requiring any of them to wade through irrelevant content. Casual viewers arriving from YouTube get the hero, the film, and why it was made. Active trip planners find hazard science, warning signs, and mitigation guidance. Deep researchers get documented case studies with links to primary incident reports. Each layer is accessible and independently complete.</div>
         </div>
-      </div>
-      <div class="decision">
-        <div class="decision-num">4</div>
-        <div class="decision-body">
+        <div class="decision">
+          <div class="decision-num">04</div>
           <div class="decision-title">The "Not a Ski Area" Reframe</div>
-          <p>A key finding from user observation was that visitors were mentally categorizing Tuckerman Ravine as a ski destination rather than mountaineering terrain. A dedicated section directly challenges this mental model by naming the gap explicitly, not implying it, not hinting at it, but stating it plainly and explaining why it matters.</p>
+          <div class="decision-body">A key finding from user observation was that visitors were mentally categorizing Tuckerman Ravine as a ski destination rather than mountaineering terrain. A dedicated section directly challenges this mental model by naming the gap explicitly, not implying it, not hinting at it, but stating it plainly and explaining why it matters.</div>
         </div>
-      </div>
-      <div class="decision">
-        <div class="decision-num">5</div>
-        <div class="decision-body">
+        <div class="decision">
+          <div class="decision-num">05</div>
           <div class="decision-title">Naming the Expert Skier Heuristic Trap</div>
-          <p>Serious incidents frequently involve strong, experienced skiers. Calling this out by name, as a documented cognitive pattern rather than a judgment of individual competence, makes the content credible to exactly the audience most likely to dismiss it. Expert skiers do not respond well to being told they are not good enough. They do respond to being told that their expertise does not change the physics.</p>
+          <div class="decision-body">Serious incidents frequently involve strong, experienced skiers. Calling this out by name, as a documented cognitive pattern rather than a judgment of individual competence, makes the content credible to exactly the audience most likely to dismiss it. Expert skiers do not respond well to being told they are not good enough. They do respond to being told that their expertise does not change the physics.</div>
         </div>
-      </div>
-      <div class="decision">
-        <div class="decision-num">6</div>
-        <div class="decision-body">
+        <div class="decision">
+          <div class="decision-num">06</div>
           <div class="decision-title">Responsibility Framing over Rules</div>
-          <p>Rather than telling users what to do, the design respects user autonomy while making the stakes of self-directed decision-making explicit. The hazard management section ends with turn-around triggers, not rules. The audience is experienced backcountry users. Telling them what to do would undermine credibility. Giving them a framework for their own decisions does not.</p>
+          <div class="decision-body">Rather than telling users what to do, the design respects user autonomy while making the stakes of self-directed decision-making explicit. The hazard management section ends with turn-around triggers, not rules. The audience is experienced backcountry users. Telling them what to do would undermine credibility. Giving them a framework for their own decisions does not.</div>
         </div>
-      </div>
-      <div class="decision">
-        <div class="decision-num">7</div>
-        <div class="decision-body">
+        <div class="decision">
+          <div class="decision-num">07</div>
           <div class="decision-title">Emotional Resonance Through Real Stories</div>
-          <p>Three case studies drawn from primary MWAC incident reports ground the hazard in specific, documented reality. The 2024 fatality that catalyzed the entire project serves as the emotional anchor. Real names, real dates, real terrain. The choice to use actual incident data rather than hypothetical scenarios was deliberate: it makes the hazard real in a way that generalized warnings cannot.</p>
+          <div class="decision-body">Three case studies drawn from primary MWAC incident reports ground the hazard in specific, documented reality. The 2024 fatality that catalyzed the entire project serves as the emotional anchor. Real names, real dates, real terrain. The choice to use actual incident data rather than hypothetical scenarios was deliberate: it makes the hazard real in a way that generalized warnings cannot.</div>
         </div>
-      </div>
-      <div class="decision">
-        <div class="decision-num">8</div>
-        <div class="decision-body">
+        <div class="decision">
+          <div class="decision-num">08</div>
           <div class="decision-title">Memorial as Closing Moment</div>
-          <p>The page closes with a tribute to those lost on the Presidential Range. This was not a standard content pattern for a public safety page. It was chosen because it gives the entire experience weight and purpose beyond information delivery. It makes clear that this is not a content marketing exercise. It is a response to real loss.</p>
+          <div class="decision-body">The page closes with a tribute to those lost on the Presidential Range. This was not a standard content pattern for a public safety page. It was chosen because it gives the entire experience weight and purpose beyond information delivery. It makes clear that this is not a content marketing exercise. It is a response to real loss.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- MEASUREMENT -->
 <section class="section">
-  <div class="article-wrap">
-    <div class="section-label">Measurement</div>
-    <h2>The North Star Metric Is Behavior Change</h2>
-
-    <p>The success of this project is not measured in pageviews. The page is designed to change what a user does on a mountain. That is a hard thing to directly attribute, and the design is honest about it.</p>
-
-    <div class="callout">
-      <div class="callout-label">Analytics Integration</div>
-      <p>PostHog analytics are integrated for scroll depth, section engagement, and click tracking. These proxies for engagement and comprehension are the closest available signals to actual behavior change at scale.</p>
-      <p>The film is available free, with no friction, no login, and no paywall. Reducing barriers to access was itself a design decision in service of the north star.</p>
+  <div class="container">
+    <div class="section-head">
+      <h2>The north star metric is <strong>behavior change.</strong></h2>
     </div>
-
-    <p>The project was executed at zero budget for web development. Every component, from the topo-map hero and editorial layout to the case study cards, pull quotes, and mobile navigation patterns, was designed and built directly in code without a design tool intermediary. The constraint was real; the output is live.</p>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section class="section">
-  <div class="article-wrap">
-    <div class="section-label">Transferable Skills</div>
-    <h2>What This Project Demonstrates</h2>
-
-    <div class="skills-grid">
-      <div class="skill-block">Problem reframing from symptom to root cause</div>
-      <div class="skill-block">User research synthesis from field observation and incident data</div>
-      <div class="skill-block">Information architecture for long-form, multi-audience content</div>
-      <div class="skill-block">Content strategy and editorial voice</div>
-      <div class="skill-block">Visual hierarchy and component design</div>
-      <div class="skill-block">Responsive design with mobile-specific navigation</div>
-      <div class="skill-block">Cross-functional collaboration with film, federal, and nonprofit partners</div>
-      <div class="skill-block">Stakeholder communication and public-facing copywriting</div>
-      <div class="skill-block">Working within real constraints: government partnership, public safety mission, zero development budget</div>
-      <div class="skill-block">Analytics integration for behavior-adjacent measurement</div>
-    </div>
-
-    <div class="pull-quote" style="margin-top: 48px;">
-      <p>The gap between knowing a risk exists and truly understanding its consequence is a design problem. Closing it requires choosing the right format, reaching users at the right moment in their journey, and building an experience that creates accurate mental models before the stakes are real.</p>
+    <div class="article-body">
+      <p>The success of this project is not measured in pageviews. The page is designed to change what a user does on a mountain. That is a hard thing to directly attribute, and the design is honest about it.</p>
+      <div class="callout">
+        <div class="callout-label">Analytics Integration</div>
+        <p>PostHog analytics are integrated for scroll depth, section engagement, and click tracking. These proxies for engagement and comprehension are the closest available signals to actual behavior change at scale.</p>
+        <p>The film is available free, with no friction, no login, and no paywall. Reducing barriers to access was itself a design decision in service of the north star.</p>
+      </div>
+      <p>The project was executed at zero budget for web development. Every component, from the topo-map hero and editorial layout to the case study cards, pull quotes, and mobile navigation patterns, was designed and built directly in code without a design tool intermediary. The constraint was real; the output is live.</p>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<div class="cta-section">
-  <div class="cta-inner">
-    <div class="cta-label">See It Live</div>
-    <h2>The Proving Ground</h2>
-    <p>The full web experience is live at the Mount Washington Avalanche Center.</p>
-    <a href="https://www.mountwashingtonavalanchecenter.org/proving-ground/" class="btn-live" target="_blank">View Live Site</a>
-    <a href="index.html" class="btn-back">← Back to Portfolio</a>
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>What this project <strong>demonstrates.</strong></h2>
+    </div>
+    <div class="article-body">
+      <div class="skills-grid">
+        <div class="skill-block">Problem reframing from symptom to root cause</div>
+        <div class="skill-block">User research synthesis from field observation and incident data</div>
+        <div class="skill-block">Information architecture for long-form, multi-audience content</div>
+        <div class="skill-block">Content strategy and editorial voice</div>
+        <div class="skill-block">Visual hierarchy and component design</div>
+        <div class="skill-block">Responsive design with mobile-specific navigation</div>
+        <div class="skill-block">Cross-functional collaboration with film, federal, and nonprofit partners</div>
+        <div class="skill-block">Stakeholder communication and public-facing copywriting</div>
+        <div class="skill-block">Working within real constraints: government partnership, public safety mission, zero development budget</div>
+        <div class="skill-block">Analytics integration for behavior-adjacent measurement</div>
+      </div>
+      <div class="pull-quote" style="margin-top: var(--space-lg);">
+        <p>The gap between knowing a risk exists and truly understanding its consequence is a design problem. Closing it requires choosing the right format, reaching users at the right moment in their journey, and building an experience that creates accurate mental models before the stakes are real.</p>
+      </div>
+    </div>
   </div>
-</div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-grid">
+      <div class="cta-label">See It Live</div>
+      <div class="cta-body">
+        <h2>The Proving <strong>Ground.</strong></h2>
+        <p>The full web experience is live at the Mount Washington Avalanche Center.</p>
+        <div class="cta-links">
+          <a class="cta-link" href="https://www.mountwashingtonavalanchecenter.org/proving-ground/" target="_blank">View Live Site</a>
+          <a class="cta-link alt" href="index.html">Back to Portfolio</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <footer>
-  <p>&copy; 2026 Gravity Strategy &nbsp;&middot;&nbsp; <a href="https://www.gravitystrategy.co">gravitystrategy.co</a></p>
+  <div class="container">
+    <div class="footer-inner">
+      <span>&copy; 2026 Gravity Strategy</span>
+      <a href="https://www.gravitystrategy.co">gravitystrategy.co</a>
+    </div>
+  </div>
 </footer>
 
 </body>

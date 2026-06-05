@@ -6,443 +6,297 @@
 <title>AllTrails Feature Design / Gravity Strategy Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700;1,800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #111111;
-    --paper: #FAFAF8;
-    --paper-dark: #F2F1EE;
-    --rule: #E0DDD8;
-    --mid: #888884;
-    --ice-mid: #7aafc4;
-    --ice-dark: #2e6a8a;
-    --green: #2d6a2d;
-    --green-light: #4a9c4a;
-    --green-glow: rgba(45, 106, 45, 0.15);
-    --green-tint: rgba(45, 106, 45, 0.07);
+    --color-bg: #F9F9F8;
+    --color-text-main: #111112;
+    --color-text-muted: #66666A;
+    --color-accent: #E15A3E;
+    --color-rule: #E5E5E2;
+    --font-primary: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+    --tracking-tight: -0.04em;
+    --tracking-normal: -0.01em;
+    --tracking-wide: 0.15em;
+    --tracking-xwide: 0.2em;
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 32px;
+    --space-lg: 64px;
+    --space-xl: 140px;
+    --transition-fade: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
   body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Urbanist', sans-serif;
-    font-size: 18px;
-    line-height: 1.75;
-  font-weight: 300;
+    background: var(--color-bg);
+    color: var(--color-text-main);
+    font-family: var(--font-primary);
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 400;
+    letter-spacing: var(--tracking-normal);
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ---- MASTHEAD ---- */
-  .masthead {
-    background: var(--ink);
-    color: rgba(245,240,232,0.55);
-    padding: 14px 32px;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+  a { color: var(--color-text-main); text-decoration: none; transition: var(--transition-fade); }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg); }
+
+  /* ---- NAV ---- */
+  nav { padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+  .nav-inner {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
-  .masthead a { color: var(--ice-mid); text-decoration: none; transition: color 0.15s; }
-  .masthead a:hover { color: #fff; }
-  .masthead-back { color: rgba(245,240,232,0.55) !important; display: flex; align-items: center; gap: 8px; }
-  .masthead-back::before { content: '←'; font-size: 14px; }
-  .masthead-sep { opacity: 0.3; }
+  .nav-inner a { color: var(--color-text-muted); }
+  .nav-inner a:hover { color: var(--color-text-main); }
+  .nav-left { display: flex; gap: var(--space-md); align-items: center; }
+  .logo { font-weight: 700; color: var(--color-text-main); letter-spacing: var(--tracking-wide); }
+  .crumb-sep { opacity: 0.4; }
+  .back-link::before { content: '\2190 \00a0'; }
 
   /* ---- HERO ---- */
-  .hero {
-    position: relative;
-    background: var(--ink);
-    overflow: hidden;
-    min-height: 65vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(ellipse at 60% 20%, rgba(45,106,45,0.18) 0%, transparent 60%),
-      radial-gradient(ellipse at 10% 80%, rgba(122,175,196,0.07) 0%, transparent 50%),
-      linear-gradient(172deg, #0a0f0a 0%, #131a13 45%, #0e1210 100%);
-  }
-  .hero-bg::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    opacity: 0.5;
-    pointer-events: none;
-  }
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    padding: 40px 56px 80px;
-    max-width: 900px;
+  .hero { padding: var(--space-xl) 0 var(--space-lg); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
   .hero-eyebrow {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.22em;
+    grid-column: 1 / span 12;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--green-light);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 32px;
-    height: 1px;
-    background: var(--green-light);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
   }
   .hero h1 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(46px, 7vw, 88px);
-    font-weight: 800;
-    line-height: 0.92;
-    color: #fff;
-    letter-spacing: -0.03em;
-    margin-bottom: 28px;
+    grid-column: 1 / span 11;
+    font-size: clamp(48px, 8.5vw, 132px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-lg);
   }
-  .hero h1 em { font-style: italic; color: var(--green-light); }
+  .hero h1 strong { font-weight: 800; }
   .hero-sub {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(16px, 2vw, 21px);
-    font-style: italic;
-    color: rgba(245,240,232,0.55);
-    max-width: 560px;
-    line-height: 1.5;
-    margin-bottom: 40px;
+    grid-column: 5 / span 8;
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    max-width: 620px;
   }
-  .hero-stat-row { display: flex; gap: 12px; flex-wrap: wrap; }
-  .hero-stat {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 8px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(45,106,45,0.25);
-    border-radius: 2px;
-    padding: 12px 18px;
+
+  .hero-meta { border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); margin-top: var(--space-lg); }
+  .hero-meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .hero-meta-cell {
+    padding: var(--space-md) 0 var(--space-md) var(--space-md);
+    border-left: 1px solid var(--color-rule);
   }
-  .hero-stat-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
+  .hero-meta-cell:first-child { border-left: none; padding-left: 0; }
+  .hero-meta-label {
+    font-size: 0.7rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: rgba(245,240,232,0.4);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xs);
   }
-  .hero-stat-value {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    color: rgba(245,240,232,0.8);
-  }
+  .hero-meta-value { font-size: 1rem; font-weight: 600; color: var(--color-text-main); line-height: 1.4; }
 
   /* ---- OVERVIEW ---- */
-  .overview {
-    padding: 72px 56px;
-    display: flex;
-    gap: 72px;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    max-width: 1200px;
-    margin: 0 auto;
+  .overview { padding: var(--space-xl) 0 var(--space-lg); border-bottom: 1px solid var(--color-rule); }
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
-  .overview-left { flex: 1; min-width: 260px; }
-  .overview-right { flex: 1.6; min-width: 300px; }
-
-  .section-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
+  .overview-label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--mid);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: var(--color-text-muted);
+    padding-top: 10px;
   }
-  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
-
-  .overview-left h2 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(24px, 3vw, 34px);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin-bottom: 20px;
+  .overview-head { grid-column: 4 / span 8; }
+  .overview-head h2 {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-lg);
   }
-  .overview-left h2 em { font-style: italic; color: var(--green); }
-  .overview-right p {
-    font-size: 16px;
-    line-height: 1.75;
-  font-weight: 300;
-    color: #333330;
-    margin-bottom: 20px;
-  }
-  .overview-right p:last-child { margin-bottom: 0; }
-
-  /* ---- PROCESS SECTIONS ---- */
-  .process-section {
-    border-top: 1px solid var(--rule);
-    padding: 0 0 80px;
-  }
-
-  .section-header {
-    padding: 64px 56px 0;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 32px;
-    flex-wrap: wrap;
-    margin-bottom: 40px;
-  }
-  .section-header-left { flex: 1; min-width: 260px; }
-  .section-number {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 80px;
-    font-weight: 800;
-    color: rgba(45,106,45,0.1);
-    line-height: 1;
-    margin-bottom: -8px;
-  }
-  .section-header h2 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-  }
-  .section-header-desc {
-    flex: 1.2;
-    min-width: 240px;
-    font-size: 15px;
+  .overview-head h2 strong { font-weight: 800; }
+  .overview-body {
+    grid-column: 4 / span 8;
+    color: var(--color-text-muted);
+    font-size: 1.05rem;
     line-height: 1.7;
-    color: var(--mid);
-    padding-bottom: 4px;
-    max-width: 500px;
+  }
+  .overview-body p { margin-bottom: var(--space-md); }
+  .overview-body p:last-child { margin-bottom: 0; }
+
+  /* ---- PROCESS SECTION ---- */
+  .process-section { padding: var(--space-xl) 0 var(--space-lg); border-bottom: 1px solid var(--color-rule); }
+  .process-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+  .process-label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-top: 10px;
+  }
+  .process-title { grid-column: 4 / span 5; }
+  .process-title h2 {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+  }
+  .process-title h2 strong { font-weight: 800; }
+  .process-desc {
+    grid-column: 9 / span 4;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+    padding-top: 12px;
   }
 
   /* ---- SLIDE GALLERY ---- */
   .slide-gallery {
-    padding: 0 40px;
-    max-width: 1200px;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
+  .slide-gallery-inner { grid-column: 2 / span 11; }
 
-  /* Single full-width slide */
-  .slide-full {
-    margin-bottom: 16px;
-  }
+  .slide-full { margin-bottom: var(--space-sm); }
   .slide-full img {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 4px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+    border: 1px solid var(--color-rule);
     cursor: zoom-in;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s ease;
   }
-  .slide-full img:hover {
-    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-    transform: translateY(-2px);
-  }
+  .slide-full img:hover { opacity: 0.92; }
 
-  /* Two-column grid */
   .slide-grid-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
   }
   .slide-grid-2 img {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: 4px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+    border: 1px solid var(--color-rule);
     cursor: zoom-in;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s ease;
   }
-  .slide-grid-2 img:hover {
-    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-    transform: translateY(-2px);
-  }
+  .slide-grid-2 img:hover { opacity: 0.92; }
 
-  /* 1+2 layout: one big left, two stacked right */
-  .slide-featured {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
-  .slide-featured .main img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: 4px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-    cursor: zoom-in;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-  }
-  .slide-featured .main img:hover {
-    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-    transform: translateY(-2px);
-  }
-  .slide-featured .side {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .slide-featured .side img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 4px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-    cursor: zoom-in;
-    flex: 1;
-    object-fit: cover;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-  }
-  .slide-featured .side img:hover {
-    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
-    transform: translateY(-2px);
-  }
-
-  /* Caption strip */
   .slide-caption {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
+    font-size: 0.7rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--mid);
-    margin-top: 8px;
-    margin-bottom: 20px;
-    padding-left: 2px;
+    color: var(--color-text-muted);
+    margin-top: var(--space-xs);
+    margin-bottom: var(--space-md);
   }
 
   /* ---- PULL QUOTE ---- */
-  .pull-quote-strip {
-    background: var(--ink);
-    padding: 56px 56px;
-    margin: 0;
+  .pull-quote-section {
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-rule);
   }
-  .pull-quote-strip .inner {
-    max-width: 760px;
-    margin: 0 auto;
-    border-left: 3px solid var(--green-light);
-    padding-left: 32px;
+  .pull-quote-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
-  .pull-quote-strip p {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(18px, 2.5vw, 26px);
-    font-style: italic;
-    color: rgba(245,240,232,0.9);
-    line-height: 1.5;
-    margin-bottom: 14px;
+  .pull-quote-inner {
+    grid-column: 4 / span 8;
+    padding-left: var(--space-md);
+    border-left: 2px solid var(--color-accent);
   }
-  .pull-quote-strip cite {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
+  .pull-quote-inner p {
+    font-size: clamp(22px, 2.6vw, 32px);
+    font-weight: 300;
+    line-height: 1.3;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-main);
+    margin-bottom: var(--space-sm);
+  }
+  .pull-quote-inner cite {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--green-light);
+    color: var(--color-text-muted);
     font-style: normal;
   }
 
-  /* ---- APPENDIX STRIP ---- */
-  .appendix-intro {
-    background: var(--paper-dark);
-    border-top: 2px solid var(--ink);
-    padding: 56px 56px 0;
+  /* ---- APPENDIX ---- */
+  .appendix-intro { padding: var(--space-xl) 0 var(--space-md); border-bottom: 1px solid var(--color-rule); }
+  .appendix-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
   }
-  .appendix-intro .inner {
-    max-width: 1120px;
-    margin: 0 auto;
-  }
-  .appendix-intro h3 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(20px, 2.5vw, 28px);
-    font-weight: 700;
-    font-style: italic;
-    margin-bottom: 12px;
-  }
-  .appendix-intro p {
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--mid);
-    max-width: 680px;
-  }
-
-  /* ---- SCROLL STRIP for journey slides ---- */
-  .journey-strip {
-    background: var(--paper-dark);
-    padding: 40px 0 56px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .journey-inner {
-    display: flex;
-    gap: 20px;
-    padding: 0 56px;
-    width: max-content;
-  }
-  .journey-slide {
-    flex-shrink: 0;
-    width: 680px;
-  }
-  .journey-slide img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 4px;
-    box-shadow: 0 6px 28px rgba(0,0,0,0.15);
-    cursor: zoom-in;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
-  }
-  .journey-slide img:hover {
-    box-shadow: 0 10px 40px rgba(0,0,0,0.22);
-    transform: translateY(-2px);
-  }
-  .journey-slide .slide-caption { margin-top: 10px; }
-  /* Scroll hint */
-  .scroll-hint {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
+  .appendix-label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: var(--mid);
-    padding: 0 56px 18px;
-    background: var(--paper-dark);
+    color: var(--color-text-muted);
+    padding-top: 10px;
+  }
+  .appendix-body { grid-column: 4 / span 8; }
+  .appendix-body h3 {
+    font-size: clamp(28px, 3.5vw, 44px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-sm);
+  }
+  .appendix-body p { color: var(--color-text-muted); font-size: 1.05rem; line-height: 1.7; }
+
+  .scroll-hint {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-sm);
+    padding: var(--space-md) 0 var(--space-sm);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
   .scroll-hint::after {
-    content: '→';
+    content: '\2192';
     font-size: 14px;
-    opacity: 0.5;
     animation: nudge 2s ease-in-out infinite;
   }
   @keyframes nudge {
@@ -450,82 +304,79 @@
     50% { transform: translateX(5px); }
   }
 
-  /* ---- CTA ---- */
-  .cta-section {
-    background: linear-gradient(160deg, #0a0f0a 0%, #131a13 100%);
-    color: #fff;
-    padding: 80px 56px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+  .journey-strip {
+    padding: var(--space-md) 0 var(--space-lg);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-bottom: 1px solid var(--color-rule);
   }
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(45,106,45,0.2) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .cta-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
-  .cta-label {
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--green-light);
-    margin-bottom: 20px;
+  .journey-inner {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
+    gap: var(--space-md);
+    padding: 0 var(--space-lg);
+    width: max-content;
   }
-  .cta-label::before, .cta-label::after {
-    content: '';
-    width: 32px;
-    height: 1px;
-    background: rgba(74,156,74,0.4);
+  .journey-slide { flex-shrink: 0; width: 680px; }
+  .journey-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--color-rule);
+    cursor: zoom-in;
+    transition: opacity 0.2s ease;
   }
-  .cta-section h2 {
-    font-family: 'Urbanist', sans-serif;
-    font-size: clamp(24px, 3.5vw, 38px);
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 16px;
-  }
-  .cta-section p {
-    font-size: 16px;
-    color: rgba(245,240,232,0.6);
-    margin-bottom: 36px;
-  }
-  .btn-back {
-    display: inline-block;
-    background: transparent;
-    color: var(--ice-mid);
-    font-family: 'Urbanist', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
+  .journey-slide img:hover { opacity: 0.92; }
+  .journey-slide .slide-caption { margin-top: var(--space-xs); }
+
+  /* ---- CTA ---- */
+  .cta-section { padding: var(--space-xl) 0; border-top: 1px solid var(--color-rule); }
+  .cta-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-md); }
+  .cta-label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    text-decoration: none;
-    padding: 15px 40px;
-    border-radius: 2px;
-    border: 1px solid rgba(122,175,196,0.4);
-    transition: all 0.2s ease;
+    color: var(--color-text-muted);
+    padding-top: 10px;
   }
-  .btn-back:hover { background: rgba(122,175,196,0.1); color: #fff; }
+  .cta-body { grid-column: 4 / span 8; }
+  .cta-body h2 {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-sm);
+  }
+  .cta-body h2 strong { font-weight: 800; }
+  .cta-body p { color: var(--color-text-muted); font-size: 1.05rem; margin-bottom: var(--space-md); }
+  .cta-link {
+    display: inline-block;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom: 2px;
+  }
+  .cta-link:hover { color: var(--color-text-main); border-color: var(--color-text-main); }
+  .cta-link::after { content: ' \2197'; }
 
   /* ---- FOOTER ---- */
-  footer {
-    background: var(--ink);
-    color: rgba(245,240,232,0.3);
-    text-align: center;
-    padding: 28px 24px;
-    font-family: 'Urbanist', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.14em;
+  footer { border-top: 1px solid var(--color-rule); padding: var(--space-md) 0; }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
   }
-  footer a { color: rgba(122,175,196,0.6); text-decoration: none; }
+  footer a { color: var(--color-text-muted); border-bottom: 1px solid var(--color-rule); }
+  footer a:hover { color: var(--color-text-main); }
 
   /* ---- LIGHTBOX ---- */
   .lightbox {
@@ -533,10 +384,10 @@
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: rgba(10,15,10,0.96);
+    background: rgba(17, 17, 18, 0.96);
     align-items: center;
     justify-content: center;
-    padding: 24px;
+    padding: var(--space-md);
     cursor: zoom-out;
   }
   .lightbox.active { display: flex; }
@@ -544,15 +395,13 @@
     max-width: 95vw;
     max-height: 92vh;
     object-fit: contain;
-    border-radius: 4px;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.8);
     cursor: default;
   }
   .lightbox-close {
     position: fixed;
     top: 20px;
     right: 24px;
-    color: rgba(245,240,232,0.6);
+    color: rgba(249, 249, 248, 0.7);
     font-size: 28px;
     font-weight: 300;
     cursor: pointer;
@@ -567,17 +416,16 @@
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(245,240,232,0.1);
-    border: none;
-    color: rgba(245,240,232,0.7);
-    font-size: 28px;
-    padding: 16px 20px;
+    background: rgba(249,249,248,0.08);
+    border: 1px solid rgba(249,249,248,0.15);
+    color: rgba(249,249,248,0.8);
+    font-size: 24px;
+    padding: 14px 18px;
     cursor: pointer;
-    border-radius: 4px;
     transition: background 0.15s, color 0.15s;
     z-index: 10000;
   }
-  .lightbox-nav:hover { background: rgba(245,240,232,0.2); color: #fff; }
+  .lightbox-nav:hover { background: rgba(249,249,248,0.18); color: #fff; }
   .lightbox-prev { left: 16px; }
   .lightbox-next { right: 16px; }
   .lightbox-counter {
@@ -585,201 +433,224 @@
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    font-family: 'Urbanist', sans-serif;
-    font-size: 12px;
+    font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.18em;
+    letter-spacing: var(--tracking-xwide);
     text-transform: uppercase;
-    color: rgba(245,240,232,0.45);
+    color: rgba(249,249,248,0.55);
   }
 
-  /* ---- ANIMATIONS ---- */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(18px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .hero-eyebrow { animation: fadeUp 0.7s ease both; }
-  .hero h1      { animation: fadeUp 0.7s 0.12s ease both; }
-  .hero-sub     { animation: fadeUp 0.7s 0.22s ease both; }
-  .hero-stat-row { animation: fadeUp 0.7s 0.32s ease both; }
+  .hero-eyebrow { animation: fadeUp 0.8s ease both; }
+  .hero h1      { animation: fadeUp 0.8s 0.1s ease both; }
+  .hero-sub     { animation: fadeUp 0.8s 0.2s ease both; }
 
-  /* ---- RESPONSIVE ---- */
-  @media (max-width: 768px) {
-    .hero-content { padding: 40px 24px 60px; }
-    .overview { padding: 48px 24px; gap: 40px; }
-    .section-header { padding: 48px 24px 0; }
-    .slide-gallery { padding: 0 20px; }
+  @media (max-width: 900px) {
+    .container { padding: 0 var(--space-md); }
+    .hero { padding: var(--space-lg) 0 var(--space-md); }
+    .hero h1 { grid-column: 1 / span 12; font-size: clamp(40px, 12vw, 72px); }
+    .hero-sub { grid-column: 1 / span 12; }
+    .hero-meta-grid { grid-template-columns: 1fr; }
+    .hero-meta-cell { border-left: none; padding-left: 0; border-top: 1px solid var(--color-rule); }
+    .hero-meta-cell:first-child { border-top: none; }
+    .overview, .process-section, .appendix-intro, .cta-section { padding: var(--space-lg) 0 var(--space-md); }
+    .overview-label, .process-label, .appendix-label, .cta-label { grid-column: 1 / span 12; padding-top: 0; margin-bottom: var(--space-sm); }
+    .overview-head, .overview-body, .process-title, .process-desc, .appendix-body, .cta-body { grid-column: 1 / span 12; padding-top: 0; }
+    .slide-gallery-inner { grid-column: 1 / span 12; }
     .slide-grid-2 { grid-template-columns: 1fr; }
-    .slide-featured { grid-template-columns: 1fr; }
-    .pull-quote-strip { padding: 48px 24px; }
-    .appendix-intro { padding: 48px 24px 0; }
-    .journey-inner { padding: 0 24px; }
+    .pull-quote-inner { grid-column: 1 / span 12; }
+    .journey-inner { padding: 0 var(--space-md); }
     .journey-slide { width: 88vw; }
-    .scroll-hint { padding: 0 24px 16px; }
-    .cta-section { padding: 60px 24px; }
-    .masthead { padding: 14px 20px; }
+    .nav-inner { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
   }
 </style>
 </head>
 <body>
 
-<!-- MASTHEAD -->
-<div class="masthead">
-  <a class="masthead-back" href="index.html">Portfolio</a>
-  <span class="masthead-sep">/</span>
-  <span>AllTrails</span>
-</div>
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a class="logo" href="index.html">Gravity Strategy</a>
+        <span class="crumb-sep">/</span>
+        <span>AllTrails</span>
+      </div>
+      <a class="back-link" href="index.html">Portfolio</a>
+    </div>
+  </div>
+</nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow">UX Research &amp; Feature Design</div>
-    <h1>All<em>Trails</em><br>Feature<br>Enhancement</h1>
-    <p class="hero-sub">Crowd-sourcing data for trust and accuracy in a mapping app with 65 million users.</p>
-    <div class="hero-stat-row">
-      <div class="hero-stat">
-        <span class="hero-stat-label">Type</span>
-        <span class="hero-stat-value">UX Research &amp; Product Design</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Context</span>
-        <span class="hero-stat-value">CMU MIIPS</span>
-      </div>
-      <div class="hero-stat">
-        <span class="hero-stat-label">Year</span>
-        <span class="hero-stat-value">2024</span>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-eyebrow">UX Research &amp; Feature Design</div>
+      <h1>All<strong>Trails</strong><br>Feature<br>Enhancement</h1>
+      <p class="hero-sub">Crowd-sourcing data for trust and accuracy in a mapping app with 65 million users.</p>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-grid">
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Type</div>
+          <div class="hero-meta-value">UX Research &amp; Product Design</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Context</div>
+          <div class="hero-meta-value">CMU MIIPS</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Year</div>
+          <div class="hero-meta-value">2024</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- OVERVIEW -->
-<div class="overview">
-  <div class="overview-left">
-    <div class="section-label">Overview</div>
-    <h2>When community data becomes a <em>safety problem</em></h2>
+<section class="overview">
+  <div class="container">
+    <div class="overview-grid">
+      <div class="overview-head">
+        <h2>When community data becomes a <strong>safety problem.</strong></h2>
+      </div>
+      <div class="overview-body">
+        <p>AllTrails' strength is its crowd-sourced database of over 400,000 trails contributed by an active community of 65 million users. But that same model is its most significant liability: unverified, user-generated data regularly leads hikers off trail, provides inaccurate time and distance estimates, and in some cases, into genuine danger.</p>
+        <p>This project, completed as part of the CMU Master of Integrated Innovation for Products and Services program, set out to identify how AllTrails could use its own community to fix the problem, by designing a feature set that turns every user into a contributor to data integrity.</p>
+        <p>The process moved from user research through ecology mapping, jobs-to-be-done analysis, and high-fidelity prototype design, culminating in a tested feature concept validated with real users.</p>
+      </div>
+    </div>
   </div>
-  <div class="overview-right">
-    <p>AllTrails' strength is its crowd-sourced database of over 400,000 trails contributed by an active community of 65 million users. But that same model is its most significant liability: unverified, user-generated data regularly leads hikers off trail, provides inaccurate time and distance estimates, and in some cases, into genuine danger.</p>
-    <p>This project, completed as part of the CMU Master of Integrated Innovation for Products and Services program, set out to identify how AllTrails could use its own community to fix the problem, by designing a feature set that turns every user into a contributor to data integrity.</p>
-    <p>The process moved from user research through ecology mapping, jobs-to-be-done analysis, and high-fidelity prototype design, culminating in a tested feature concept validated with real users.</p>
-  </div>
-</div>
+</section>
 
-<!-- ═══ SECTION 1: RESEARCH ═══ -->
-<div class="process-section">
-  <div class="section-header">
-    <div class="section-header-left">
-      <div class="section-number">01</div>
-      <h2>Research &amp; Discovery</h2>
+<section class="process-section">
+  <div class="container">
+    <div class="process-head">
+      <div class="process-title">
+        <h2>Research &amp; <strong>Discovery.</strong></h2>
+      </div>
+      <div class="process-desc">Four research methods: user surveys, desk research, 1:1 interviews, and guerilla research, built a holistic picture of how people actually experience AllTrails in the field.</div>
     </div>
-    <p class="section-header-desc">Four research methods: user surveys, desk research, 1:1 interviews, and guerilla research, built a holistic picture of how people actually experience AllTrails in the field.</p>
-  </div>
-  <div class="slide-gallery">
-    <div class="slide-full">
-      <img src="alltrails-imgs/slide-03.jpg" alt="AllTrails service summary" loading="lazy">
-    </div>
-    <div class="slide-caption">AllTrails service overview, 65M users, 400K+ trails</div>
+    <div class="slide-gallery">
+      <div class="slide-gallery-inner">
+        <div class="slide-full">
+          <img src="alltrails-imgs/slide-03.jpg" alt="AllTrails service summary" loading="lazy">
+        </div>
+        <div class="slide-caption">AllTrails service overview &nbsp;&middot;&nbsp; 65M users, 400K+ trails</div>
 
-    <div class="slide-full">
-      <img src="alltrails-imgs/slide-04.jpg" alt="Research methods and data points" loading="lazy">
+        <div class="slide-full">
+          <img src="alltrails-imgs/slide-04.jpg" alt="Research methods and data points" loading="lazy">
+        </div>
+        <div class="slide-caption">Four research methods &nbsp;&middot;&nbsp; Select data points from user interviews</div>
+      </div>
     </div>
-    <div class="slide-caption">Four research methods, select data points from user interviews</div>
   </div>
-</div>
+</section>
 
-<!-- PULL QUOTE -->
-<div class="pull-quote-strip">
-  <div class="inner">
-    <p>"AllTrails has led me down false routes and has been off by milage estimation by more than a mile. I've gotten lost because of this."</p>
-    <cite>User interview participant</cite>
+<section class="pull-quote-section">
+  <div class="container">
+    <div class="pull-quote-grid">
+      <div class="pull-quote-inner">
+        <p>"AllTrails has led me down false routes and has been off by milage estimation by more than a mile. I've gotten lost because of this."</p>
+        <cite>User interview participant</cite>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- ═══ SECTION 2: SYNTHESIS ═══ -->
-<div class="process-section">
-  <div class="section-header">
-    <div class="section-header-left">
-      <div class="section-number">02</div>
-      <h2>Synthesis &amp; Framing</h2>
+<section class="process-section">
+  <div class="container">
+    <div class="process-head">
+      <div class="process-title">
+        <h2>Synthesis &amp; <strong>Framing.</strong></h2>
+      </div>
+      <div class="process-desc">Research findings were synthesized into pain points, design questions, and a service ecology map that charted where value and information actually flow between AllTrails and its users.</div>
     </div>
-    <p class="section-header-desc">Research findings were synthesized into pain points, design questions, and a service ecology map that charted where value and information actually flow between AllTrails and its users.</p>
+    <div class="slide-gallery">
+      <div class="slide-gallery-inner">
+        <div class="slide-grid-2">
+          <img src="alltrails-imgs/slide-05.jpg" alt="Research findings and design questions" loading="lazy">
+          <img src="alltrails-imgs/slide-06.jpg" alt="Ecology map" loading="lazy">
+        </div>
+        <div class="slide-caption">Research findings &rarr; guiding design questions &nbsp;&middot;&nbsp; Service ecology map</div>
+
+        <div class="slide-grid-2">
+          <img src="alltrails-imgs/slide-07.jpg" alt="Jobs to be done and ideation goals" loading="lazy">
+          <img src="alltrails-imgs/slide-08.jpg" alt="Feature set: must-have and nice-to-have" loading="lazy">
+        </div>
+        <div class="slide-caption">Jobs-to-be-done &amp; ideation goals &nbsp;&middot;&nbsp; Must-have vs. nice-to-have feature set</div>
+      </div>
+    </div>
   </div>
-  <div class="slide-gallery">
-    <div class="slide-grid-2">
-      <img src="alltrails-imgs/slide-05.jpg" alt="Research findings and design questions" loading="lazy">
-      <img src="alltrails-imgs/slide-06.jpg" alt="Ecology map" loading="lazy">
-    </div>
-    <div class="slide-caption">Research findings → guiding design questions &nbsp;·&nbsp; Service ecology map</div>
+</section>
 
-    <div class="slide-grid-2">
-      <img src="alltrails-imgs/slide-07.jpg" alt="Jobs to be done and ideation goals" loading="lazy">
-      <img src="alltrails-imgs/slide-08.jpg" alt="Feature set: must-have and nice-to-have" loading="lazy">
+<section class="process-section">
+  <div class="container">
+    <div class="process-head">
+      <div class="process-title">
+        <h2>The Feature <strong>Design.</strong></h2>
+      </div>
+      <div class="process-desc">Three interconnected features form the core concept: a post-hike accuracy rating system, a crowd-sourced verification loop, and a contributor profile with gamified incentives to drive participation.</div>
     </div>
-    <div class="slide-caption">Jobs-to-be-done &amp; ideation goals &nbsp;·&nbsp; Must-have vs. nice-to-have feature set</div>
+    <div class="slide-gallery">
+      <div class="slide-gallery-inner">
+        <div class="slide-full">
+          <img src="alltrails-imgs/slide-09.jpg" alt="In-app rating and classification system" loading="lazy">
+        </div>
+        <div class="slide-caption">In-app rating &amp; classification system &nbsp;&middot;&nbsp; Post-hike accuracy data collection</div>
+
+        <div class="slide-full">
+          <img src="alltrails-imgs/slide-10.jpg" alt="In-app verification system" loading="lazy">
+        </div>
+        <div class="slide-caption">In-app verification system &nbsp;&middot;&nbsp; Crowd-sourced data validation during navigation</div>
+
+        <div class="slide-full">
+          <img src="alltrails-imgs/slide-11.jpg" alt="Contributor incentive model" loading="lazy">
+        </div>
+        <div class="slide-caption">Contributor profile &amp; incentive model &nbsp;&middot;&nbsp; AllTrails+ subscription as reward</div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- ═══ SECTION 3: THE FEATURES ═══ -->
-<div class="process-section">
-  <div class="section-header">
-    <div class="section-header-left">
-      <div class="section-number">03</div>
-      <h2>The Feature Design</h2>
+<section class="process-section">
+  <div class="container">
+    <div class="process-head">
+      <div class="process-title">
+        <h2>Testing &amp; <strong>Framework.</strong></h2>
+      </div>
+      <div class="process-desc">Prototype testing with real users validated the core jobs-to-be-done and surfaced important constructive feedback. The DART model was used to evaluate the feature set through the lens of value co-creation.</div>
     </div>
-    <p class="section-header-desc">Three interconnected features form the core concept: a post-hike accuracy rating system, a crowd-sourced verification loop, and a contributor profile with gamified incentives to drive participation.</p>
+    <div class="slide-gallery">
+      <div class="slide-gallery-inner">
+        <div class="slide-grid-2">
+          <img src="alltrails-imgs/slide-12.jpg" alt="Prototype testing insights" loading="lazy">
+          <img src="alltrails-imgs/slide-13.jpg" alt="DART model" loading="lazy">
+        </div>
+        <div class="slide-caption">Key insights from prototype testing &nbsp;&middot;&nbsp; DART model for value co-creation</div>
+
+        <div class="slide-full">
+          <img src="alltrails-imgs/slide-14.jpg" alt="Conclusions and recommendations" loading="lazy">
+        </div>
+        <div class="slide-caption">Conclusions &amp; recommendations</div>
+      </div>
+    </div>
   </div>
-  <div class="slide-gallery">
-    <div class="slide-full">
-      <img src="alltrails-imgs/slide-09.jpg" alt="In-app rating and classification system" loading="lazy">
-    </div>
-    <div class="slide-caption">In-app rating &amp; classification system, post-hike accuracy data collection</div>
+</section>
 
-    <div class="slide-full">
-      <img src="alltrails-imgs/slide-10.jpg" alt="In-app verification system" loading="lazy">
+<section class="appendix-intro">
+  <div class="container">
+    <div class="appendix-grid">
+      <div class="appendix-body">
+        <h3>Full prototype with narrated <strong>user journey.</strong></h3>
+        <p>The prototype walkthrough follows a real user scenario end-to-end: from opening the app and discovering a trail, to experiencing a route inaccuracy in the field, completing the post-hike feedback loop, and building toward their contributor goals over subsequent hikes. Scroll to explore the full sequence.</p>
+        <div class="scroll-hint">Scroll to explore the user journey</div>
+      </div>
     </div>
-    <div class="slide-caption">In-app verification system, crowd-sourced data validation during navigation</div>
-
-    <div class="slide-full">
-      <img src="alltrails-imgs/slide-11.jpg" alt="Contributor incentive model" loading="lazy">
-    </div>
-    <div class="slide-caption">Contributor profile &amp; incentive model, AllTrails+ subscription as reward</div>
   </div>
-</div>
+</section>
 
-<!-- ═══ SECTION 4: VALIDATION ═══ -->
-<div class="process-section">
-  <div class="section-header">
-    <div class="section-header-left">
-      <div class="section-number">04</div>
-      <h2>Testing &amp; Framework</h2>
-    </div>
-    <p class="section-header-desc">Prototype testing with real users validated the core jobs-to-be-done and surfaced important constructive feedback. The DART model was used to evaluate the feature set through the lens of value co-creation.</p>
-  </div>
-  <div class="slide-gallery">
-    <div class="slide-grid-2">
-      <img src="alltrails-imgs/slide-12.jpg" alt="Prototype testing insights" loading="lazy">
-      <img src="alltrails-imgs/slide-13.jpg" alt="DART model" loading="lazy">
-    </div>
-    <div class="slide-caption">Key insights from prototype testing &nbsp;·&nbsp; DART model for value co-creation</div>
-
-    <div class="slide-full">
-      <img src="alltrails-imgs/slide-14.jpg" alt="Conclusions and recommendations" loading="lazy">
-    </div>
-    <div class="slide-caption">Conclusions &amp; recommendations</div>
-  </div>
-</div>
-
-<!-- ═══ APPENDIX: USER JOURNEY ═══ -->
-<div class="appendix-intro">
-  <div class="inner">
-    <div class="section-label">Appendix</div>
-    <h3>Full Prototype with Narrated User Journey</h3>
-    <p>The prototype walkthrough follows a real user scenario end-to-end: from opening the app and discovering a trail, to experiencing a route inaccuracy in the field, completing the post-hike feedback loop, and building toward their contributor goals over subsequent hikes. Scroll to explore the full sequence.</p>
-  </div>
-</div>
-<div class="scroll-hint">Scroll to explore the user journey</div>
 <div class="journey-strip">
   <div class="journey-inner">
     <div class="journey-slide">
@@ -809,21 +680,28 @@
   </div>
 </div>
 
-<!-- CTA -->
-<div class="cta-section">
-  <div class="cta-inner">
-    <div class="cta-label">Up Next</div>
-    <h2>See More Work</h2>
-    <p>Browse the full portfolio or return to the landing page.</p>
-    <a href="index.html" class="btn-back">← Back to Portfolio</a>
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-grid">
+      <div class="cta-label">Up Next</div>
+      <div class="cta-body">
+        <h2>See <strong>more work.</strong></h2>
+        <p>Browse the full portfolio or return to the landing page.</p>
+        <a class="cta-link" href="index.html">Back to Portfolio</a>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
 <footer>
-  <p>&copy; 2026 Gravity Strategy &nbsp;&middot;&nbsp; <a href="https://www.gravitystrategy.co">gravitystrategy.co</a></p>
+  <div class="container">
+    <div class="footer-inner">
+      <span>&copy; 2026 Gravity Strategy</span>
+      <a href="https://www.gravitystrategy.co">gravitystrategy.co</a>
+    </div>
+  </div>
 </footer>
 
-<!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose">&times;</button>
   <button class="lightbox-nav lightbox-prev" id="lightboxPrev">&#8249;</button>
@@ -833,7 +711,6 @@
 </div>
 
 <script>
-  // Collect all slide images in document order
   const allImages = Array.from(document.querySelectorAll('img[src^="alltrails-imgs/"]'));
   let currentIdx = 0;
 
@@ -843,43 +720,31 @@
     document.getElementById('lightbox').classList.add('active');
     document.body.style.overflow = 'hidden';
   }
-
   function closeLightbox() {
     document.getElementById('lightbox').classList.remove('active');
     document.body.style.overflow = '';
   }
-
   function updateLightbox() {
     const img = allImages[currentIdx];
     document.getElementById('lightboxImg').src = img.src;
     document.getElementById('lightboxImg').alt = img.alt;
-    document.getElementById('lightboxCounter').textContent =
-      `${currentIdx + 1} / ${allImages.length}`;
+    document.getElementById('lightboxCounter').textContent = `${currentIdx + 1} / ${allImages.length}`;
   }
-
   function prevSlide() {
     currentIdx = (currentIdx - 1 + allImages.length) % allImages.length;
     updateLightbox();
   }
-
   function nextSlide() {
     currentIdx = (currentIdx + 1) % allImages.length;
     updateLightbox();
   }
-
-  // Attach click to all slide images
-  allImages.forEach(img => {
-    img.addEventListener('click', () => openLightbox(img));
-  });
-
+  allImages.forEach(img => { img.addEventListener('click', () => openLightbox(img)); });
   document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
   document.getElementById('lightboxPrev').addEventListener('click', e => { e.stopPropagation(); prevSlide(); });
   document.getElementById('lightboxNext').addEventListener('click', e => { e.stopPropagation(); nextSlide(); });
-
   document.getElementById('lightbox').addEventListener('click', function(e) {
     if (e.target === this) closeLightbox();
   });
-
   document.addEventListener('keydown', e => {
     if (!document.getElementById('lightbox').classList.contains('active')) return;
     if (e.key === 'Escape') closeLightbox();
