@@ -249,6 +249,14 @@
     grid-template-columns: repeat(12, 1fr);
     gap: var(--space-md);
   }
+  .about-photo {
+    grid-column: 1 / span 3;
+    padding-top: 10px;
+  }
+  .about-photo img {
+    width: 100%;
+    display: block;
+  }
   .about-label {
     grid-column: 1 / span 3;
     font-size: 0.72rem;
@@ -332,6 +340,7 @@
     .project-name { grid-column: 1 / span 12; }
     .project-body { grid-column: 1 / span 12; padding-top: 0; }
     .project-arrow { grid-column: 1 / span 12; text-align: left; padding-top: 0; }
+    .about-photo { grid-column: 1 / span 12; max-width: 180px; }
     .about-label, .about-head, .about-body, .contact-line { grid-column: 1 / span 12; }
     .meta-block, .meta-block:nth-child(2) { grid-column: 1 / span 12; }
     .nav-links { gap: var(--space-md); }
@@ -463,12 +472,16 @@
 <section class="about-section" id="about">
   <div class="container">
     <div class="about-grid">
+      <div class="about-photo">
+        <img src="PatrickScanlan.PNG" alt="Patrick Scanlan">
+      </div>
       <div class="about-head">
         <h2>Design for the <strong>real</strong> world.</h2>
       </div>
       <div class="about-body">
-        <p>Gravity Strategy is a design studio and consultancy helping build the next generation of smart outdoor technology. We work at the intersection of design, strategy, and technology to create products that work when it matters most.</p>
-        <p>Our work spans UX research &amp; design, product strategy, and human factors engineering for organizations operating in challenging environments.</p>
+        <p>Patrick Scanlan is a product designer with a background spanning human factors engineering, UX research, and strategic design. He currently works as a contractor at Apple across the end-to-end product design process, and holds a graduate degree from Carnegie Mellon's Integrated Innovation Institute.</p>
+        <p>Before working in tech, Patrick spent a decade as a mountain guide, federal avalanche forecaster, and search and rescue leader in North America's most demanding mountain terrain. That experience is not incidental to the design work. A decade of making consequential decisions in complex, dynamic environments with incomplete information is a direct education in what good design actually requires of the people using it.</p>
+        <p>The through line across his career is a focus on the gap between what products promise and what they deliver under real conditions: products built by talented engineering teams that don't account for the environments, user states, and pressures their users actually face. Closing that gap, through sharper research, clearer framing, and design that holds up when it matters, is the work.</p>
       </div>
       <div class="contact-line">
         <a class="contact-link" href="https://www.gravitystrategy.co" target="_blank">gravitystrategy.co</a>
