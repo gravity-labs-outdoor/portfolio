@@ -514,6 +514,24 @@
 <section class="section">
   <div class="container">
     <div class="section-head">
+      <h2>Designed by a forecaster, <strong>tested with forecasters.</strong></h2>
+    </div>
+    <div class="article-body">
+      <p>Prototype development focused on deliberate simplicity. Rather than building a comprehensive weather station, the design isolated two measurements: snow depth and temperature. That constraint kept unit cost low, kept power demands within battery range, and kept the product focused on the data that contributes most directly to avalanche hazard assessment. Adding sensors was always possible. The question was whether adding them was justified at this stage, and early on the answer was no.</p>
+
+      <div style="grid-column: 4 / span 6; margin: var(--space-md) 0;">
+        <img src="snowbook%20hardware%20design.png" alt="snowbook hardware design sketch showing internal components and field deployment configuration" style="width:100%;display:block;border:1px solid #E5E5E2;">
+        <div style="font-size:0.7rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:#66666A;margin-top:10px;">Hardware design sketch, 2023. Internal components (top) and field deployment configuration (bottom).</div>
+      </div>
+
+      <p>User research was conducted with professional avalanche forecasters through a structured beta testing protocol. The primary finding shaped subsequent product decisions: the critical adoption requirement was not sensor accuracy or battery life, but integration with existing forecasting workflows and databases. snowbook addresses this by treating the existing SNOTEL and fixed station network as a collaborator rather than a competitor. The machine learning model is designed to ingest existing infrastructure data alongside snowbook sensor readings, making the product additive to the current system rather than a replacement.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
       <h2>Three audiences, <strong>one platform.</strong></h2>
     </div>
     <div class="article-body">
@@ -545,9 +563,9 @@
       <h2>Deploy, measure, transmit, <strong>predict.</strong></h2>
     </div>
     <div class="article-body">
-      <p>snowbook units are installed by field technicians across locations where snowpack data is needed. From that point, the system operates autonomously. Snow depth and temperature measurements are collected continuously and transmitted to a central database via SMS every 30 minutes, with no requirement for local power infrastructure or network connectivity beyond a cellular signal.</p>
+      <p>snowbook units are installed by field technicians across locations where snowpack data is needed. From that point, the system operates autonomously. Snow depth and temperature measurements are collected continuously and transmitted to a central database via SMS every 30 minutes, with no requirement for local power infrastructure or network connectivity beyond a cellular signal. The beta version transmits via SMS, with satellite connectivity on the roadmap for locations beyond cellular coverage.</p>
       <p>Battery life supports approximately 30 days of continuous operation before a technician returns to swap the battery or collect the unit. That runtime is long enough to capture the arc of a storm cycle and its aftermath without mid-deployment intervention.</p>
-      <p>On the software side, incoming sensor data flows into two output streams. Raw measurements are made available directly for specialist use. In parallel, the data feeds snowbook's machine learning model, which combines sensor inputs with standard geo-relevant datasets to generate high-integrity predictions of avalanche hazard and snowpack structure.</p>
+      <p>On the software side, incoming sensor data flows into two output streams. Each unit reports independently to the cloud without communicating with other units in the network, which means any number of sensors can be added or removed without affecting the rest of the system. Raw measurements are made available directly for specialist use. In parallel, the data feeds snowbook's machine learning model, which combines sensor inputs with standard geo-relevant datasets to generate high-integrity predictions of avalanche hazard and snowpack structure.</p>
       <div class="spec-rows">
         <div class="spec-group">
           <div class="spec-group-inner">
@@ -737,7 +755,7 @@
         <div class="benefit">
           <div class="benefit-num">02</div>
           <div class="benefit-title">Cost</div>
-          <div class="benefit-body">snowbook units cost pennies on the dollar compared to standardized fixed snow plot stations, making broad deployment financially viable for the first time.</div>
+          <div class="benefit-body">Traditional fixed weather stations, with sensors, data loggers, solar arrays, and installation, cost over $100,000 per site. A snowbook unit costs $116 in components. That cost difference is not just a price story: it is what makes spatial density financially viable for the first time. The value of the product is not in replacing one high-accuracy data point, but in placing many affordable ones across terrain that would never support permanent infrastructure.</div>
         </div>
         <div class="benefit">
           <div class="benefit-num">03</div>
