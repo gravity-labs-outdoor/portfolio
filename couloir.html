@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Couloir / Gravity Strategy Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700;1,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color-bg: #F9F9F8;
+    --color-text-main: #111112;
+    --color-text-muted: #66666A;
+    --color-accent: #E15A3E;
+    --color-rule: #E5E5E2;
+    --font-primary: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+    --tracking-tight: -0.04em;
+    --tracking-normal: -0.01em;
+    --tracking-wide: 0.15em;
+    --tracking-xwide: 0.2em;
+    --space-xs: 8px;
+    --space-sm: 16px;
+    --space-md: 32px;
+    --space-lg: 64px;
+    --space-xl: 140px;
+    --transition-fade: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    /* ---- Prototype / interactive demo vars ---- */
+    --nac-low: #50B848;
+    --nac-moderate: #FFF200;
+    --nac-considerable: #F7941E;
+    --nac-high: #ED1C24;
+    --nac-extreme: #231F20;
+    --bg: #000;
+    --surface: rgba(25,25,25,0.85);
+    --outline: rgba(68,71,72,0.35);
+    --on-surface: #E2E2E2;
+    --on-surface-variant: #B4B7B7;
+    --on-surface-dim: rgba(180,183,183,0.7);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-text-main);
+    font-family: var(--font-primary);
+    font-size: 17px;
+    line-height: 1.7;
+    font-weight: 400;
+    letter-spacing: var(--tracking-normal);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: var(--color-text-main); text-decoration: none; transition: var(--transition-fade); }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-lg); }
+
+  /* ---- NAV ---- */
+  nav { padding: var(--space-md) 0; border-bottom: 1px solid var(--color-rule); }
+  .nav-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .nav-inner a { color: var(--color-text-muted); }
+  .nav-inner a:hover { color: var(--color-text-main); }
+  .nav-left { display: flex; gap: var(--space-md); align-items: center; }
+  .logo { font-weight: 700; color: var(--color-text-main); letter-spacing: var(--tracking-wide); }
+  .crumb-sep { opacity: 0.4; }
+  .back-link::before { content: '\2190 \00a0'; }
+
+  /* ---- HERO ---- */
+  .hero { padding: var(--space-xl) 0 var(--space-lg); }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+  }
+  .hero-eyebrow {
+    grid-column: 1 / span 12;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+  .hero h1 {
+    grid-column: 1 / span 10;
+    font-size: clamp(56px, 10vw, 152px);
+    font-weight: 300;
+    line-height: 1.0;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-lg);
+  }
+  .hero h1 strong { font-weight: 800; }
+  .hero-sub {
+    grid-column: 5 / span 8;
+    font-size: 1.25rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    max-width: 620px;
+  }
+
+  /* ---- HERO META ---- */
+  .hero-meta { border-top: 1px solid var(--color-rule); border-bottom: 1px solid var(--color-rule); margin-top: var(--space-lg); }
+  .hero-meta-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .hero-meta-cell {
+    padding: var(--space-md) 0 var(--space-md) var(--space-md);
+    border-left: 1px solid var(--color-rule);
+  }
+  .hero-meta-cell:first-child { border-left: none; padding-left: 0; }
+  .hero-meta-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-xs);
+  }
+  .hero-meta-value { font-size: 0.95rem; font-weight: 600; color: var(--color-text-main); line-height: 1.4; }
+
+  /* ---- SECTION ---- */
+  .section { padding: var(--space-xl) 0 var(--space-lg); border-bottom: 1px solid var(--color-rule); }
+  .section-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+  }
+  .section-head .label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-top: 10px;
+  }
+  .section-head h2 {
+    grid-column: 4 / span 8;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+  }
+  .section-head h2 strong { font-weight: 800; }
+
+  .article-body {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+  }
+  .article-body > * { grid-column: 4 / span 8; }
+  .article-body p {
+    font-size: 1.05rem;
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+  }
+  .article-body p:last-child { margin-bottom: 0; }
+  .article-body strong { color: var(--color-text-main); font-weight: 600; }
+  .article-body a { color: var(--color-accent); border-bottom: 1px solid var(--color-accent); }
+  .article-body code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    color: var(--color-text-main);
+    background: rgba(225, 90, 62, 0.06);
+    padding: 1px 6px;
+    border-radius: 0;
+  }
+  .article-body h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-text-main);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  /* ---- PULL QUOTE ---- */
+  .pull-quote {
+    grid-column: 4 / span 8 !important;
+    margin: var(--space-md) 0;
+    padding-left: var(--space-md);
+    border-left: 2px solid var(--color-accent);
+  }
+  .pull-quote p {
+    font-size: clamp(22px, 2.6vw, 32px) !important;
+    font-weight: 300 !important;
+    line-height: 1.3 !important;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-text-main) !important;
+    margin-bottom: var(--space-sm) !important;
+  }
+  .pull-quote cite {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    font-style: normal;
+  }
+
+  /* ---- APP / WIDGET PREVIEW ---- */
+  .preview-section {
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .preview-head {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    align-items: end;
+  }
+  .preview-label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-bottom: 6px;
+  }
+  .preview-title {
+    grid-column: 4 / span 8;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: var(--tracking-tight);
+  }
+  .preview-title strong { font-weight: 800; }
+
+  .phone-frames {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .phone-frame {
+    background: #0A0C12;
+    border-radius: 36px;
+    border: 1px solid #1E2130;
+    width: 260px;
+    overflow: hidden;
+    text-align: left;
+    flex-shrink: 0;
+  }
+  .phone-notch { width: 90px; height: 8px; background: #141620; border-radius: 4px; margin: 14px auto 0; }
+  .phone-screen { padding: 14px; }
+
+  /* ---- APP MOCK ---- */
+  .mock-nav-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #F0F0F5;
+    margin-bottom: 8px;
+    padding: 0 2px;
+  }
+  .mock-search {
+    background: rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 7px 10px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mock-search-icon { opacity: 0.4; font-size: 11px; }
+  .mock-section-label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 6px;
+    margin-top: 10px;
+    padding: 0 2px;
+  }
+  .mock-zone-card {
+    background: rgba(22,25,36,0.95);
+    border: 0.5px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+  }
+  .mock-zone-dot {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+  .mock-zone-info { flex: 1; min-width: 0; }
+  .mock-zone-name { font-size: 11px; font-weight: 600; color: #F0F0F5; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mock-zone-sub { font-size: 9px; color: rgba(255,255,255,0.35); margin-top: 1px; }
+  .mock-zone-action { font-size: 14px; color: rgba(255,255,255,0.2); flex-shrink: 0; }
+
+  .mock-center-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 2px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.05);
+  }
+  .mock-center-left { display: flex; flex-direction: column; }
+  .mock-center-name { font-size: 11px; font-weight: 500; color: #E0E0EA; }
+  .mock-center-state { font-size: 9px; color: rgba(255,255,255,0.3); margin-top: 1px; }
+  .mock-center-right { display: flex; align-items: center; gap: 6px; }
+  .mock-center-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .mock-center-chevron { font-size: 10px; color: rgba(255,255,255,0.18); }
+
+  /* ---- WIDGET MOCKS ---- */
+  .widget-phone-screen {
+    background: linear-gradient(155deg, #1c2a3a 0%, #0d1520 55%, #181020 100%);
+    border-radius: 22px;
+    padding: 10px;
+    min-height: 340px;
+    position: relative;
+  }
+
+  /* Fake wallpaper mountain silhouette */
+  .widget-phone-screen::before {
+    content: '';
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    height: 80px;
+    background: linear-gradient(to top, rgba(255,255,255,0.03) 0%, transparent 100%);
+    clip-path: polygon(0% 100%, 8% 60%, 18% 75%, 30% 35%, 42% 55%, 52% 20%, 65% 45%, 75% 25%, 88% 50%, 100% 30%, 100% 100%);
+    border-radius: 0 0 12px 12px;
+  }
+
+  /* App icon grid placeholder */
+  .mock-icon-row {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    margin-bottom: 8px;
+  }
+  .mock-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    flex-shrink: 0;
+  }
+
+  /* Widget cards */
+  .w-card {
+    background: rgba(8, 10, 16, 0.88);
+    border-radius: 20px;
+    border: 0.5px solid rgba(255,255,255,0.06);
+    padding: 13px;
+    position: relative;
+    overflow: hidden;
+  }
+  .w-card-small {
+    width: 106px;
+    height: 106px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+  }
+  .w-card-medium {
+    width: 224px;
+    height: 106px;
+    display: flex;
+    flex-direction: row;
+  }
+
+  /* Hazard color glow effect */
+  .w-glow {
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Widget header */
+  .w-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: auto;
+  }
+  .w-center-id {
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.38);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .w-center-icon { font-size: 7px; opacity: 0.6; }
+
+  /* NAC danger icon (approximated) */
+  .w-nac {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+  .w-nac-lg {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 4px;
+  }
+
+  /* Danger number */
+  .w-number {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 1px;
+    margin-top: auto;
+  }
+  .w-label {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 1px;
+    line-height: 1.2;
+  }
+  .w-zone {
+    font-size: 7.5px;
+    color: rgba(255,255,255,0.38);
+    line-height: 1.3;
+  }
+  .w-updated {
+    font-size: 6.5px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    margin-top: 3px;
+  }
+
+  /* Medium widget columns */
+  .w-left-col {
+    width: 72px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+  .w-divider {
+    width: 0.5px;
+    background: rgba(255,255,255,0.08);
+    margin: 0 10px;
+    align-self: stretch;
+  }
+  .w-right-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .w-advice {
+    font-size: 8.5px;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.6;
+  }
+
+  /* NAPADS colors */
+  .danger-low         { background: #50B848; }
+  .danger-moderate    { background: #FFF200; color: black !important; }
+  .danger-considerable{ background: #F7941E; }
+  .danger-high        { background: #ED1C24; }
+  .danger-extreme     { background: #231F20; }
+
+  .color-low          { color: #50B848; }
+  .color-moderate     { color: #FFF200; }
+  .color-considerable { color: #F7941E; }
+  .color-high         { color: #ED1C24; }
+  .color-extreme      { color: #231F20; }
+
+  .glow-considerable  { background: radial-gradient(circle, #F7941E, transparent); opacity: 0.14; }
+  .glow-high          { background: radial-gradient(circle, #ED1C24, transparent); opacity: 0.14; }
+
+  /* ---- FLOW STEPS ---- */
+  .flow-rows {
+    grid-column: 4 / span 9 !important;
+    margin-top: var(--space-md);
+  }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 1fr 3fr 5fr;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-rule);
+    align-items: start;
+  }
+  .flow-step:last-child { border-bottom: 1px solid var(--color-rule); }
+  .flow-num {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-top: 6px;
+  }
+  .flow-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-normal);
+    color: var(--color-text-main);
+    line-height: 1.25;
+  }
+  .flow-body { color: var(--color-text-muted); font-size: 1rem; line-height: 1.65; }
+
+  /* ---- CALLOUT ---- */
+  .callout {
+    grid-column: 4 / span 8 !important;
+    padding: var(--space-md) var(--space-md);
+    margin: var(--space-md) 0;
+    border-top: 1px solid var(--color-accent);
+    border-bottom: 1px solid var(--color-accent);
+  }
+  .callout-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--space-sm);
+  }
+  .callout p { font-size: 1rem !important; line-height: 1.65 !important; color: var(--color-text-main) !important; margin-bottom: 0 !important; }
+
+  /* ---- SPEC TABLE ---- */
+  .spec-table-wrap { grid-column: 4 / span 9 !important; margin-top: var(--space-md); }
+  .spec-table { width: 100%; border-collapse: collapse; }
+  .spec-table tr { border-top: 1px solid var(--color-rule); }
+  .spec-table tr:last-child { border-bottom: 1px solid var(--color-rule); }
+  .spec-table td { padding: var(--space-md) 0; vertical-align: top; }
+  .spec-table td:first-child {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    width: 25%;
+    padding-right: var(--space-md);
+    padding-top: calc(var(--space-md) + 4px);
+  }
+  .spec-table td:last-child { color: var(--color-text-main); font-size: 1rem; line-height: 1.65; }
+  .spec-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-rule);
+    padding: 4px 10px;
+    margin: 2px 4px 2px 0;
+  }
+
+  /* ---- CONSTRAINTS ---- */
+  .constraints-rows { grid-column: 4 / span 9 !important; margin-top: var(--space-md); }
+  .constraint-item {
+    display: grid;
+    grid-template-columns: 1fr 3fr 5fr;
+    gap: var(--space-md);
+    padding: var(--space-md) 0;
+    border-top: 1px solid var(--color-rule);
+    align-items: start;
+  }
+  .constraint-item:last-child { border-bottom: 1px solid var(--color-rule); }
+  .constraint-num {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-top: 6px;
+  }
+  .constraint-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: var(--tracking-normal);
+    line-height: 1.25;
+  }
+  .constraint-body { color: var(--color-text-muted); font-size: 1rem; line-height: 1.65; }
+
+  /* ---- CTA ---- */
+  .cta-section { padding: var(--space-xl) 0; border-top: 1px solid var(--color-rule); }
+  .cta-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-md); }
+  .cta-label {
+    grid-column: 1 / span 3;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-xwide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-top: 10px;
+  }
+  .cta-body { grid-column: 4 / span 8; }
+  .cta-body h2 {
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: var(--tracking-tight);
+    margin-bottom: var(--space-sm);
+  }
+  .cta-body h2 strong { font-weight: 800; }
+  .cta-body p { color: var(--color-text-muted); font-size: 1.05rem; margin-bottom: var(--space-md); }
+  .cta-links { display: flex; gap: var(--space-lg); flex-wrap: wrap; }
+  .cta-link {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-accent);
+    padding-bottom: 2px;
+  }
+  .cta-link.alt { color: var(--color-text-main); border-color: var(--color-text-main); }
+  .cta-link:hover { color: var(--color-text-main); border-color: var(--color-text-main); }
+  .cta-link.alt:hover { color: var(--color-accent); border-color: var(--color-accent); }
+  .cta-link::after { content: ' \2197'; }
+
+  /* ---- FOOTER ---- */
+  footer { border-top: 1px solid var(--color-rule); padding: var(--space-md) 0; }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  footer a { color: var(--color-text-muted); border-bottom: 1px solid var(--color-rule); }
+  footer a:hover { color: var(--color-text-main); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow { animation: fadeUp 0.8s ease both; }
+  .hero h1      { animation: fadeUp 0.8s 0.1s ease both; }
+  .hero-sub     { animation: fadeUp 0.8s 0.2s ease both; }
+
+  @media (max-width: 900px) {
+    .container { padding: 0 var(--space-md); }
+    .hero { padding: var(--space-lg) 0 var(--space-md); }
+    .hero h1 { grid-column: 1 / span 12; font-size: clamp(48px, 13vw, 88px); }
+    .hero-sub { grid-column: 1 / span 12; }
+    .hero-meta-grid { grid-template-columns: 1fr; }
+    .hero-meta-cell { border-left: none; padding-left: 0; border-top: 1px solid var(--color-rule); }
+    .hero-meta-cell:first-child { border-top: none; }
+    .section { padding: var(--space-lg) 0 var(--space-md); }
+    .section-head .label, .preview-label { grid-column: 1 / span 12; padding-top: 0; padding-bottom: 0; margin-bottom: var(--space-sm); }
+    .section-head h2, .preview-title { grid-column: 1 / span 12; }
+    .article-body > *, .flow-rows, .spec-table-wrap, .constraints-rows, .callout, .pull-quote { grid-column: 1 / span 12 !important; }
+    .flow-step, .constraint-item { grid-template-columns: 1fr; gap: var(--space-xs); }
+    .cta-label { grid-column: 1 / span 12; padding-top: 0; margin-bottom: var(--space-sm); }
+    .cta-body { grid-column: 1 / span 12; }
+    .nav-inner { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
+    .phone-frames { flex-direction: column; align-items: center; }
+  }
+
+  /* =========================================================
+     Prototype / interactive demo layer
+     ========================================================= */
+  .stage {
+    display: grid;
+    grid-template-columns: minmax(340px, 400px) 1fr;
+    gap: var(--space-lg);
+    align-items: start;
+    margin-top: var(--space-lg);
+  }
+  @media (max-width: 880px) { .stage { grid-template-columns: 1fr; } }
+  .widget-panel { display: flex; flex-direction: column; gap: var(--space-md); }
+  .widget-panel h2 {
+    font-size: 0.78rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: var(--tracking-wide); color: var(--color-text-muted); margin: 0;
+  }
+  .widget-panel .hint { font-size: 0.98rem; color: var(--color-text-muted); margin: 0; line-height: 1.6; max-width: 520px; }
+  .proto-controls {
+    display: flex; gap: var(--space-lg); align-items: baseline;
+    margin-top: var(--space-md); font-size: 0.82rem;
+    letter-spacing: var(--tracking-wide); text-transform: uppercase; font-weight: 600;
+  }
+  .proto-controls button {
+    background: none; border: none; padding: 0; font-family: inherit;
+    font-size: inherit; font-weight: inherit; letter-spacing: inherit; text-transform: inherit;
+    cursor: pointer; color: var(--color-accent); transition: var(--transition-fade);
+  }
+  .proto-controls button:hover { opacity: 0.7; }
+  .proto-controls button.muted { color: var(--color-text-muted); }
+  .proto-controls button.muted:hover { color: var(--color-text-main); }
+  .proto-controls .tour-step {
+    color: var(--color-text-muted); font-weight: 400; text-transform: none;
+    letter-spacing: var(--tracking-normal); font-size: 0.9rem; flex: 1; min-width: 0;
+  }
+  .phone {
+    background: #111; border-radius: 46px; padding: 12px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 0 0 2px #2a2a2a;
+    width: 100%; max-width: 400px; margin: 0 auto;
+  }
+  .screen {
+    background: var(--bg); border-radius: 36px; overflow: hidden;
+    height: 780px; display: flex; flex-direction: column; position: relative;
+    color: var(--on-surface);
+  }
+  .status-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 28px 6px; font-size: 13px; font-weight: 600; color: #fff;
+  }
+  .nav-title { padding: 8px 20px 4px; font-size: 32px; font-weight: 800; letter-spacing: -0.5px; color: #fff; }
+  .search-bar {
+    margin: 4px 16px 8px; background: rgba(255,255,255,0.08); border-radius: 10px;
+    padding: 8px 12px; display: flex; align-items: center; gap: 8px;
+    font-size: 14px; color: var(--on-surface-variant);
+  }
+  .search-bar svg { flex-shrink: 0; }
+  .search-bar input { background: transparent; border: none; outline: none; color: var(--on-surface); flex: 1; font-size: 14px; font-family: inherit; }
+  .search-bar input::placeholder { color: var(--on-surface-dim); }
+  .feed { flex: 1; overflow-y: auto; padding: 6px 16px 24px; scrollbar-width: thin; }
+  .feed::-webkit-scrollbar { width: 6px; }
+  .feed::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+  .feed-section-header {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--on-surface-variant); padding: 16px 4px 8px;
+  }
+  .zone-card {
+    background: var(--surface); border: 1px solid var(--outline); border-radius: 14px;
+    padding: 12px; margin-bottom: 8px; display: flex; gap: 12px; align-items: center;
+    cursor: pointer; position: relative; overflow: hidden; transition: transform 0.12s ease;
+    color: var(--on-surface);
+  }
+  .zone-card:active { transform: scale(0.985); }
+  .zone-card .hazard-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.22; }
+  .zone-card > * { position: relative; }
+  .zone-card .info { flex: 1; min-width: 0; }
+  .zone-card .zone-name { font-size: 15px; font-weight: 600; color: var(--on-surface); display: flex; align-items: center; gap: 4px; }
+  .zone-card .zone-name .arrow { font-size: 10px; color: var(--on-surface-dim); font-weight: 700; }
+  .zone-card .meta { display: flex; gap: 6px; font-size: 11px; align-items: center; margin-top: 3px; color: var(--on-surface-variant); }
+  .zone-card .meta .dot { color: var(--on-surface-dim); }
+  .zone-card .meta .level { font-weight: 600; }
+  .zone-card .advice { font-size: 11.5px; color: rgba(180,183,183,0.85); margin-top: 4px; line-height: 1.35; }
+  .zone-card .save-btn { background: none; border: none; color: var(--on-surface-dim); cursor: pointer; padding: 6px; font-size: 22px; line-height: 1; display: flex; align-items: center; justify-content: center; }
+  .zone-card .save-btn.saved { color: var(--saved-color, var(--nac-low)); }
+  .center-row-item {
+    background: var(--surface); border: 1px solid var(--outline); border-radius: 14px;
+    padding: 12px; margin-bottom: 8px; display: flex; gap: 12px; align-items: center;
+    cursor: pointer; position: relative; overflow: hidden; transition: transform 0.12s ease;
+    color: var(--on-surface);
+  }
+  .center-row-item:active { transform: scale(0.99); }
+  .center-row-item .hazard-bg { position: absolute; inset: 0; pointer-events: none; opacity: 0.18; }
+  .center-row-item > * { position: relative; }
+  .center-row-item .meta { flex: 1; min-width: 0; }
+  .center-row-item .title-row { display: flex; gap: 8px; align-items: center; font-size: 14px; font-weight: 700; color: var(--on-surface); }
+  .center-row-item .state { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: rgba(180,183,183,0.18); color: var(--on-surface-variant); letter-spacing: 0.3px; }
+  .center-row-item .center-name { font-size: 11.5px; color: var(--on-surface-variant); margin-top: 1px; }
+  .center-row-item .summary { margin-top: 3px; font-size: 10px; color: var(--on-surface-dim); }
+  .center-row-item .summary .peak { font-weight: 700; }
+  .center-row-item .chevron { transition: transform 0.2s ease; color: var(--on-surface-dim); font-size: 12px; margin-right: 4px; }
+  .center-row-item.expanded .chevron { transform: rotate(180deg); }
+  .zone-list { padding-left: 16px; padding-bottom: 4px; overflow: hidden; max-height: 0; transition: max-height 0.28s ease; }
+  .zone-list.open { max-height: 2400px; }
+  .empty-search { font-size: 12px; color: var(--on-surface-variant); padding: 12px 4px; }
+  .badge { height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .badge img { height: 100%; width: auto; display: block; -webkit-user-drag: none; user-select: none; }
+  .badge.small { height: 36px; }
+  .badge.tiny { height: 28px; }
+  .badge.big { height: 56px; }
+  .hazard-bg.lvl-1 { background: linear-gradient(135deg, rgba(80,184,72,0.4), transparent 60%); }
+  .hazard-bg.lvl-2 { background: linear-gradient(135deg, rgba(255,242,0,0.35), transparent 60%); }
+  .hazard-bg.lvl-3 { background: linear-gradient(135deg, rgba(247,148,30,0.4), transparent 60%); }
+  .hazard-bg.lvl-4 { background: linear-gradient(135deg, rgba(237,28,36,0.4), transparent 60%); }
+  .hazard-bg.lvl-5 { background: linear-gradient(135deg, rgba(35,31,32,0.7), transparent 60%); }
+  .hazard-bg.lvl-0 { background: linear-gradient(135deg, rgba(80,80,80,0.3), transparent 60%); }
+  .level-color-1 { color: var(--nac-low); }
+  .level-color-2 { color: var(--nac-moderate); }
+  .level-color-3 { color: var(--nac-considerable); }
+  .level-color-4 { color: var(--nac-high); }
+  .level-color-5 { color: #ff5660; }
+  .level-color-0 { color: #888; }
+  .demo-widget-row { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+  .demo-widget {
+    background: #1a1a1a; border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.06);
+    cursor: pointer; overflow: hidden; position: relative; transition: transform 0.12s ease;
+    color: var(--on-surface);
+  }
+  .demo-widget:active { transform: scale(0.98); }
+  .demo-widget .hazard-bg { position: absolute; inset: 0; }
+  .demo-widget > * { position: relative; }
+  .demo-widget.small { width: 158px; height: 158px; padding: 14px; display: flex; flex-direction: column; }
+  .demo-widget.medium { width: 338px; height: 158px; padding: 14px; display: flex; gap: 12px; }
+  .demo-widget .center-tag { font-size: 9.5px; font-weight: 600; color: var(--on-surface-variant); letter-spacing: 0.5px; text-transform: uppercase; display: flex; gap: 4px; align-items: center; }
+  .demo-widget .header-row { display: flex; justify-content: space-between; align-items: center; }
+  .demo-widget .num-big { font-weight: 900; font-size: 42px; letter-spacing: -2px; line-height: 1; margin-top: auto; }
+  .demo-widget .num-medium { margin-top: auto; margin-bottom: 6px; }
+  .demo-widget .level-label { font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: -0.2px; margin-top: 2px; color: var(--on-surface); }
+  .demo-widget .zone-label { font-size: 11px; color: var(--on-surface-variant); margin-top: 3px; }
+  .demo-widget .timestamp { font-size: 9px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: rgba(180,183,183,0.7); margin-top: auto; padding-top: 6px; }
+  .demo-widget .left-col { flex: 0 0 38%; display: flex; flex-direction: column; }
+  .demo-widget .divider { width: 1px; background: rgba(180,183,183,0.18); }
+  .demo-widget .right-col { flex: 1; padding-left: 6px; display: flex; align-items: flex-start; font-size: 11.5px; line-height: 1.35; color: var(--on-surface); }
+  .toast {
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: #1a1a1a; border: 1px solid var(--outline); color: var(--on-surface);
+    padding: 12px 18px; border-radius: 999px; font-size: 13px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    opacity: 0; transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none; z-index: 100; max-width: 90%; display: flex; align-items: center; gap: 10px;
+  }
+  .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast .toast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--nac-low); box-shadow: 0 0 8px var(--nac-low); }
+  .toast .url { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; color: var(--on-surface-variant); max-width: 460px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <a class="logo" href="index.html">Patrick Scanlan</a>
+        <span class="crumb-sep">/</span>
+        <span>Couloir</span>
+      </div>
+      <a class="back-link" href="index.html">Portfolio</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-eyebrow">iOS App &amp; Widget Design</div>
+      <h1>Cou<strong>loir</strong></h1>
+      <p class="hero-sub">Live avalanche danger ratings on your home screen, sourced directly from the National Avalanche Center.</p>
+    </div>
+    <div class="hero-meta">
+      <div class="hero-meta-grid">
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Type</div>
+          <div class="hero-meta-value">iOS App + Widget</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Domain</div>
+          <div class="hero-meta-value">Avalanche Safety</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Platform</div>
+          <div class="hero-meta-value">iOS 17+</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Year</div>
+          <div class="hero-meta-value">2025</div>
+        </div>
+        <div class="hero-meta-cell">
+          <div class="hero-meta-label">Stack</div>
+          <div class="hero-meta-value">Swift &middot; SwiftUI &middot; WidgetKit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 1: THE PROBLEM -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Checking the forecast is a <strong>five-tap problem.</strong></h2>
+    </div>
+    <div class="article-body">
+      <p>Avalanche education is unambiguous on one point: check the forecast before you go, every time. The rule is not negotiable, and it is not complicated. The practice is less clean.</p>
+      <p>Eighteen regional avalanche centers cover the United States, each with its own website, URL structure, and forecast format. Getting today's danger rating for your specific zone means opening a browser, navigating to the right center, and finding the day's forecast page, usually in a dark parking lot before dawn, on cold hands, with a group waiting and headlamps already on heads. The friction is small. Small friction applied consistently to a safety behavior is how that behavior quietly erodes.</p>
+      <div class="pull-quote">
+        <p>"The forecast is always published by the time you're heading out. The question is whether you actually look at it."</p>
+        <cite>Common refrain in avalanche education</cite>
+      </div>
+      <p>Couloir collapses the workflow to a glance. The current danger rating for any forecast zone in the US sits on your home screen, updates automatically, and taps through to the full forecast in one touch. The decision still belongs to the person going into the mountains. The information is just no longer three taps and a browser away.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 2: WIDGET + APP PREVIEW -->
+<section class="preview-section">
+  <div class="container">
+    <div class="preview-head">
+      <div class="preview-label">The Product</div>
+      <div class="preview-title">Zone browser, small widget, <strong>and medium widget.</strong></div>
+    </div>
+
+    <div class="phone-frames">
+
+      <!-- Frame 1: App list view -->
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <div class="mock-nav-title">Couloir</div>
+          <div class="mock-search">
+            <span class="mock-search-icon">&#9906;</span>
+            <span>Search zones or centers</span>
+          </div>
+
+          <div class="mock-section-label">Your Zones</div>
+          <div class="mock-zone-card">
+            <div class="mock-zone-dot danger-considerable" style="font-size:13px;">3</div>
+            <div class="mock-zone-info">
+              <div class="mock-zone-name">Presidential Range</div>
+              <div class="mock-zone-sub">MWAC &middot; New Hampshire</div>
+            </div>
+            <div class="mock-zone-action">&#x2605;</div>
+          </div>
+          <div class="mock-zone-card">
+            <div class="mock-zone-dot danger-high" style="font-size:13px;">4</div>
+            <div class="mock-zone-info">
+              <div class="mock-zone-name">Wasatch Range</div>
+              <div class="mock-zone-sub">UAC &middot; Utah</div>
+            </div>
+            <div class="mock-zone-action">&#x2605;</div>
+          </div>
+
+          <div class="mock-section-label">Avalanche Centers</div>
+          <div class="mock-center-row">
+            <div class="mock-center-left">
+              <div class="mock-center-name">CAIC</div>
+              <div class="mock-center-state">Colorado</div>
+            </div>
+            <div class="mock-center-right">
+              <div class="mock-center-dot danger-considerable"></div>
+              <div class="mock-center-chevron">&#8250;</div>
+            </div>
+          </div>
+          <div class="mock-center-row">
+            <div class="mock-center-left">
+              <div class="mock-center-name">MWAC</div>
+              <div class="mock-center-state">New Hampshire</div>
+            </div>
+            <div class="mock-center-right">
+              <div class="mock-center-dot danger-considerable"></div>
+              <div class="mock-center-chevron">&#8250;</div>
+            </div>
+          </div>
+          <div class="mock-center-row">
+            <div class="mock-center-left">
+              <div class="mock-center-name">NWAC</div>
+              <div class="mock-center-state">Washington</div>
+            </div>
+            <div class="mock-center-right">
+              <div class="mock-center-dot danger-moderate"></div>
+              <div class="mock-center-chevron">&#8250;</div>
+            </div>
+          </div>
+          <div class="mock-center-row">
+            <div class="mock-center-left">
+              <div class="mock-center-name">UAC</div>
+              <div class="mock-center-state">Utah</div>
+            </div>
+            <div class="mock-center-right">
+              <div class="mock-center-dot danger-high"></div>
+              <div class="mock-center-chevron">&#8250;</div>
+            </div>
+          </div>
+          <div class="mock-center-row" style="border-bottom:none;">
+            <div class="mock-center-left">
+              <div class="mock-center-name">GNFAC</div>
+              <div class="mock-center-state">Montana</div>
+            </div>
+            <div class="mock-center-right">
+              <div class="mock-center-dot danger-low"></div>
+              <div class="mock-center-chevron">&#8250;</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frame 2: Small widget on home screen -->
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" style="padding:10px;">
+          <div class="widget-phone-screen">
+            <!-- Top icon row -->
+            <div class="mock-icon-row" style="justify-content:flex-end; margin-bottom:14px;">
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+            </div>
+
+            <!-- Small widget + adjacent icon -->
+            <div style="display:flex; gap:8px; margin-bottom:8px; align-items:flex-start;">
+              <div class="w-card w-card-small">
+                <div class="w-glow glow-considerable"></div>
+                <div class="w-header">
+                  <div class="w-center-id"><span class="w-center-icon">&#9968;</span> MWAC</div>
+                  <div class="w-nac danger-considerable">3</div>
+                </div>
+                <div class="w-number color-considerable">3</div>
+                <div class="w-label">Considerable</div>
+                <div class="w-zone">Presidential Range</div>
+                <div class="w-updated">Updated 7:02 AM</div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="mock-icon"></div>
+                <div class="mock-icon"></div>
+              </div>
+            </div>
+
+            <!-- More icon rows -->
+            <div class="mock-icon-row" style="margin-bottom:8px;">
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+            </div>
+            <div class="mock-icon-row">
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+            </div>
+
+            <!-- Dock -->
+            <div style="margin-top:16px; background:rgba(255,255,255,0.07); border-radius:24px; padding:10px; display:flex; justify-content:center; gap:12px;">
+              <div class="mock-icon" style="border-radius:14px;"></div>
+              <div class="mock-icon" style="border-radius:14px;"></div>
+              <div class="mock-icon" style="border-radius:14px;"></div>
+              <div class="mock-icon" style="border-radius:14px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Frame 3: Medium widget on home screen -->
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen" style="padding:10px;">
+          <div class="widget-phone-screen">
+            <!-- Top icon row -->
+            <div class="mock-icon-row" style="margin-bottom:14px;">
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+            </div>
+
+            <!-- Medium widget (full width) -->
+            <div class="w-card w-card-medium" style="width:100%; margin-bottom:8px;">
+              <div class="w-glow glow-high"></div>
+              <div class="w-left-col">
+                <div class="w-center-id" style="margin-bottom:auto;"><span class="w-center-icon">&#9968;</span> UAC</div>
+                <div class="w-nac-lg danger-high" style="margin-top:auto;">4</div>
+                <div class="w-label">High</div>
+                <div class="w-zone">Wasatch Range</div>
+              </div>
+              <div class="w-divider"></div>
+              <div class="w-right-col">
+                <div class="w-advice">Very dangerous avalanche conditions. Travel in avalanche terrain not recommended.</div>
+              </div>
+            </div>
+
+            <!-- Icon rows below -->
+            <div class="mock-icon-row" style="margin-bottom:8px;">
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+            </div>
+            <div class="mock-icon-row" style="margin-bottom:8px;">
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+              <div class="mock-icon"></div>
+            </div>
+
+            <!-- Dock -->
+            <div style="margin-top:16px; background:rgba(255,255,255,0.07); border-radius:24px; padding:10px; display:flex; justify-content:center; gap:12px;">
+              <div class="mock-icon" style="border-radius:14px;"></div>
+              <div class="mock-icon" style="border-radius:14px;"></div>
+              <div class="mock-icon" style="border-radius:14px;"></div>
+              <div class="mock-icon" style="border-radius:14px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTIVE DEMO -->
+<section class="section" id="demo">
+  <div class="container">
+    <div class="section-head">
+      <div class="label">Interactive Demo</div>
+      <h2>Browse every center, <strong>every zone.</strong></h2>
+    </div>
+    <div class="article-body" style="margin-bottom:var(--space-lg);">
+      <p>The avalanche centers are closed for the summer, so this prototype runs on a representative sample dataset modeled on mid-January conditions across all 18 US forecasting centers. Every NAPADS danger level is present. Tap a center to expand its zones, tap any zone card or widget to see the forecast URL it would open in your browser. The widgets update live as you save zones.</p>
+      <div class="proto-controls">
+        <button id="playTour">Play guided tour &#x2197;</button>
+        <button class="muted" id="resetDemo">Reset demo</button>
+        <span class="tour-step" id="tourStep"></span>
+      </div>
+    </div>
+
+    <div class="stage">
+      <!-- Phone -->
+      <div class="phone">
+        <div class="screen">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span style="display:flex; gap:6px; align-items:center;">
+              <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><path d="M14 0H2C0.9 0 0 0.9 0 2v7c0 1.1 0.9 2 2 2h12c1.1 0 2-0.9 2-2V2c0-1.1-0.9-2-2-2zm0 9H2V2h12v7z" fill="white"/></svg>
+              <span style="font-size:11px;">100%</span>
+            </span>
+          </div>
+          <div class="nav-title">Couloir</div>
+          <div class="search-bar">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M11 6.5a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm-.74 4.43a6 6 0 111.06-1.06l3.4 3.4a.75.75 0 11-1.06 1.07l-3.4-3.4z" fill="currentColor"/></svg>
+            <input id="searchInput" type="text" placeholder="Search zones or centers" autocomplete="off">
+          </div>
+          <div class="feed" id="feed"></div>
+        </div>
+      </div>
+
+      <!-- Widget panel -->
+      <div class="widget-panel">
+        <h2>Home-screen widgets</h2>
+        <p class="hint">The widget reflects your first saved zone. Tap either widget to see which URL would open in your browser.</p>
+        <div class="demo-widget-row" id="widgetRow"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: DESIGN DECISIONS -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Safety communication has an <strong>established visual language.</strong></h2>
+    </div>
+    <div class="article-body">
+      <p>Every design decision in Couloir was made relative to one constraint: this is avalanche safety information, not a general-purpose weather app. The people who use it have spent time in avalanche education courses. They already know what the colors mean. The widget's job is to surface that information faithfully, not to reinvent the presentation.</p>
+
+      <h3>NAPADS Fidelity</h3>
+      <p>The North American Public Avalanche Danger Scale has official hex values, standardized iconography, and established terminology published by the National Avalanche Center. Couloir uses all of them verbatim: <strong>#50B848</strong> for Low, <strong>#FFF200</strong> for Moderate, <strong>#F7941E</strong> for Considerable, <strong>#ED1C24</strong> for High, and <strong>#231F20</strong> for Extreme. The danger icons on each widget tile are the official NAC rose icons, not custom illustrations.</p>
+
+      <div class="callout">
+        <div class="callout-label">A Detail That Matters</div>
+        <p>Moderate is the only danger level with a yellow (#FFF200) background, which requires black foreground text instead of white. This is specified in the official NAPADS color guidance and easy to overlook in implementation. Getting it wrong means reduced contrast on the one level where the color already demands the most careful treatment.</p>
+      </div>
+
+      <h3>Smart Refresh Timing</h3>
+      <p>WidgetKit widgets don't update continuously. They request a refresh on a schedule, and iOS decides when to actually execute it. The cadence has to be deliberate. Most avalanche centers publish their forecasts between 7 and 9 AM. Couloir requests a refresh every two hours during the 6–11 AM window, when a new forecast has likely dropped and you're making trip decisions. Outside that window, the interval extends to four hours. Forecasts don't change intraday. The expensive widget wake is concentrated where it earns its cost.</p>
+
+      <h3>Widget Tap Behavior</h3>
+      <p>Tapping either widget opens the full forecast for that zone in the browser, not just the app. The widget link resolves to the canonical forecast page for the selected center. For MWAC, the NAC API returns a generic link that doesn't deep-link to the Presidential Range forecast specifically. That case is caught at the model layer and overridden with the correct URL, so tapping the MWAC widget actually lands where it should.</p>
+
+      <h3>Graceful Degradation</h3>
+      <p>If the API is unreachable when the widget attempts a refresh, which is a reasonable thing to expect in a trailhead parking lot with two bars of LTE, the widget falls back to the last-cached forecast. The cached danger rating and travel advice are still displayed, along with the time it was last updated. A forecast from three hours ago is still decision-relevant. A blank widget at 6 AM is not.</p>
+
+      <h3>The Medium Widget's Travel Advice</h3>
+      <p>The wider medium widget has room for a second column, and the obvious choice would be to display the zone-specific advisory text from the API. The problem is that zone-specific text is written for reading, not scanning. It varies in length, changes its level of detail inconsistently between centers, and doesn't fit predictably in a fixed widget area.</p>
+      <p>Instead, the medium widget shows the canonical NAPADS travel advice for the current danger level. This text is short by design, written to be scanned, and consistent across every level. "Very dangerous avalanche conditions. Travel in avalanche terrain not recommended." Eight words and a period. That's what High means, in the same language used in every avalanche education program in the country. The full zone-specific advisory is one tap away.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: BUILD DETAILS -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Build <strong>details.</strong></h2>
+    </div>
+    <div class="article-body">
+      <div class="spec-table-wrap">
+        <table class="spec-table">
+          <tr>
+            <td>Platform</td>
+            <td>iOS 17+ (required for <code>AppIntentConfiguration</code> in WidgetKit)</td>
+          </tr>
+          <tr>
+            <td>Framework</td>
+            <td>SwiftUI for both the companion app and widget views. WidgetKit for the widget extension. AppIntents for interactive widget configuration.</td>
+          </tr>
+          <tr>
+            <td>Data Source</td>
+            <td>National Avalanche Center public API at <code>api.avalanche.org/v2/public</code>. GeoJSON map-layer endpoint returns all active forecast zones with current danger levels, travel advice, and forecast timestamps.</td>
+          </tr>
+          <tr>
+            <td>Data Sharing</td>
+            <td>App Groups (<code>group.com.couloir.shared</code>) via <code>UserDefaults</code>. The <code>ForecastStore</code> actor manages saved zones and cached forecast data accessible to both the companion app and widget extension.</td>
+          </tr>
+          <tr>
+            <td>Widget Sizes</td>
+            <td>
+              <span class="spec-tag">Small (2&times;2)</span>
+              <span class="spec-tag">Medium (4&times;2)</span>
+            </td>
+          </tr>
+          <tr>
+            <td>Configuration</td>
+            <td><code>SelectZoneIntent</code> (AppIntent) + <code>AvalancheZoneEntity</code> + <code>AvalancheZoneQuery</code>. Zones populated from saved favorites in the companion app, with fallback to a full center fetch for first-time configuration.</td>
+          </tr>
+          <tr>
+            <td>Refresh</td>
+            <td>2-hour interval during 6–11 AM. 4-hour interval all other hours. Controlled via WidgetKit's <code>Timeline</code> policy with a computed <code>nextUpdate</code> date.</td>
+          </tr>
+          <tr>
+            <td>Coverage</td>
+            <td>18 US avalanche centers: BTAC, CAIC, CBAC, CNFAIC, ESAC, FAC, GNFAC, IPAC, KPAC, MSAC, MWAC, NWAC, PAC, SAC, SNFAC, UAC, WAC, WCMAC.</td>
+          </tr>
+          <tr>
+            <td>Assets</td>
+            <td>Official NAPADS danger rose icons from the National Avalanche Center, adapted for light and dark rendering. Danger-level colors per the NAC published hex specification.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: CONSTRAINTS -->
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Platform constraints, <strong>honestly stated.</strong></h2>
+    </div>
+    <div class="article-body">
+      <p>Couloir was built for a specific use case on a specific platform. The limitations below are direct consequences of its architecture, not oversights.</p>
+      <div class="constraints-rows">
+        <div class="constraint-item">
+          <div class="constraint-num">01</div>
+          <div class="constraint-title">iOS Only</div>
+          <div class="constraint-body">WidgetKit is an Apple framework. Android users cannot install this widget. Building a cross-platform equivalent would require a fundamentally different architecture, likely a web-based widget or a separate native build.</div>
+        </div>
+        <div class="constraint-item">
+          <div class="constraint-num">02</div>
+          <div class="constraint-title">US Centers Only</div>
+          <div class="constraint-body">Coverage is limited to the 18 centers in the NAC public API. Canadian, European, and other international avalanche forecasting systems use different APIs and different danger scale conventions. Adding them would require additional API clients and careful handling of non-NAPADS scale variants.</div>
+        </div>
+        <div class="constraint-item">
+          <div class="constraint-num">03</div>
+          <div class="constraint-title">No Hazard-Change Notifications</div>
+          <div class="constraint-body">WidgetKit widgets pull data on a schedule; they cannot push a notification when a danger level changes. A significant overnight upgrade, say Considerable to High after new storm snow, will not alert you. The widget reflects the current rating whenever iOS refreshes it. Monitoring for changes and alerting would require a different delivery mechanism entirely.</div>
+        </div>
+        <div class="constraint-item">
+          <div class="constraint-num">04</div>
+          <div class="constraint-title">Companion App Required</div>
+          <div class="constraint-body">The widget depends on the companion app to save zones before configuration is possible. A bare widget installation, without ever opening the app, presents only a "Select a Zone" placeholder. The companion app doubles as a full zone browser and forecast reader, so this is a useful relationship, but it is a dependency.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-grid">
+      <div class="cta-label">The Project</div>
+      <div class="cta-body">
+        <h2>Built for the <strong>backcountry.</strong></h2>
+        <p>Couloir is a personal tool, built because the thing didn't exist, distributed with a step-by-step Xcode setup guide so anyone can run it on their own device. No App Store account required.</p>
+        <div class="cta-links">
+          <a class="cta-link alt" href="index.html">Back to Portfolio</a>
+          <a class="cta-link alt" href="mailto:patrick@gravitystrategy.co">Get in touch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast">
+  <span class="toast-dot"></span>
+  <span>Opens in browser:</span>
+  <span class="url" id="toastUrl"></span>
+</div>
+
+<script>
+const SAMPLE = [
+  { id: "CNFAIC_Turnagain", center: "CNFAIC", centerName: "Chugach National Forest Avalanche Center", state: "AK", zone: "Turnagain", level: 4 },
+  { id: "CNFAIC_Girdwood",  center: "CNFAIC", centerName: "Chugach National Forest Avalanche Center", state: "AK", zone: "Girdwood Valley", level: 3 },
+  { id: "CNFAIC_Summit",    center: "CNFAIC", centerName: "Chugach National Forest Avalanche Center", state: "AK", zone: "Summit Lake", level: 3 },
+  { id: "BTAC_Teton",    center: "BTAC", centerName: "Bridger-Teton Avalanche Center", state: "WY", zone: "Teton Range", level: 3 },
+  { id: "BTAC_Togwotee", center: "BTAC", centerName: "Bridger-Teton Avalanche Center", state: "WY", zone: "Togwotee Pass", level: 2 },
+  { id: "BTAC_Greys",    center: "BTAC", centerName: "Bridger-Teton Avalanche Center", state: "WY", zone: "Greys River", level: 2 },
+  { id: "CAIC_FrontRange",   center: "CAIC", centerName: "Colorado Avalanche Information Center", state: "CO", zone: "Front Range", level: 3 },
+  { id: "CAIC_Vail",         center: "CAIC", centerName: "Colorado Avalanche Information Center", state: "CO", zone: "Vail & Summit County", level: 2 },
+  { id: "CAIC_Aspen",        center: "CAIC", centerName: "Colorado Avalanche Information Center", state: "CO", zone: "Aspen", level: 4 },
+  { id: "CAIC_NorthSanJuan", center: "CAIC", centerName: "Colorado Avalanche Information Center", state: "CO", zone: "Northern San Juan", level: 3 },
+  { id: "CAIC_SouthSanJuan", center: "CAIC", centerName: "Colorado Avalanche Information Center", state: "CO", zone: "Southern San Juan", level: 3 },
+  { id: "CAIC_Steamboat",    center: "CAIC", centerName: "Colorado Avalanche Information Center", state: "CO", zone: "Steamboat & Flat Tops", level: 2 },
+  { id: "CAIC_Sangre",       center: "CAIC", centerName: "Colorado Avalanche Information Center", state: "CO", zone: "Sangre de Cristo", level: 2 },
+  { id: "CBAC_CB",   center: "CBAC",  centerName: "Crested Butte Avalanche Center",         state: "CO", zone: "Crested Butte",      level: 3 },
+  { id: "ESAC_East", center: "ESAC",  centerName: "Eastern Sierra Avalanche Center",         state: "CA", zone: "Eastern Sierra",     level: 1 },
+  { id: "FAC_White", center: "FAC",   centerName: "Flathead Avalanche Center",               state: "MT", zone: "Whitefish Range",    level: 2 },
+  { id: "FAC_Flat",  center: "FAC",   centerName: "Flathead Avalanche Center",               state: "MT", zone: "Flathead Range",     level: 2 },
+  { id: "GNFAC_NMad",  center: "GNFAC", centerName: "Gallatin National Forest Avalanche Center", state: "MT", zone: "Northern Madison",  level: 2 },
+  { id: "GNFAC_SMad",  center: "GNFAC", centerName: "Gallatin National Forest Avalanche Center", state: "MT", zone: "Southern Madison",  level: 3 },
+  { id: "GNFAC_Lion",  center: "GNFAC", centerName: "Gallatin National Forest Avalanche Center", state: "MT", zone: "Lionhead",          level: 3 },
+  { id: "GNFAC_NGal",  center: "GNFAC", centerName: "Gallatin National Forest Avalanche Center", state: "MT", zone: "Northern Gallatin", level: 2 },
+  { id: "IPAC_Pan",  center: "IPAC",  centerName: "Idaho Panhandle Avalanche Center",        state: "ID", zone: "Idaho Panhandle",    level: 2 },
+  { id: "KPAC_Kach", center: "KPAC",  centerName: "Kachina Peaks Avalanche Center",          state: "AZ", zone: "Kachina Peaks",      level: 1 },
+  { id: "MSAC_Sha",  center: "MSAC",  centerName: "Mount Shasta Avalanche Center",           state: "CA", zone: "Mount Shasta",       level: 1 },
+  { id: "MWAC_Pres", center: "MWAC",  centerName: "Mount Washington Avalanche Center",       state: "NH", zone: "Presidential Range", level: 2 },
+  { id: "NWAC_Baker",   center: "NWAC", centerName: "Northwest Avalanche Center", state: "WA", zone: "West Slopes North (Mt. Baker)",   level: 4 },
+  { id: "NWAC_WCent",   center: "NWAC", centerName: "Northwest Avalanche Center", state: "WA", zone: "West Slopes Central (Stevens)",   level: 3 },
+  { id: "NWAC_WSouth",  center: "NWAC", centerName: "Northwest Avalanche Center", state: "WA", zone: "West Slopes South (Crystal)",     level: 2 },
+  { id: "NWAC_ECent",   center: "NWAC", centerName: "Northwest Avalanche Center", state: "WA", zone: "East Slopes Central",             level: 2 },
+  { id: "NWAC_Olym",    center: "NWAC", centerName: "Northwest Avalanche Center", state: "WA", zone: "Olympics",                        level: 1 },
+  { id: "PAC_Pay",   center: "PAC",   centerName: "Payette Avalanche Center",                state: "ID", zone: "Payette",            level: 2 },
+  { id: "SAC_Cent",  center: "SAC",   centerName: "Sierra Avalanche Center",                 state: "CA", zone: "Central Sierra Nevada", level: 1 },
+  { id: "SNFAC_Saw", center: "SNFAC", centerName: "Sawtooth Avalanche Center",               state: "ID", zone: "Sawtooth & Western Smoky", level: 2 },
+  { id: "UAC_SLC",   center: "UAC",   centerName: "Utah Avalanche Center", state: "UT", zone: "Salt Lake", level: 3 },
+  { id: "UAC_Provo", center: "UAC",   centerName: "Utah Avalanche Center", state: "UT", zone: "Provo",     level: 2 },
+  { id: "UAC_Logan", center: "UAC",   centerName: "Utah Avalanche Center", state: "UT", zone: "Logan",     level: 2 },
+  { id: "UAC_Sky",   center: "UAC",   centerName: "Utah Avalanche Center", state: "UT", zone: "Skyline",   level: 3 },
+  { id: "UAC_Uin",   center: "UAC",   centerName: "Utah Avalanche Center", state: "UT", zone: "Uintas",    level: 2 },
+  { id: "UAC_Moab",  center: "UAC",   centerName: "Utah Avalanche Center", state: "UT", zone: "Moab",      level: 1 },
+  { id: "WAC_Wall",  center: "WAC",   centerName: "Wallowa Avalanche Center",                state: "OR", zone: "Wallowa",            level: 2 },
+  { id: "WCMAC_WC",  center: "WCMAC", centerName: "West Central Montana Avalanche Center",   state: "MT", zone: "West Central Montana", level: 2 },
+];
+
+const CENTER_URLS = {
+  "BTAC":"https://www.jhavalanche.org","CAIC":"https://avalanche.state.co.us",
+  "CBAC":"https://cbavalanchecenter.org","CNFAIC":"https://www.cnfaic.org",
+  "ESAC":"https://www.esavalanche.org","FAC":"https://www.flatheadavalanche.org",
+  "GNFAC":"https://www.mtavalanche.com","IPAC":"https://www.idahopanhandleavalanche.org",
+  "KPAC":"https://kachinapeaks.org","MSAC":"https://www.shastaavalanche.org",
+  "MWAC":"https://www.mountwashingtonavalanchecenter.org/forecasts/#/presidential-range",
+  "NWAC":"https://nwac.us","PAC":"https://payetteavalanche.org",
+  "SAC":"https://www.sierraavalanchecenter.org","SNFAC":"https://www.sawtoothavalanche.com",
+  "UAC":"https://utahavalanchecenter.org","WAC":"https://wallowaavalanchecenter.org",
+  "WCMAC":"https://www.missoulaavalanche.org",
+};
+
+const LEVEL_LABEL = {0:"No Rating",1:"Low",2:"Moderate",3:"Considerable",4:"High",5:"Extreme"};
+const HEADLINE = {
+  0:"No avalanche forecast is currently available for this zone.",
+  1:"Generally safe avalanche conditions. Watch for unstable snow on isolated terrain features.",
+  2:"Heightened avalanche conditions on specific terrain features. Evaluate snow and terrain carefully; identify features of concern.",
+  3:"Dangerous avalanche conditions. Careful snowpack evaluation, cautious route-finding, and conservative decision-making essential.",
+  4:"Very dangerous avalanche conditions. Travel in avalanche terrain not recommended.",
+  5:"Avoid all avalanche terrain.",
+};
+const ICON_PATHS = {
+  0:"couloir-icons/danger-no-rating.png",
+  1:"couloir-icons/danger-1-low.png",
+  2:"couloir-icons/danger-2-moderate.png",
+  3:"couloir-icons/danger-3-considerable.png",
+  4:"couloir-icons/danger-4-high.png",
+  5:"couloir-icons/danger-5-extreme.png",
+};
+
+let saved = new Set(["UAC_SLC","MWAC_Pres","BTAC_Teton"]);
+let expanded = new Set();
+let searchQ = "";
+
+const feedEl = document.getElementById("feed");
+const widgetRowEl = document.getElementById("widgetRow");
+const searchInputEl = document.getElementById("searchInput");
+const toastEl = document.getElementById("toast");
+const toastUrlEl = document.getElementById("toastUrl");
+
+function escapeHtml(s) {
+  return (s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':'&quot;',"\'":"&#39;"}[c]));
+}
+
+function badge(level, size) {
+  const lvl = level||0;
+  const cls = size ? "badge "+size : "badge";
+  return `<div class="${cls}"><img src="${ICON_PATHS[lvl]||ICON_PATHS[0]}" alt="${LEVEL_LABEL[lvl]} danger"/></div>`;
+}
+
+function forecastURL(z) {
+  return z.center==="MWAC" ? CENTER_URLS.MWAC : (CENTER_URLS[z.center]||"#");
+}
+
+function renderZoneCard(z) {
+  const isSaved = saved.has(z.id);
+  const nacKey = ["","low","moderate","considerable","high","extreme"][z.level||1]||"low";
+  const savedColor = `var(--nac-${nacKey})`;
+  return `<div class="zone-card" data-zone="${z.id}" data-action="open">
+    <div class="hazard-bg lvl-${z.level||0}"></div>
+    ${badge(z.level)}
+    <div class="info">
+      <div class="zone-name">${escapeHtml(z.zone)} <span class="arrow">&#x2197;</span></div>
+      <div class="meta">
+        <span style="font-weight:600">${z.center}</span>
+        <span class="dot">&bull;</span>
+        <span class="level level-color-${z.level||0}">${LEVEL_LABEL[z.level||0]}</span>
+        <span class="dot">&bull;</span>
+        <span>${z.state}</span>
+      </div>
+      <div class="advice">${HEADLINE[z.level||0]}</div>
+    </div>
+    <button class="save-btn${isSaved?" saved":""}" data-action="toggleSave" data-zone="${z.id}" style="--saved-color:${savedColor}" aria-label="${isSaved?"Unsave":"Save"}">${isSaved?"&#x2713;":"+"}</button>
+  </div>`;
+}
+
+const AVAILABLE_CENTERS = (() => {
+  const m={};
+  for (const z of SAMPLE) if (!m[z.center]) m[z.center]={name:z.centerName,state:z.state};
+  return m;
+})();
+
+function renderCenterRow(cid, zones) {
+  const peak = Math.max(0,...zones.map(z=>z.level));
+  const isOpen = expanded.has(cid);
+  const meta = AVAILABLE_CENTERS[cid]||{};
+  return `<div class="center-row-item${isOpen?" expanded":""}" data-center="${cid}" data-action="toggleCenter">
+    <div class="hazard-bg lvl-${peak}"></div>
+    ${badge(peak,"small")}
+    <div class="meta">
+      <div class="title-row"><span>${cid}</span><span class="state">${meta.state||zones[0].state}</span></div>
+      <div class="center-name">${escapeHtml(meta.name||zones[0].centerName)}</div>
+      <div class="summary">${zones.length} ${zones.length===1?"zone":"zones"}${peak>0?` <span style="opacity:.5">&bull;</span> <span class="peak level-color-${peak}">${LEVEL_LABEL[peak]}</span>`:""}</div>
+    </div>
+    <span class="chevron">&#x25BC;</span>
+  </div>
+  <div class="zone-list${isOpen?" open":""}" id="zl-${cid}">${zones.map(z=>renderZoneCard(z)).join("")}</div>`;
+}
+
+function renderFeed() {
+  const savedZones = SAMPLE.filter(z=>saved.has(z.id));
+  const q = searchQ.trim().toLowerCase();
+  let html = "";
+  if (savedZones.length) {
+    html += `<div class="feed-section-header">Your Zones</div>`;
+    html += savedZones.map(z=>renderZoneCard(z)).join("");
+  }
+  if (q==="") {
+    html += `<div class="feed-section-header">Avalanche Centers</div>`;
+    const grouped={};
+    for (const z of SAMPLE) (grouped[z.center]=grouped[z.center]||[]).push(z);
+    for (const c of Object.keys(grouped).sort()) {
+      html += renderCenterRow(c, grouped[c].slice().sort((a,b)=>a.zone.localeCompare(b.zone)));
+    }
+  } else {
+    html += `<div class="feed-section-header">Search Results</div>`;
+    const matches = SAMPLE.filter(z=>
+      z.zone.toLowerCase().includes(q)||z.center.toLowerCase().includes(q)||
+      z.centerName.toLowerCase().includes(q)||z.state.toLowerCase().includes(q)
+    );
+    html += matches.length ? matches.map(z=>renderZoneCard(z)).join("") : `<div class="empty-search">No zones match "${escapeHtml(q)}"</div>`;
+  }
+  feedEl.innerHTML = html;
+}
+
+function renderWidgets() {
+  const z = SAMPLE.find(s=>saved.has(s.id))||{center:"—",zone:"Select a Zone",level:0};
+  const url = z.id ? forecastURL(z) : "#";
+  const lvl = z.level||0;
+  const time = new Date().toLocaleTimeString([],{hour:"numeric",minute:"2-digit"});
+  widgetRowEl.innerHTML = `
+    <div class="demo-widget small" data-url="${url}">
+      <div class="hazard-bg lvl-${lvl}"></div>
+      <div class="header-row"><span class="center-tag">&#x26F0; ${z.center}</span>${badge(lvl,"tiny")}</div>
+      <div class="num-big level-color-${lvl}">${lvl||"?"}</div>
+      <div class="level-label">${LEVEL_LABEL[lvl]}</div>
+      <div class="zone-label">${escapeHtml(z.zone||"")}</div>
+      <div class="timestamp">UPDATED ${time}</div>
+    </div>
+    <div class="demo-widget medium" data-url="${url}">
+      <div class="hazard-bg lvl-${lvl}"></div>
+      <div class="left-col">
+        <span class="center-tag">&#x26F0; ${z.center}</span>
+        <div class="num-medium">${badge(lvl,"big")}</div>
+        <div class="level-label">${LEVEL_LABEL[lvl]}</div>
+        <div class="zone-label" style="text-transform:uppercase;font-size:9px;letter-spacing:.6px">${escapeHtml(z.zone||"")}</div>
+      </div>
+      <div class="divider"></div>
+      <div class="right-col">${HEADLINE[lvl]}</div>
+    </div>`;
+}
+
+let toastTimer;
+function showToast(url) {
+  toastUrlEl.textContent = url;
+  toastEl.classList.add("visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toastEl.classList.remove("visible"), 2400);
+}
+
+feedEl.addEventListener("click", e => {
+  const t = e.target.closest("[data-action]");
+  if (!t) return;
+  e.stopPropagation();
+  if (t.dataset.action==="toggleCenter") {
+    const c=t.dataset.center;
+    expanded.has(c)?expanded.delete(c):expanded.add(c);
+    renderFeed();
+  } else if (t.dataset.action==="toggleSave") {
+    e.preventDefault();
+    const id=t.dataset.zone;
+    saved.has(id)?saved.delete(id):saved.add(id);
+    renderFeed(); renderWidgets();
+  } else if (t.dataset.action==="open") {
+    const z=SAMPLE.find(s=>s.id===t.dataset.zone);
+    if (z) showToast(forecastURL(z));
+  }
+});
+
+widgetRowEl.addEventListener("click", e => {
+  const w=e.target.closest(".demo-widget");
+  if (w) showToast(w.dataset.url);
+});
+
+searchInputEl.addEventListener("input", e=>{ searchQ=e.target.value; renderFeed(); });
+
+function resetDemo() {
+  saved=new Set(["UAC_SLC","MWAC_Pres","BTAC_Teton"]);
+  expanded=new Set(); searchQ=""; searchInputEl.value="";
+  renderFeed(); renderWidgets();
+}
+document.getElementById("resetDemo").addEventListener("click", resetDemo);
+
+// Guided tour
+const TOUR = [
+  {msg:"Welcome. Saved zones appear at top; all 18 centers are listed below.",action:()=>{}},
+  {msg:"Tap a center to expand its zones. Opening CAIC…",action:()=>{expanded.add("CAIC");renderFeed();const r=feedEl.querySelector('[data-center="CAIC"]');if(r)r.scrollIntoView({behavior:"smooth",block:"start"});}},
+  {msg:"Each zone shows the official NAC badge and NAPADS travel advice.",action:()=>{const c=feedEl.querySelector('[data-zone="CAIC_Aspen"]');if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.style.boxShadow="0 0 0 2px var(--nac-low)";setTimeout(()=>c.style.boxShadow="",1200);}}},
+  {msg:"Tap + to save Aspen to your zones…",action:()=>{saved.add("CAIC_Aspen");renderFeed();renderWidgets();}},
+  {msg:"MWAC deep-links to the Presidential Range forecast directly.",action:()=>{showToast(CENTER_URLS.MWAC);}},
+  {msg:"Search filters across all centers and zones. Trying ‘sierra’…",action:()=>{searchQ="sierra";searchInputEl.value="sierra";renderFeed();}},
+  {msg:"Widgets always reflect your first saved zone. Tap to open the forecast.",action:()=>{searchQ="";searchInputEl.value="";renderFeed();document.getElementById("demo").scrollIntoView({behavior:"smooth",block:"start"});}},
+  {msg:"Tour complete. Hit Reset to start fresh.",action:()=>{}},
+];
+let tourIdx=0, tourTimer=null;
+
+document.getElementById("playTour").addEventListener("click",()=>{
+  if (tourTimer) {
+    clearTimeout(tourTimer); tourTimer=null; tourIdx=0;
+    document.getElementById("tourStep").textContent="";
+    document.getElementById("playTour").textContent="Play guided tour ↗";
+    return;
+  }
+  document.getElementById("playTour").textContent="Stop tour";
+  resetDemo(); tourIdx=0; runTour();
+});
+
+function runTour() {
+  if (tourIdx>=TOUR.length) {
+    document.getElementById("tourStep").textContent="";
+    document.getElementById("playTour").textContent="Play guided tour ↗";
+    tourIdx=0; return;
+  }
+  const step=TOUR[tourIdx];
+  document.getElementById("tourStep").textContent=`Step ${tourIdx+1}/${TOUR.length}: ${step.msg}`;
+  step.action(); tourIdx++;
+  tourTimer=setTimeout(runTour,2800);
+}
+
+renderFeed();
+renderWidgets();
+</script>
+
+
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span>&copy; 2026 Gravity Strategy</span>
+      <a href="https://www.gravitystrategy.co">gravitystrategy.co</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
