@@ -719,23 +719,7 @@
     letter-spacing: var(--tracking-wide); color: var(--color-text-muted); margin: 0;
   }
   .widget-panel .hint { font-size: 0.98rem; color: var(--color-text-muted); margin: 0; line-height: 1.6; max-width: 520px; }
-  .proto-controls {
-    display: flex; gap: var(--space-lg); align-items: baseline;
-    margin-top: var(--space-md); font-size: 0.82rem;
-    letter-spacing: var(--tracking-wide); text-transform: uppercase; font-weight: 600;
-  }
-  .proto-controls button {
-    background: none; border: none; padding: 0; font-family: inherit;
-    font-size: inherit; font-weight: inherit; letter-spacing: inherit; text-transform: inherit;
-    cursor: pointer; color: var(--color-accent); transition: var(--transition-fade);
-  }
-  .proto-controls button:hover { opacity: 0.7; }
-  .proto-controls button.muted { color: var(--color-text-muted); }
-  .proto-controls button.muted:hover { color: var(--color-text-main); }
-  .proto-controls .tour-step {
-    color: var(--color-text-muted); font-weight: 400; text-transform: none;
-    letter-spacing: var(--tracking-normal); font-size: 0.9rem; flex: 1; min-width: 0;
-  }
+
   .phone {
     background: #111; border-radius: 46px; padding: 12px;
     box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 0 0 2px #2a2a2a;
@@ -916,7 +900,7 @@
       <p>Avalanche education is unambiguous on one point: check the forecast before you go, every time. The rule is not negotiable, and it is not complicated. The practice is less clean.</p>
       <p>Eighteen regional avalanche centers cover the United States, each with its own website, URL structure, and forecast format. Getting today's danger rating for your specific zone means opening a browser, navigating to the right center, and finding the day's forecast page, usually in a dark parking lot before dawn, on cold hands, with a group waiting and headlamps already on heads. The friction is small. Small friction applied consistently to a safety behavior is how that behavior quietly erodes.</p>
       <div class="pull-quote">
-        <p>"The forecast is always published by the time you're heading out. The question is whether you actually look at it."</p>
+        <p>"The forecast is often published by the time you're heading out. The question is whether you actually look at it."</p>
         <cite>Common refrain in avalanche education</cite>
       </div>
       <p>Couloir collapses the workflow to a glance. The current danger rating for any forecast zone in the US sits on your home screen, updates automatically, and taps through to the full forecast in one touch. The decision still belongs to the person going into the mountains. The information is just no longer three taps and a browser away.</p>
@@ -1135,15 +1119,10 @@
   <div class="container">
     <div class="section-head">
       <div class="label">Interactive Demo</div>
-      <h2>Browse every center, <strong>every zone.</strong></h2>
+      <h2>Checking the forecast is a multi-tap problem.</h2>
     </div>
     <div class="article-body" style="margin-bottom:var(--space-lg);">
       <p>The avalanche centers are closed for the summer, so this prototype runs on a representative sample dataset modeled on mid-January conditions across all 18 US forecasting centers. Every NAPADS danger level is present. Tap a center to expand its zones, tap any zone card or widget to see the forecast URL it would open in your browser. The widgets update live as you save zones.</p>
-      <div class="proto-controls">
-        <button id="playTour">Play guided tour &#x2197;</button>
-        <button class="muted" id="resetDemo">Reset demo</button>
-        <span class="tour-step" id="tourStep"></span>
-      </div>
     </div>
 
     <div class="stage">
@@ -1556,43 +1535,6 @@ function resetDemo() {
   saved=new Set(["UAC_SLC","MWAC_Pres","BTAC_Teton"]);
   expanded=new Set(); searchQ=""; searchInputEl.value="";
   renderFeed(); renderWidgets();
-}
-document.getElementById("resetDemo").addEventListener("click", resetDemo);
-
-// Guided tour
-const TOUR = [
-  {msg:"Welcome. Saved zones appear at top; all 18 centers are listed below.",action:()=>{}},
-  {msg:"Tap a center to expand its zones. Opening CAIC…",action:()=>{expanded.add("CAIC");renderFeed();const r=feedEl.querySelector('[data-center="CAIC"]');if(r)r.scrollIntoView({behavior:"smooth",block:"start"});}},
-  {msg:"Each zone shows the official NAC badge and NAPADS travel advice.",action:()=>{const c=feedEl.querySelector('[data-zone="CAIC_Aspen"]');if(c){c.scrollIntoView({behavior:"smooth",block:"center"});c.style.boxShadow="0 0 0 2px var(--nac-low)";setTimeout(()=>c.style.boxShadow="",1200);}}},
-  {msg:"Tap + to save Aspen to your zones…",action:()=>{saved.add("CAIC_Aspen");renderFeed();renderWidgets();}},
-  {msg:"MWAC deep-links to the Presidential Range forecast directly.",action:()=>{showToast(CENTER_URLS.MWAC);}},
-  {msg:"Search filters across all centers and zones. Trying ‘sierra’…",action:()=>{searchQ="sierra";searchInputEl.value="sierra";renderFeed();}},
-  {msg:"Widgets always reflect your first saved zone. Tap to open the forecast.",action:()=>{searchQ="";searchInputEl.value="";renderFeed();document.getElementById("demo").scrollIntoView({behavior:"smooth",block:"start"});}},
-  {msg:"Tour complete. Hit Reset to start fresh.",action:()=>{}},
-];
-let tourIdx=0, tourTimer=null;
-
-document.getElementById("playTour").addEventListener("click",()=>{
-  if (tourTimer) {
-    clearTimeout(tourTimer); tourTimer=null; tourIdx=0;
-    document.getElementById("tourStep").textContent="";
-    document.getElementById("playTour").textContent="Play guided tour ↗";
-    return;
-  }
-  document.getElementById("playTour").textContent="Stop tour";
-  resetDemo(); tourIdx=0; runTour();
-});
-
-function runTour() {
-  if (tourIdx>=TOUR.length) {
-    document.getElementById("tourStep").textContent="";
-    document.getElementById("playTour").textContent="Play guided tour ↗";
-    tourIdx=0; return;
-  }
-  const step=TOUR[tourIdx];
-  document.getElementById("tourStep").textContent=`Step ${tourIdx+1}/${TOUR.length}: ${step.msg}`;
-  step.action(); tourIdx++;
-  tourTimer=setTimeout(runTour,2800);
 }
 
 renderFeed();
