@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TrackPush / Gravity Strategy Portfolio</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700;1,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,700;1,800&family=Barlow:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --color-bg: #F9F9F8;
@@ -507,6 +508,19 @@
   }
   .constraint-body { color: var(--color-text-muted); font-size: 1rem; line-height: 1.65; }
 
+  /* ---- Inline CTA ---- */
+  .inline-cta { padding: var(--space-lg) 0; }
+  .inline-cta-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+  .inline-cta-text {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+  }
+
   /* ---- CTA ---- */
   .cta-section { padding: var(--space-xl) 0; border-top: 1px solid var(--color-rule); }
   .cta-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--space-md); }
@@ -584,8 +598,130 @@
     .cta-body { grid-column: 1 / span 12; }
     .nav-inner { flex-direction: column; gap: var(--space-sm); align-items: flex-start; }
   }
+
+
+  /* ═══════════════════════════════════════════════
+     DEMO SECTION: browser chrome wrapper
+  ═══════════════════════════════════════════════ */
+  .demo-section { padding: var(--space-lg) 0; border-bottom: 1px solid var(--color-rule); }
+  .demo-head { display: grid; grid-template-columns: repeat(12,1fr); gap: var(--space-md); margin-bottom: var(--space-lg); align-items: end; }
+  .demo-head .label { grid-column: 1/span 3; font-size: .72rem; font-weight: 600; letter-spacing: var(--tracking-xwide); text-transform: uppercase; color: var(--color-text-muted); padding-top: 10px; }
+  .demo-head-content { grid-column: 4/span 8; }
+  .demo-head-content h2 { font-size: clamp(24px,3vw,40px); font-weight: 300; line-height: 1.15; letter-spacing: var(--tracking-tight); margin-bottom: 10px; }
+  .demo-head-content h2 strong { font-weight: 800; }
+  .demo-head-content p { color: var(--color-text-muted); font-size: .95rem; line-height: 1.6; }
+  .demo-role-note { margin-top: 12px; font-size: .82rem; color: var(--color-text-muted); opacity: 0.7; }
+  .demo-browser { border-radius: 12px; overflow: hidden; border: 1px solid var(--color-rule); box-shadow: 0 8px 48px rgba(0,0,0,.08); }
+  .demo-chrome-bar { background: #EAEAE8; padding: 10px 16px; display: flex; align-items: center; gap: 14px; border-bottom: 1px solid #D4D4D0; }
+  .demo-chrome-dots { display: flex; gap: 7px; flex-shrink: 0; }
+  .demo-chrome-dots span { width: 12px; height: 12px; border-radius: 50%; display: block; }
+  .demo-chrome-dots span:nth-child(1) { background: #FF5F57; }
+  .demo-chrome-dots span:nth-child(2) { background: #FEBC2E; }
+  .demo-chrome-dots span:nth-child(3) { background: #28C840; }
+  #tp-url-bar { background: #fff; border-radius: 6px; padding: 5px 14px; font-size: .78rem; font-family: 'JetBrains Mono', monospace; color: #555; flex: 1; max-width: 520px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid #D4D4D0; transition: color .3s ease; }
+  #tp-url-bar.has-link { color: #0A5C3E; font-weight: 600; }
+
+  /* ═══════════════════════════════════════════════
+     APP INTERNALS: all scoped to #tp-app
+  ═══════════════════════════════════════════════ */
+  #tp-app { position: relative; height: 580px; overflow: hidden; background: #0F1117; font-family: 'Barlow', -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; color: #F0F0F5; -webkit-font-smoothing: antialiased; }
+  #tp-app *, #tp-app *::before, #tp-app *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  #tp-app #tp-map { position: absolute; inset: 0; z-index: 1; }
+  /* Leaflet overrides scoped to demo */
+  #tp-app .leaflet-control-zoom { display: none; }
+  #tp-app .leaflet-control-attribution { font-size: 9px !important; opacity: .4; }
+  #tp-app .leaflet-control-layers { background: #181B25 !important; border: 1px solid #2A2D3E !important; border-radius: 10px !important; color: #F0F0F5 !important; font-family: 'Barlow', sans-serif !important; font-size: 13px !important; box-shadow: 0 4px 16px rgba(0,0,0,.4) !important; }
+  #tp-app .leaflet-control-layers-toggle { width: 36px !important; height: 36px !important; border-radius: 10px !important; background-color: #181B25 !important; border: 1px solid #2A2D3E !important; filter: invert(.85); }
+  #tp-app .leaflet-control-layers label { color: #F0F0F5 !important; }
+  #tp-app .leaflet-control-layers-separator { border-color: #2A2D3E !important; }
+  #tp-app .leaflet-popup-content-wrapper { background: #1E2130 !important; color: #F0F0F5 !important; border-radius: 12px !important; box-shadow: 0 8px 32px rgba(0,0,0,.5) !important; border: 1px solid #2A2D3E !important; }
+  #tp-app .leaflet-popup-tip { background: #1E2130 !important; }
+  #tp-app .leaflet-popup-content { font-family: 'Barlow', sans-serif !important; font-size: 13px !important; }
+  /* Overlay */
+  #tp-app .tp-overlay-top { position: absolute; top: 0; left: 0; right: 0; z-index: 1000; pointer-events: none; }
+  #tp-app .tp-overlay-top > * { pointer-events: auto; }
+  /* Header */
+  #tp-app .tp-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: linear-gradient(180deg,rgba(15,17,23,.95) 0%,rgba(15,17,23,.8) 80%,transparent 100%); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  #tp-app .tp-brand { display: flex; align-items: center; gap: 10px; }
+  #tp-app .tp-brand-icon { width: 32px; height: 32px; background: #E8651A; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: white; box-shadow: 0 2px 12px rgba(232,101,26,.25); }
+  #tp-app .tp-brand-text { font-size: 15px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; }
+  #tp-app .tp-brand-sub { font-size: 10px; color: #8B8FA3; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; }
+  #tp-app .tp-mode-badge { font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px; letter-spacing: .8px; text-transform: uppercase; }
+  #tp-app .tp-mode-badge.create { background: rgba(232,101,26,.15); color: #FF8642; border: 1px solid rgba(232,101,26,.3); }
+  #tp-app .tp-mode-badge.follow { background: rgba(26,191,160,.2); color: #1ABFA0; border: 1px solid rgba(26,191,160,.3); animation: tp-pulse-badge 2s ease-in-out infinite; }
+  @keyframes tp-pulse-badge { 0%,100%{opacity:1} 50%{opacity:.7} }
+  /* Splash */
+  #tp-app .tp-splash { position: absolute; inset: 0; z-index: 2000; background: #0F1117; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 24px; }
+  #tp-app .tp-splash-icon { width: 64px; height: 64px; background: #E8651A; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 800; color: white; margin-bottom: 20px; box-shadow: 0 8px 40px rgba(232,101,26,.25); }
+  #tp-app .tp-splash-title { font-size: 28px; font-weight: 800; letter-spacing: 1px; margin-bottom: 8px; }
+  #tp-app .tp-splash-tagline { font-size: 14px; color: #8B8FA3; margin-bottom: 36px; line-height: 1.5; max-width: 280px; }
+  #tp-app .tp-splash-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
+  #tp-app .tp-splash-footer { position: absolute; bottom: 18px; font-size: 11px; color: #555872; letter-spacing: .5px; }
+  /* Buttons */
+  #tp-app .tp-btn { font-family: 'Barlow', sans-serif; font-weight: 600; font-size: 14px; border: none; border-radius: 10px; padding: 12px 20px; cursor: pointer; transition: all .15s ease; letter-spacing: .3px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; -webkit-tap-highlight-color: transparent; }
+  #tp-app .tp-btn-primary { background: #E8651A; color: white; box-shadow: 0 4px 20px rgba(232,101,26,.25); }
+  #tp-app .tp-btn-primary:hover:not(:disabled) { background: #D05815; }
+  #tp-app .tp-btn-secondary { background: #1E2130; color: #F0F0F5; border: 1px solid #2A2D3E; }
+  #tp-app .tp-btn-secondary:hover { border-color: #555; }
+  #tp-app .tp-btn-ghost { background: transparent; color: #8B8FA3; padding: 8px 12px; }
+  #tp-app .tp-btn-teal { background: #1ABFA0; color: #0A1410; font-weight: 700; border: none; }
+  #tp-app .tp-btn-teal:hover { background: #17A890; }
+  #tp-app .tp-btn-full { width: 100%; }
+  #tp-app .tp-btn:disabled { opacity: .4; cursor: default; }
+  /* Create panel (bottom sheet) */
+  #tp-app .tp-create-panel { position: absolute; bottom: 0; left: 0; right: 0; z-index: 1000; background: #181B25; border-top: 1px solid #2A2D3E; border-radius: 20px 20px 0 0; max-height: 54%; overflow-y: auto; }
+  #tp-app .tp-drag-handle { width: 36px; height: 4px; background: #2A2D3E; border-radius: 2px; margin: 10px auto 6px; }
+  #tp-app .tp-panel-content { padding: 6px 20px 20px; }
+  #tp-app .tp-panel-title { font-size: 13px; font-weight: 600; color: #8B8FA3; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+  #tp-app .tp-instruction { font-size: 13px; color: #8B8FA3; line-height: 1.5; margin-bottom: 12px; padding: 10px 14px; background: #1E2130; border-radius: 10px; border-left: 3px solid #E8651A; }
+  #tp-app .tp-waypoint-list { list-style: none; margin-bottom: 12px; max-height: 120px; overflow-y: auto; }
+  #tp-app .tp-wp-item { display: flex; align-items: center; gap: 12px; padding: 8px 14px; background: #1E2130; border-radius: 10px; margin-bottom: 5px; font-size: 13px; }
+  #tp-app .tp-wp-num { width: 22px; height: 22px; background: #E8651A; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  #tp-app .tp-wp-coords { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #8B8FA3; flex: 1; }
+  #tp-app .tp-wp-remove { background: none; border: none; color: #555872; cursor: pointer; font-size: 17px; padding: 2px 6px; border-radius: 5px; font-family: inherit; }
+  #tp-app .tp-wp-remove:hover { color: #E84545; background: rgba(232,69,69,.15); }
+  #tp-app .tp-btn-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  /* Share output */
+  #tp-app .tp-share-output { margin-top: 12px; padding: 12px; background: #1E2130; border-radius: 12px; border: 1px solid #1ABFA0; box-shadow: 0 0 16px rgba(26,191,160,.15); }
+  #tp-app .tp-share-label { font-size: 11px; font-weight: 600; color: #1ABFA0; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 8px; }
+  #tp-app .tp-share-url-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+  #tp-app .tp-share-url-input { flex: 1; background: #0F1117; border: 1px solid #2A2D3E; border-radius: 7px; padding: 8px 10px; color: #F0F0F5; font-family: 'JetBrains Mono', monospace; font-size: 10px; outline: none; min-width: 0; }
+  #tp-app .tp-share-btn-row { display: flex; gap: 8px; }
+  /* Follow HUD */
+  #tp-app .tp-follow-hud { position: absolute; bottom: 0; left: 0; right: 0; z-index: 1000; padding: 0 12px 12px; }
+  #tp-app .tp-hud-card { background: rgba(24,27,37,.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid #2A2D3E; overflow: hidden; }
+  #tp-app .tp-hud-main { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 16px 24px; gap: 16px; }
+  #tp-app .tp-hud-metric { text-align: center; }
+  #tp-app .tp-hud-lbl { font-size: 10px; font-weight: 600; color: #555872; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 3px; }
+  #tp-app .tp-hud-val { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 600; color: #F0F0F5; line-height: 1; }
+  #tp-app .tp-hud-unit { font-size: 12px; color: #8B8FA3; font-weight: 400; margin-left: 2px; }
+  #tp-app .tp-compass-ring { width: 58px; height: 58px; border: 2px solid #2A2D3E; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; }
+  #tp-app .tp-compass-arrow { font-size: 24px; transition: transform .5s ease; color: #E8651A; }
+  #tp-app .tp-compass-lbl { position: absolute; bottom: -16px; font-size: 10px; font-weight: 600; color: #8B8FA3; font-family: 'JetBrains Mono', monospace; white-space: nowrap; }
+  #tp-app .tp-hud-progress { padding: 8px 24px 12px; border-top: 1px solid #2A2D3E; }
+  #tp-app .tp-progress-header { display: flex; justify-content: space-between; padding-bottom: 6px; font-size: 11px; color: #555872; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+  #tp-app .tp-progress-track { width: 100%; height: 4px; background: #2A2D3E; border-radius: 2px; overflow: hidden; }
+  #tp-app .tp-progress-fill { height: 100%; background: linear-gradient(90deg,#E8651A,#1ABFA0); border-radius: 2px; transition: width .5s ease; }
+  #tp-app .tp-hud-status { padding: 8px 20px 12px; border-top: 1px solid #2A2D3E; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  #tp-app .tp-status-row { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; }
+  #tp-app .tp-status-dot { width: 8px; height: 8px; border-radius: 50%; animation: tp-blink 1.5s ease-in-out infinite; }
+  @keyframes tp-blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+  #tp-app .tp-status-dot.simulating { background: #E8651A; box-shadow: 0 0 6px rgba(232,101,26,.3); }
+  #tp-app .tp-status-dot.idle { background: #8B8FA3; animation: none; }
+  #tp-app .tp-status-dot.done { background: #1ABFA0; animation: none; }
+  /* Toast */
+  #tp-app .tp-toast { position: absolute; top: 68px; left: 50%; transform: translateX(-50%) translateY(-16px); background: #1ABFA0; color: #0A1410; font-weight: 700; font-size: 13px; padding: 9px 22px; border-radius: 30px; z-index: 9999; opacity: 0; transition: all .25s ease; pointer-events: none; white-space: nowrap; }
+  #tp-app .tp-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  /* Demo badge */
+  #tp-app .tp-demo-badge { position: absolute; top: 64px; right: 10px; z-index: 1001; background: rgba(15,17,23,.7); border: 1px solid #2A2D3E; border-radius: 7px; padding: 4px 9px; font-size: 10px; font-weight: 600; color: #555872; letter-spacing: 1px; text-transform: uppercase; backdrop-filter: blur(8px); }
+  #tp-app .hidden { display: none !important; }
+  @media (max-width: 768px) {
+    #tp-app { height: 560px; }
+    .demo-head .label { grid-column: 1/span 12; padding-top: 0; margin-bottom: 6px; }
+    .demo-head-content { grid-column: 1/span 12; }
+  }
+
 </style>
-</head>
 <body>
 
 <nav>
@@ -647,118 +783,121 @@
         <p>"The route is always in my head. The problem is getting it into theirs."</p>
         <cite>SAR Coordinator, White Mountains</cite>
       </div>
-      <p>TrackPush was built to close that gap. A SAR professional draws an egress route and sends it as a link. The recipient taps it, grants location permission, and a live navigation interface appears in their browser. No app store. No account. No setup.</p>
+      <p>TrackPush was built to close that gap, by a search and rescue professional, for search and rescue professionals. A SAR coordinator draws an egress route and sends it as a link. The recipient taps it, and a live navigation interface appears in their browser. No app store. No account. No setup.</p>
     </div>
   </div>
 </section>
 
-<section class="app-preview-section">
+
+<section class="demo-section">
   <div class="container">
-    <div class="app-preview-head">
-      <div class="app-preview-title">Two interfaces. <strong>One link.</strong></div>
+    <div class="demo-head">
+      <div class="label">Live Demo</div>
+      <div class="demo-head-content">
+        <h2><strong>Try it.</strong></h2>
+        <p>Click the map to place waypoints and generate a working link. Hit "Try Demo Route" to see Follow mode with a GPS simulation.</p>
+        <p class="demo-role-note">Building the route is what the rescuer does. Following it is what the caller does.</p>
+      </div>
     </div>
-    <div class="phone-frames">
-
-      <div class="phone-frame">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-          <div class="mock-header">
-            <div class="mock-brand">
-              <div class="mock-brand-icon">&oplus;</div>
-              <div class="mock-brand-text">TrackPush</div>
+    <div class="demo-browser">
+      <div class="demo-chrome-bar">
+        <div class="demo-chrome-dots"><span></span><span></span><span></span></div>
+        <div id="tp-url-bar">gravity-labs-outdoor.github.io/trackpush/</div>
+      </div>
+      <div id="tp-app">
+        <div id="tp-map"></div>
+        <div class="tp-splash" id="tp-splash">
+          <div class="tp-splash-icon">&#8853;</div>
+          <div class="tp-splash-title">TrackPush</div>
+          <p class="tp-splash-tagline">Share GPS routes instantly. Built for search and rescue teams.</p>
+          <div class="tp-splash-actions">
+            <button class="tp-btn tp-btn-primary tp-btn-full" id="tp-btn-create" style="font-size:15px;padding:14px 20px;border-radius:12px;">&#10010;&nbsp; Create a Route</button>
+            <button class="tp-btn tp-btn-secondary tp-btn-full" id="tp-btn-demo" style="font-size:15px;padding:14px 20px;border-radius:12px;">&#9654;&nbsp; Try Demo Route</button>
+          </div>
+          <div class="tp-splash-footer">No account required &middot; No app install &middot; Just a link</div>
+        </div>
+        <div class="tp-overlay-top">
+          <div class="tp-header hidden" id="tp-header">
+            <div class="tp-brand">
+              <div class="tp-brand-icon">&#8853;</div>
+              <div>
+                <div class="tp-brand-text">TrackPush</div>
+                <div class="tp-brand-sub">SAR Route Share</div>
+              </div>
             </div>
-            <div class="mock-badge" style="background:rgba(225,90,62,0.12);color:#FF8642;border-color:rgba(225,90,62,0.25);">Create</div>
+            <div class="tp-mode-badge create" id="tp-mode-badge">Create</div>
           </div>
-          <div class="mock-map">
-            <svg viewBox="0 0 228 120" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="80" cy="70" rx="75" ry="45" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
-              <ellipse cx="80" cy="70" rx="55" ry="32" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
-              <ellipse cx="80" cy="70" rx="36" ry="20" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
-              <polyline points="30,90 60,75 95,60 135,45 175,28 205,18" stroke="#E15A3E" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="7,5" opacity="0.9"/>
-              <circle cx="30" cy="90" r="6" fill="#E15A3E" stroke="white" stroke-width="1.5"/>
-              <circle cx="95" cy="60" r="5" fill="#E15A3E" stroke="white" stroke-width="1.5"/>
-              <circle cx="175" cy="28" r="5" fill="#E15A3E" stroke="white" stroke-width="1.5"/>
-              <circle cx="205" cy="18" r="6" fill="#1ABFA0" stroke="white" stroke-width="1.5"/>
-              <polygon points="80,72 85,79 80,77 75,79" fill="#E15A3E" opacity="0.75"/>
-              <polygon points="158,34 163,41 158,39 153,41" fill="#E15A3E" opacity="0.75"/>
-            </svg>
-          </div>
-          <div class="mock-wp-list">
-            <div class="mock-instruction">Tap map to add waypoints. 3 added.</div>
-            <div class="mock-wp-item"><div class="mock-wp-num">1</div><div class="mock-wp-coords">44.27100, -71.30300</div></div>
-            <div class="mock-wp-item"><div class="mock-wp-num">2</div><div class="mock-wp-coords">44.27420, -71.30700</div></div>
-            <div class="mock-wp-item"><div class="mock-wp-num">3</div><div class="mock-wp-coords">44.27560, -71.31020</div></div>
-          </div>
-          <div class="mock-btn-row" style="margin-bottom: 7px;">
-            <div class="mock-btn secondary">&uarr; GPX</div>
-            <div class="mock-btn secondary">Clear</div>
-          </div>
-          <div class="mock-btn primary" style="margin-bottom:7px;">Generate Share Link</div>
-          <div class="mock-share-output">
-            <div class="mock-share-label">&check; Share this link</div>
-            <div class="mock-share-url-row">
-              <div class="mock-share-input">trackpush.io/#follow/e8kLp...</div>
-              <div class="mock-btn primary" style="flex-shrink:0;padding:5px 10px;">Copy</div>
+        </div>
+        <div class="tp-create-panel hidden" id="tp-create-panel">
+          <div class="tp-drag-handle"></div>
+          <div class="tp-panel-content">
+            <div class="tp-panel-title">Build Route</div>
+            <div class="tp-instruction">Tap the map to place waypoints. Each waypoint defines a turn or checkpoint along the egress route.</div>
+            <ul class="tp-waypoint-list" id="tp-waypoint-list"></ul>
+            <div class="tp-btn-row">
+              <button class="tp-btn tp-btn-ghost" id="tp-clear-btn" onclick="tpClear()" disabled>Clear</button>
+            </div>
+            <button class="tp-btn tp-btn-primary tp-btn-full" id="tp-gen-btn" onclick="tpGenerate()" disabled>Generate Share Link</button>
+            <div class="tp-share-output hidden" id="tp-share-out">
+              <span class="tp-share-label">&#10003; Link generated : opens in TrackPush</span>
+              <div class="tp-share-url-row">
+                <input type="text" readonly class="tp-share-url-input" id="tp-share-input">
+                <button class="tp-btn tp-btn-primary" onclick="tpCopy()" style="padding:8px 14px;border-radius:7px;font-size:13px;flex-shrink:0;">Copy</button>
+              </div>
+              <div class="tp-share-btn-row">
+                <a id="tp-open-link" href="#" target="_blank" class="tp-btn tp-btn-secondary tp-btn-full" style="text-decoration:none;font-size:13px;padding:10px;">Open in TrackPush &#8599;</a>
+                <button class="tp-btn tp-btn-teal tp-btn-full" onclick="tpStartFollowDemo()" style="font-size:13px;padding:10px;">&#9654; Preview Follow Mode</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div class="phone-frame">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-          <div class="mock-header">
-            <div class="mock-brand">
-              <div class="mock-brand-icon">&oplus;</div>
-              <div class="mock-brand-text">TrackPush</div>
-            </div>
-            <div class="mock-badge">Following</div>
-          </div>
-          <div class="mock-map">
-            <svg viewBox="0 0 228 120" xmlns="http://www.w3.org/2000/svg">
-              <ellipse cx="90" cy="72" rx="78" ry="46" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
-              <ellipse cx="90" cy="72" rx="56" ry="32" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
-              <ellipse cx="90" cy="72" rx="36" ry="20" fill="none" stroke="#2A3A4A" stroke-width="0.8" opacity="0.5"/>
-              <polyline points="38,92 68,77 105,62 145,46 185,28 210,18" stroke="#E15A3E" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.9"/>
-              <circle cx="38" cy="92" r="6" fill="#E15A3E" stroke="white" stroke-width="1.5"/>
-              <circle cx="210" cy="18" r="6" fill="#1ABFA0" stroke="white" stroke-width="1.5"/>
-              <polygon points="86,66 91,73 86,71 81,73" fill="#E15A3E" opacity="0.8"/>
-              <polygon points="163,38 168,45 163,43 158,45" fill="#E15A3E" opacity="0.8"/>
-              <polygon points="68,77 74,85 68,82 62,85" fill="#1ABFA0" stroke="white" stroke-width="0.8" transform="rotate(-15, 68, 80)"/>
-              <circle cx="68" cy="79" r="10" fill="rgba(26,191,160,0.1)" stroke="#1ABFA0" stroke-width="0.5" opacity="0.4"/>
-            </svg>
-          </div>
-          <div class="mock-hud-card">
-            <div class="mock-hud-main">
-              <div class="mock-hud-metric">
-                <div class="mock-hud-label">Distance</div>
-                <div class="mock-hud-value">0.8<small>mi</small></div>
+        <div class="tp-follow-hud hidden" id="tp-follow-hud">
+          <div class="tp-hud-card">
+            <div class="tp-hud-main">
+              <div class="tp-hud-metric">
+                <div class="tp-hud-lbl">Distance</div>
+                <div class="tp-hud-val" id="tp-hud-dist">--<span class="tp-hud-unit"></span></div>
               </div>
-              <div class="mock-compass">&nearr;</div>
-              <div class="mock-hud-metric">
-                <div class="mock-hud-label">Next WP</div>
-                <div class="mock-hud-value">3</div>
+              <div class="tp-compass-ring">
+                <div class="tp-compass-arrow" id="tp-compass-arrow">&#8593;</div>
+                <div class="tp-compass-lbl" id="tp-compass-lbl">---&deg;</div>
+              </div>
+              <div class="tp-hud-metric">
+                <div class="tp-hud-lbl">Next WP</div>
+                <div class="tp-hud-val" id="tp-hud-wp">--</div>
               </div>
             </div>
-            <div class="mock-progress">
-              <div class="mock-progress-label">
-                <span>Waypoint 2 / 5</span>
-                <span>42%</span>
+            <div class="tp-hud-progress">
+              <div class="tp-progress-header">
+                <span id="tp-prog-label">Waypoint 1 / --</span>
+                <span id="tp-prog-pct">0%</span>
               </div>
-              <div class="mock-progress-bar"><div class="mock-progress-fill"></div></div>
+              <div class="tp-progress-track"><div class="tp-progress-fill" id="tp-prog-fill" style="width:0%"></div></div>
+            </div>
+            <div class="tp-hud-status">
+              <div class="tp-status-row">
+                <div class="tp-status-dot idle" id="tp-status-dot"></div>
+                <span id="tp-status-txt">Ready to simulate</span>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="tp-btn tp-btn-secondary" id="tp-sim-btn" onclick="tpToggleSim()" style="padding:7px 14px;font-size:12px;border-radius:8px;">&#9654; Start</button>
+                <button class="tp-btn tp-btn-ghost" onclick="tpExitFollow()" style="padding:7px 12px;font-size:12px;border-radius:8px;">&#8592; Back</button>
+              </div>
             </div>
           </div>
         </div>
+        <div class="tp-toast" id="tp-toast">&#10003; Link copied to clipboard</div>
+        <div class="tp-demo-badge">Demo</div>
       </div>
-
     </div>
   </div>
 </section>
+
 
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <h2>Six steps from distress call to <strong>navigation.</strong></h2>
+      <h2>From distress call to <strong>navigation.</strong></h2>
     </div>
     <div class="article-body">
       <div class="flow-rows">
@@ -785,12 +924,17 @@
         <div class="flow-step">
           <div class="flow-num">05</div>
           <div class="flow-title">Recipient Opens It</div>
-          <div class="flow-body">The caller taps the link. Their browser opens Follow mode: no app download, no account prompt, no delay. They grant location access in one tap.</div>
+          <div class="flow-body">The caller taps the link. Their browser opens Follow mode instantly: no app download, no account prompt, no loading screen.</div>
         </div>
         <div class="flow-step">
           <div class="flow-num">06</div>
+          <div class="flow-title">Grant Location Access</div>
+          <div class="flow-body">The browser surfaces the native GPS permission prompt. One tap on Allow and the app begins tracking their real-time position. No custom overlay, no explanation screen. The native prompt is faster and more trusted than anything the app could build.</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">07</div>
           <div class="flow-title">They Walk. The App Guides.</div>
-          <div class="flow-body">Live GPS position, a compass bearing to the next waypoint, distance remaining, and a progress bar. The interface is designed for cold hands, low battery, and high stress.</div>
+          <div class="flow-body">Live GPS position, a compass bearing to the next waypoint, distance remaining, and a progress bar. Designed for cold hands, low battery, and high stress.</div>
         </div>
       </div>
     </div>
@@ -803,7 +947,7 @@
       <h2>Every choice in service of <strong>one user state.</strong></h2>
     </div>
     <div class="article-body">
-      <p>The follow mode interface is designed around a person who is cold, scared, and probably has less than 30% battery. That framing informed every decision from color palette to interaction model.</p>
+      <p>The follow mode interface is designed around a single user state: cold hands, low battery, high stress. That constraint informed every decision, from color palette to interaction model.</p>
       <h3>Serverless by Design</h3>
       <p>The entire route is encoded into the URL itself using Google's polyline encoding algorithm. There is no backend, no database, no API key required. The app works from a static file host, reduces latency to near zero, and eliminates any failure surface in the link-sharing pipeline. The tradeoff is URL length at high waypoint counts, which is mitigated by a GPX simplification algorithm that reduces tracks to a configurable maximum of 50 points.</p>
       <div class="callout">
@@ -908,7 +1052,7 @@
         <h2>Open the <strong>app.</strong></h2>
         <p>TrackPush is free to use and requires no account. Create a route and share it with anyone.</p>
         <div class="cta-links">
-          <a class="cta-link" href="https://www.gravitystrategy.co/trackpush" target="_blank">Open TrackPush</a>
+          <a class="cta-link" href="https://gravity-labs-outdoor.github.io/trackpush/" target="_blank">Open TrackPush</a>
           <a class="cta-link alt" href="index.html">Back to Portfolio</a>
         </div>
       </div>
@@ -919,11 +1063,357 @@
 <footer>
   <div class="container">
     <div class="footer-inner">
-      <span>&copy; 2026 Gravity Strategy</span>
-      <a href="https://www.gravitystrategy.co">gravitystrategy.co</a>
+      <span>&copy; 2026 Patrick Scanlan</span>
+      <a href="mailto:patrick@gravitystrategy.co">patrick@gravitystrategy.co</a>
     </div>
   </div>
 </footer>
+
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function () {
+'use strict';
+
+// ── POLYLINE ENCODE/DECODE (Google algo) ──
+function encodePoly(coords) {
+  var enc = '', pLat = 0, pLng = 0;
+  for (var i = 0; i < coords.length; i++) {
+    var lat = coords[i][0], lng = coords[i][1];
+    var dLat = Math.round(lat * 1e5) - pLat, dLng = Math.round(lng * 1e5) - pLng;
+    pLat += dLat; pLng += dLng;
+    enc += encVal(dLat) + encVal(dLng);
+  }
+  return enc;
+}
+function encVal(v) {
+  v = v < 0 ? ~(v << 1) : v << 1; var s = '';
+  while (v >= 0x20) { s += String.fromCharCode((0x20 | (v & 0x1f)) + 63); v >>= 5; }
+  return s + String.fromCharCode(v + 63);
+}
+
+// ── GEO MATH ──
+function hav(lat1, lon1, lat2, lon2) {
+  var R = 6371000, dLat = (lat2 - lat1) * Math.PI / 180, dLon = (lon2 - lon1) * Math.PI / 180;
+  var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+function brng(lat1, lon1, lat2, lon2) {
+  var dLon = (lon2 - lon1) * Math.PI / 180;
+  var y = Math.sin(dLon) * Math.cos(lat2 * Math.PI / 180);
+  var x = Math.cos(lat1*Math.PI/180)*Math.sin(lat2*Math.PI/180) - Math.sin(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.cos(dLon);
+  return ((Math.atan2(y, x) * 180 / Math.PI) + 360) % 360;
+}
+function fmtDist(m) {
+  var mi = m / 1609.344;
+  if (mi < 0.1) return { v: Math.round(m * 3.28084), u: 'ft' };
+  return { v: mi.toFixed(1), u: 'mi' };
+}
+function compassDir(deg) {
+  var d = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  return d[Math.round(deg / 22.5) % 16];
+}
+
+// ── MAP INIT ──
+var tpMap = L.map('tp-map', { zoomControl: false, attributionControl: true, center: [44.27, -71.30], zoom: 13 });
+var topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenTopoMap, &copy; OSM', maxZoom: 17 });
+var osmLayer  = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap' });
+topoLayer.addTo(tpMap);
+L.control.layers({ 'Topo': topoLayer, 'Street': osmLayer }, null, { position: 'topright', collapsed: true }).addTo(tpMap);
+
+// ── ICONS ──
+function mkWpIcon(n, color) {
+  color = color || '#E8651A';
+  return L.divIcon({ className: '', html: '<div style="width:28px;height:28px;background:'+color+';border-radius:50%;border:2.5px solid white;display:flex;align-items:center;justify-content:center;font-family:Barlow,sans-serif;font-size:12px;font-weight:700;color:white;box-shadow:0 2px 10px rgba(0,0,0,0.4);">'+n+'</div>', iconSize: [28,28], iconAnchor: [14,14] });
+}
+function mkUserIcon(heading) {
+  var r = heading != null ? heading : 0;
+  return L.divIcon({ className: '', html: '<div style="width:48px;height:64px;display:flex;align-items:center;justify-content:center;position:relative;"><div style="position:absolute;width:44px;height:44px;top:14px;background:rgba(26,191,160,0.1);border-radius:50%;"></div><svg width="48" height="64" viewBox="0 0 48 64" style="transform:rotate('+r+'deg);transition:transform 0.4s ease;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.4));"><polygon points="24,0 28,14 24,10 20,14" fill="#1ABFA0" opacity="0.7"/><polygon points="24,14 38,42 24,35 10,42" fill="#1ABFA0" stroke="white" stroke-width="1.5" stroke-linejoin="round"/></svg></div>', iconSize: [48,64], iconAnchor: [24,36] });
+}
+function mkStartIcon() {
+  return L.divIcon({ className: '', html: '<div style="width:32px;height:32px;background:#E8651A;border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-size:14px;color:white;box-shadow:0 2px 12px rgba(0,0,0,0.4);">S</div>', iconSize: [32,32], iconAnchor: [16,16] });
+}
+function mkEndIcon() {
+  return L.divIcon({ className: '', html: '<div style="width:36px;height:36px;background:#1ABFA0;border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-size:15px;color:#0A1410;box-shadow:0 2px 12px rgba(0,0,0,0.4);font-weight:bold;">&#10003;</div>', iconSize: [36,36], iconAnchor: [18,18] });
+}
+
+// ── STATE ──
+var appMode = 'splash';
+var waypoints = [], wpMarkers = [], arrowMarkers = [];
+var routeLine = null, simMarker = null, trackedLine = null;
+var simTimer = null, simRunning = false;
+var simPos = { segIdx: 0, t: 0 };
+var followCoords = [];
+
+// ── SPLASH ──
+document.getElementById('tp-btn-create').onclick = function () { tpEnterCreate(); };
+document.getElementById('tp-btn-demo').onclick   = function () { tpStartFollowDemo(); };
+
+function tpEnterCreate() {
+  appMode = 'create';
+  document.getElementById('tp-splash').classList.add('hidden');
+  document.getElementById('tp-header').classList.remove('hidden');
+  document.getElementById('tp-create-panel').classList.remove('hidden');
+  document.getElementById('tp-follow-hud').classList.add('hidden');
+  document.getElementById('tp-mode-badge').className = 'tp-mode-badge create';
+  document.getElementById('tp-mode-badge').textContent = 'Create';
+  tpMap.on('click', onMapClick);
+  tpMap.invalidateSize();
+  setUrl('gravity-labs-outdoor.github.io/trackpush/', false);
+}
+window.tpEnterCreate = tpEnterCreate;
+
+function tpEnterFollow(coords) {
+  appMode = 'follow';
+  followCoords = coords;
+  stopSim();
+  simPos = { segIdx: 0, t: 0 };
+  if (simMarker) { tpMap.removeLayer(simMarker); simMarker = null; }
+  if (trackedLine) { tpMap.removeLayer(trackedLine); trackedLine = null; }
+  document.getElementById('tp-splash').classList.add('hidden');
+  document.getElementById('tp-header').classList.remove('hidden');
+  document.getElementById('tp-create-panel').classList.add('hidden');
+  document.getElementById('tp-follow-hud').classList.remove('hidden');
+  document.getElementById('tp-mode-badge').className = 'tp-mode-badge follow';
+  document.getElementById('tp-mode-badge').textContent = 'Following';
+  tpMap.off('click', onMapClick);
+  tpMap.invalidateSize();
+  drawFollowRoute(coords);
+  placeSimMarker(coords[0], null);
+  refreshHUD(coords[0], 1);
+  setStatus('idle', 'Ready to simulate');
+  var btn = document.getElementById('tp-sim-btn');
+  if (btn) { btn.innerHTML = '&#9654; Start'; btn.onclick = tpToggleSim; }
+}
+
+window.tpStartFollowDemo = function () {
+  var demo = [[44.2710,-71.3030],[44.2725,-71.3055],[44.2742,-71.3070],[44.2756,-71.3102],[44.2770,-71.3130],[44.2790,-71.3155],[44.2815,-71.3170]];
+  var url = 'https://gravity-labs-outdoor.github.io/trackpush/#follow/' + encodeURIComponent(encodePoly(demo));
+  setUrl(url, true);
+  tpEnterFollow(demo);
+};
+
+window.tpExitFollow = function () {
+  stopSim();
+  if (simMarker) { tpMap.removeLayer(simMarker); simMarker = null; }
+  if (trackedLine) { tpMap.removeLayer(trackedLine); trackedLine = null; }
+  tpEnterCreate();
+};
+
+// ── CREATE MODE ──
+function onMapClick(e) {
+  if (appMode !== 'create') return;
+  addWp(e.latlng.lat, e.latlng.lng);
+}
+function addWp(lat, lng) {
+  waypoints.push([lat, lng]);
+  var m = L.marker([lat, lng], { icon: mkWpIcon(waypoints.length) }).addTo(tpMap);
+  wpMarkers.push(m);
+  drawCreateRoute();
+  renderWpList();
+  updateBtns();
+  document.getElementById('tp-share-out').classList.add('hidden');
+  setUrl('gravity-labs-outdoor.github.io/trackpush/', false);
+}
+window.tpRemoveWp = function (i) {
+  waypoints.splice(i, 1);
+  wpMarkers.forEach(function (m) { tpMap.removeLayer(m); });
+  wpMarkers = [];
+  waypoints.forEach(function (wp, j) {
+    wpMarkers.push(L.marker(wp, { icon: mkWpIcon(j + 1) }).addTo(tpMap));
+  });
+  drawCreateRoute();
+  renderWpList();
+  updateBtns();
+  document.getElementById('tp-share-out').classList.add('hidden');
+  setUrl('gravity-labs-outdoor.github.io/trackpush/', false);
+};
+window.tpClear = function () {
+  waypoints = [];
+  wpMarkers.forEach(function (m) { tpMap.removeLayer(m); });
+  wpMarkers = [];
+  if (routeLine) { tpMap.removeLayer(routeLine); routeLine = null; }
+  renderWpList();
+  updateBtns();
+  document.getElementById('tp-share-out').classList.add('hidden');
+  setUrl('gravity-labs-outdoor.github.io/trackpush/', false);
+};
+function drawCreateRoute() {
+  if (routeLine) { tpMap.removeLayer(routeLine); routeLine = null; }
+  if (waypoints.length >= 2) {
+    routeLine = L.polyline(waypoints, { color: '#E8651A', weight: 4, opacity: .9, dashArray: '8,6' }).addTo(tpMap);
+    tpMap.fitBounds(routeLine.getBounds().pad(0.15));
+  }
+}
+function renderWpList() {
+  var el = document.getElementById('tp-waypoint-list');
+  if (!el) return;
+  if (!waypoints.length) { el.innerHTML = ''; return; }
+  el.innerHTML = waypoints.map(function (wp, i) {
+    return '<li class="tp-wp-item"><div class="tp-wp-num">' + (i+1) + '</div><div class="tp-wp-coords">' + wp[0].toFixed(5) + ', ' + wp[1].toFixed(5) + '</div><button class="tp-wp-remove" onclick="tpRemoveWp(' + i + ')">&times;</button></li>';
+  }).join('');
+}
+function updateBtns() {
+  document.getElementById('tp-clear-btn').disabled = waypoints.length === 0;
+  document.getElementById('tp-gen-btn').disabled   = waypoints.length < 2;
+}
+window.tpGenerate = function () {
+  if (waypoints.length < 2) return;
+  var enc = encodeURIComponent(encodePoly(waypoints));
+  var url = 'https://gravity-labs-outdoor.github.io/trackpush/#follow/' + enc;
+  document.getElementById('tp-share-input').value = url;
+  var openLink = document.getElementById('tp-open-link');
+  if (openLink) openLink.href = url;
+  document.getElementById('tp-share-out').classList.remove('hidden');
+  setUrl(url, true);
+};
+window.tpCopy = function () {
+  var v = document.getElementById('tp-share-input').value;
+  if (navigator.clipboard) { navigator.clipboard.writeText(v).then(showToast).catch(showToast); }
+  else { showToast(); }
+};
+window.tpToggleSim = function () { simRunning ? stopSim() : startSim(); };
+
+// ── FOLLOW ROUTE DRAWING ──
+function drawFollowRoute(coords) {
+  wpMarkers.forEach(function (m) { tpMap.removeLayer(m); }); wpMarkers = [];
+  arrowMarkers.forEach(function (m) { tpMap.removeLayer(m); }); arrowMarkers = [];
+  if (routeLine) { tpMap.removeLayer(routeLine); routeLine = null; }
+  routeLine = L.polyline(coords, { color: '#E8651A', weight: 5, opacity: .9, lineCap: 'round' }).addTo(tpMap);
+  addArrows(coords);
+  wpMarkers.push(L.marker(coords[0], { icon: mkStartIcon() }).addTo(tpMap));
+  wpMarkers.push(L.marker(coords[coords.length-1], { icon: mkEndIcon() }).addTo(tpMap));
+  coords.forEach(function (c, i) {
+    if (i === 0 || i === coords.length-1) return;
+    wpMarkers.push(L.circleMarker(c, { radius: 4, fillColor: '#FF8642', fillOpacity: .8, color: 'white', weight: 1 }).addTo(tpMap));
+  });
+  tpMap.fitBounds(routeLine.getBounds().pad(0.15));
+}
+function addArrows(coords) {
+  if (coords.length < 2) return;
+  var segs = [], total = 0;
+  for (var i = 0; i < coords.length-1; i++) {
+    var d = hav(coords[i][0], coords[i][1], coords[i+1][0], coords[i+1][1]);
+    segs.push({ from: coords[i], to: coords[i+1], d: d, cum: total });
+    total += d;
+  }
+  var n = Math.max(3, Math.floor(total / 150)), intv = total / (n + 1);
+  for (var k = 1; k <= n; k++) {
+    var tgt = k * intv;
+    for (var j = 0; j < segs.length; j++) {
+      var s = segs[j];
+      if (tgt >= s.cum && tgt <= s.cum + s.d) {
+        var r = (tgt - s.cum) / s.d;
+        var lt = s.from[0] + (s.to[0]-s.from[0]) * r;
+        var lg = s.from[1] + (s.to[1]-s.from[1]) * r;
+        var b = brng(s.from[0], s.from[1], s.to[0], s.to[1]);
+        var ai = L.divIcon({ className: '', html: '<svg width="16" height="16" viewBox="0 0 16 16" style="transform:rotate('+b+'deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,0.3));"><polygon points="8,1 14,12 8,9 2,12" fill="#E8651A" opacity="0.85"/></svg>', iconSize: [16,16], iconAnchor: [8,8] });
+        arrowMarkers.push(L.marker([lt, lg], { icon: ai, interactive: false }).addTo(tpMap));
+        break;
+      }
+    }
+  }
+}
+
+// ── SIMULATION ──
+var SIM_SPD = 0.003, SIM_INT = 50;
+function placeSimMarker(pos, heading) {
+  if (simMarker) tpMap.removeLayer(simMarker);
+  simMarker = L.marker(pos, { icon: mkUserIcon(heading), zIndexOffset: 1000 }).addTo(tpMap);
+}
+function startSim() {
+  simRunning = true;
+  setStatus('simulating', 'Simulating GPS...');
+  var btn = document.getElementById('tp-sim-btn');
+  if (btn) btn.innerHTML = '&#9646;&#9646; Pause';
+  if (trackedLine) { tpMap.removeLayer(trackedLine); trackedLine = null; }
+  trackedLine = L.polyline([followCoords[0]], { color: '#1ABFA0', weight: 3, opacity: .7 }).addTo(tpMap);
+  simTimer = setInterval(simStep, SIM_INT);
+}
+function stopSim() {
+  simRunning = false;
+  clearInterval(simTimer);
+  var btn = document.getElementById('tp-sim-btn');
+  if (btn) btn.innerHTML = '&#9654; Resume';
+  if (appMode === 'follow') setStatus('idle', 'Paused');
+}
+function simStep() {
+  if (!followCoords.length) return;
+  simPos.t += SIM_SPD;
+  if (simPos.t >= 1) {
+    simPos.segIdx++; simPos.t = 0;
+    if (simPos.segIdx >= followCoords.length - 1) {
+      stopSim();
+      placeSimMarker(followCoords[followCoords.length-1], null);
+      refreshHUD(followCoords[followCoords.length-1], followCoords.length-1);
+      setStatus('done', 'Route complete');
+      var btn = document.getElementById('tp-sim-btn');
+      if (btn) {
+        btn.innerHTML = '&#8635; Replay';
+        btn.onclick = function () {
+          simPos = { segIdx: 0, t: 0 };
+          if (trackedLine) { tpMap.removeLayer(trackedLine); trackedLine = null; }
+          placeSimMarker(followCoords[0], null);
+          startSim();
+        };
+      }
+      return;
+    }
+  }
+  var a = followCoords[simPos.segIdx], b = followCoords[simPos.segIdx + 1];
+  var pos = [a[0] + (b[0]-a[0]) * simPos.t, a[1] + (b[1]-a[1]) * simPos.t];
+  var heading = brng(a[0], a[1], b[0], b[1]);
+  placeSimMarker(pos, heading);
+  if (trackedLine) trackedLine.addLatLng(pos);
+  tpMap.panTo(pos, { animate: true, duration: 0.3 });
+  refreshHUD(pos, Math.min(simPos.segIdx + 1, followCoords.length - 1));
+}
+function refreshHUD(pos, nextIdx) {
+  if (!followCoords.length) return;
+  var d = fmtDist(hav(pos[0], pos[1], followCoords[nextIdx][0], followCoords[nextIdx][1]));
+  var distEl = document.getElementById('tp-hud-dist');
+  if (distEl) distEl.innerHTML = d.v + '<span class="tp-hud-unit">' + d.u + '</span>';
+  var b = brng(pos[0], pos[1], followCoords[nextIdx][0], followCoords[nextIdx][1]);
+  var arrowEl = document.getElementById('tp-compass-arrow');
+  if (arrowEl) arrowEl.style.transform = 'rotate(' + b + 'deg)';
+  var lblEl = document.getElementById('tp-compass-lbl');
+  if (lblEl) lblEl.textContent = Math.round(b) + '° ' + compassDir(b);
+  var wpEl = document.getElementById('tp-hud-wp');
+  if (wpEl) wpEl.textContent = nextIdx + 1;
+  var pct = Math.round((simPos.segIdx / (followCoords.length - 1)) * 100);
+  var pl = document.getElementById('tp-prog-label');
+  var pp = document.getElementById('tp-prog-pct');
+  var pf = document.getElementById('tp-prog-fill');
+  if (pl) pl.textContent = 'Waypoint ' + (simPos.segIdx + 1) + ' / ' + followCoords.length;
+  if (pp) pp.textContent = pct + '%';
+  if (pf) pf.style.width = pct + '%';
+}
+
+// ── HELPERS ──
+function setStatus(type, text) {
+  var dot = document.getElementById('tp-status-dot');
+  var txt = document.getElementById('tp-status-txt');
+  if (dot) dot.className = 'tp-status-dot ' + type;
+  if (txt) txt.textContent = text;
+}
+function setUrl(url, hasLink) {
+  var el = document.getElementById('tp-url-bar');
+  if (!el) return;
+  el.textContent = url;
+  el.className = hasLink ? 'has-link' : '';
+}
+function showToast() {
+  var t = document.getElementById('tp-toast');
+  if (!t) return;
+  t.classList.add('show');
+  setTimeout(function () { t.classList.remove('show'); }, 2000);
+}
+
+// ── INIT ──
+setTimeout(function () { tpMap.invalidateSize(); }, 400);
+
+})();
+</script>
 
 </body>
 </html>
